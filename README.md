@@ -1,5 +1,7 @@
 # AndroidTicWatchE3
-Android TicWatch E-3 API 28 in Kotlin Android Studio
+Android TicWatch E-3 API 28 in Kotlin Android Studio - Work in Progress
+
+NOT COMPLETE
 
 ## TicWatch E-3 Virtual Star Pet
 
