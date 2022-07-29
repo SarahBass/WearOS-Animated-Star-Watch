@@ -1,14 +1,40 @@
 # AndroidTicWatchE3
 This is a watch for Android TicWatch E-3 API 28 in Kotlin
 
-TicWatch E-3 Virtual Star Pet
+## TicWatch E-3 Virtual Star Pet
 
+<img src="https://github.com/SarahBass/AndroidTicWatchE3/blob/main/virtualstaricon.png" width="300" height="300">
+
+----------
 Features:
-Daily Background Change
-Holiday Modes : Christmas, Halloween, and Thanksgiving
+-----------
+> Daily Background Change
 
-Daily Star that is animated and changes on the hour. 
-Star also changes if you reach 3,000 Steps - collected from Android
+> Holiday Modes 
 
-It also includes a daily Star report for Horoscope, Sunset, and MoonPhase Data
+> Animated Sprite Character
 
+> Step Data Logged
+
+> Moon Phases
+
+> Sun Rise and Sun Set
+
+> Horoscope
+
+-------------
+
+
+Holiday Mode Samples:
+
+<img src="https://github.com/SarahBass/AndroidTicWatchE3/blob/main/halloweenmode.png" width="300" height="300">
+
+<img src="https://github.com/SarahBass/AndroidTicWatchE3/blob/main/christmasmode.png" width="300" height="300">
+
+-----------
+
+Contents | Description
+-------- | ----------
+AndroidManifest.xml | Extra Code to bypass security to make the workflow better on Simulation Device
+------------- | -------------
+MyWatchFace.kt | Kotlin/Java Code for Changing Background, using Clock rotation animations, samples BG colors
