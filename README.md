@@ -35,7 +35,7 @@ Holiday Mode Samples:
 
 <img src="https://github.com/SarahBass/AndroidTicWatchE3/blob/main/valentinesexample.png" width="300" height="300">
 
-<https://github.com/SarahBass/AndroidTicWatchE3/blob/main/patrickexamplebigger.png" width="300" height="300">
+<img src="https://github.com/SarahBass/AndroidTicWatchE3/blob/main/patrickexamplebigger.png" width="300" height="300">
 
 <img src="https://github.com/SarahBass/AndroidTicWatchE3/blob/main/easterexample.png" width="300" height="300">
 
