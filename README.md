@@ -27,20 +27,52 @@ Features:
 -------------
 
 
-Holiday Mode Samples:
+## Holiday Mode Samples:
+
+Halloween
 
 <img src="https://github.com/SarahBass/AndroidTicWatchE3/blob/main/halloweenmode.png" width="300" height="300">
 
+Christmas
+
 <img src="https://github.com/SarahBass/AndroidTicWatchE3/blob/main/christmasmode.png" width="300" height="300">
+
+Chanukah
 
 <img src="https://github.com/SarahBass/AndroidTicWatchE3/blob/main/Galaxywatch360%204.vectornator.png" width="300" height="300">
 
+Valentine's Day
+
 <img src="https://github.com/SarahBass/AndroidTicWatchE3/blob/main/valentinesexample.png" width="300" height="300">
+
+Easter
 
 <img src="https://github.com/SarahBass/AndroidTicWatchE3/blob/main/easterexample.png" width="300" height="300">
 
+Saint Patrick's Day
+
 <img src="https://github.com/SarahBass/AndroidTicWatchE3/blob/main/patrickexamplebigger.png" width="300" height="300">
 
+-----------------------
+
+
+## Season Mode Samples:
+
+Spring
+
+<img src="https://github.com/SarahBass/AndroidTicWatchE3/blob/main/springround.png" width="300" height="300">
+
+Summer
+
+<img src="https://github.com/SarahBass/AndroidTicWatchE3/blob/main/summerround.png" width="300" height="300">
+
+Fall
+
+<img src="https://github.com/SarahBass/AndroidTicWatchE3/blob/main/fallexample.png" width="300" height="300">
+
+Winter
+
+<img src="https://github.com/SarahBass/AndroidTicWatchE3/blob/main/winterexample.png" width="300" height="300">
 
 
 -----------
