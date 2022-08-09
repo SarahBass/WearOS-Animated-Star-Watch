@@ -217,7 +217,7 @@ class MyWatchFace : CanvasWatchFaceService() {
                         BitmapFactory.decodeResource(resources, R.drawable.november2)}}
             else if (monthOfYear == "December") {
                 //Christmas & Christmas Eve
-                if (dayOfMonth == "25" || dayOfMonth == "24"){
+                if (dayOfMonth == "25" || dayOfMonth == "24") {
                     mBackgroundBitmap =
                         BitmapFactory.decodeResource(resources, R.drawable.december1)}
                 //https://www.calendardate.com/hanukkah_2030.htm has dates up to 2030 for Hanukah or use HebrewCalendar (YEAR, 2, 25)
@@ -229,7 +229,7 @@ class MyWatchFace : CanvasWatchFaceService() {
                     (Integer.parseInt(year4digits) == 2027 && Integer.parseInt(dayOfMonth) in 26..30 ) ||
                     (Integer.parseInt(year4digits) == 2028 && Integer.parseInt(dayOfMonth) in 12..20 ) ||
                     (Integer.parseInt(year4digits) == 2029 && Integer.parseInt(dayOfMonth) in 1..9 ) ||
-                    (Integer.parseInt(year4digits) == 2030 && Integer.parseInt(dayOfMonth) in 20..23 )){
+                    (Integer.parseInt(year4digits) == 2030 && Integer.parseInt(dayOfMonth) in 20..23 )) {
                     mBackgroundBitmap =
                         BitmapFactory.decodeResource(resources, R.drawable.jewishholiday)}
                 else {
@@ -257,31 +257,43 @@ class MyWatchFace : CanvasWatchFaceService() {
                 mBackgroundBitmap =
                     BitmapFactory.decodeResource(resources, R.drawable.summerbeach) }
             else {
+                mBackgroundBitmap = BitmapFactory.decodeResource(
+                    resources,
+                    when(dayOfTheWeek) {
+                        "Mon" -> R.drawable.monday
+                        "Tue" -> R.drawable.tuesday
+                        "Wed" -> R.drawable.wednesday
+                        "Thu" -> R.drawable.thursday
+                        "Fri" -> R.drawable.friday
+                        "Sat" -> R.drawable.saturday
+                        "Sun" -> R.drawable.sunday
+                        else -> R.drawable.icerainbow
+                    })
 
-                if (dayOfTheWeek == "Mon") {
-                    mBackgroundBitmap =
-                        BitmapFactory.decodeResource(resources, R.drawable.monday) }
-                else if (dayOfTheWeek == "Tue") {
-                    mBackgroundBitmap =
-                        BitmapFactory.decodeResource(resources, R.drawable.tuesday) }
-                else if (dayOfTheWeek == "Wed") {
-                    mBackgroundBitmap =
-                        BitmapFactory.decodeResource(resources, R.drawable.wednesday) }
-                else if (dayOfTheWeek == "Thu") {
-                    mBackgroundBitmap =
-                        BitmapFactory.decodeResource(resources, R.drawable.icerainbow) }
-                else if (dayOfTheWeek == "Fri") {
-                    mBackgroundBitmap =
-                        BitmapFactory.decodeResource(resources, R.drawable.friday) }
-                else if (dayOfTheWeek == "Sat") {
-                    mBackgroundBitmap =
-                        BitmapFactory.decodeResource(resources, R.drawable.saturday) }
-                else if (dayOfTheWeek == "Sun") {
-                    mBackgroundBitmap =
-                        BitmapFactory.decodeResource(resources, R.drawable.sunday) }
-                else {
-                    mBackgroundBitmap =
-                        BitmapFactory.decodeResource(resources, R.drawable.icerainbow)}
+//                if (dayOfTheWeek == "Mon") {
+//                    mBackgroundBitmap =
+//                        BitmapFactory.decodeResource(resources, R.drawable.monday) }
+//                else if (dayOfTheWeek == "Tue") {
+//                    mBackgroundBitmap =
+//                        BitmapFactory.decodeResource(resources, R.drawable.tuesday) }
+//                else if (dayOfTheWeek == "Wed") {
+//                    mBackgroundBitmap =
+//                        BitmapFactory.decodeResource(resources, R.drawable.wednesday) }
+//                else if (dayOfTheWeek == "Thu") {
+//                    mBackgroundBitmap =
+//                        BitmapFactory.decodeResource(resources, R.drawable.icerainbow) }
+//                else if (dayOfTheWeek == "Fri") {
+//                    mBackgroundBitmap =
+//                        BitmapFactory.decodeResource(resources, R.drawable.friday) }
+//                else if (dayOfTheWeek == "Sat") {
+//                    mBackgroundBitmap =
+//                        BitmapFactory.decodeResource(resources, R.drawable.saturday) }
+//                else if (dayOfTheWeek == "Sun") {
+//                    mBackgroundBitmap =
+//                        BitmapFactory.decodeResource(resources, R.drawable.sunday) }
+//                else {
+//                    mBackgroundBitmap =
+//                        BitmapFactory.decodeResource(resources, R.drawable.icerainbow)}
             }
 
             /* Extracts colors from background image to improve watchface style. */
@@ -522,10 +534,35 @@ class MyWatchFace : CanvasWatchFaceService() {
                 (bounds.left / scale).toInt(),
                 (bounds.top / scale).toInt(),
                 (bounds.right / scale).toInt(),
-                (bounds.bottom / scale).toInt())
+                (bounds.bottom / scale).toInt()
+            )
+
+            val frameTime = INTERACTIVE_UPDATE_RATE_MS
+
+            val starsCount = 2
+            val timeTimeSwitch = 5000
+            val drawable = when ((mCalendar.timeInMillis % (timeTimeSwitch * starsCount)) / timeTimeSwitch) {
+                0L -> when ((mCalendar.timeInMillis % (6 * frameTime)) / frameTime) {
+                    0L -> R.drawable.rainbow1
+                    1L -> R.drawable.rainbow2
+                    2L -> R.drawable.rainbow3
+                    3L -> R.drawable.rainbow4
+                    4L -> R.drawable.rainbow5
+                    5L -> R.drawable.rainbow6
+                    else -> R.drawable.rainbow1
+                }
+
+                1L -> when ((mCalendar.timeInMillis % (2 * frameTime)) / frameTime) {
+                    0L -> R.drawable.starfish1
+                    1L -> R.drawable.starfish2
+                    else -> R.drawable.starfish1
+                }
+
+                else -> R.drawable.rainbow1
+            }
 
             canvas.drawBitmap(
-                BitmapFactory.decodeResource(applicationContext.resources, R.drawable.rainbow1),
+                BitmapFactory.decodeResource(applicationContext.resources, drawable),
                 bounds,
                 dst,
                 null
