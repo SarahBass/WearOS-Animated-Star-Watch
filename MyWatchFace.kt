@@ -165,27 +165,11 @@ class MyWatchFace : CanvasWatchFaceService() {
 
             mCalendar = Calendar.getInstance()
 
-//            setContentView(R.layout.rainbowanimate)
-//
-//            val rocketImage = findViewById<ImageView>(R.id.rainbowstar).apply {
-//                setBackgroundResource(R.drawable.rocket_thrust)
-//                rocketAnimation = background as AnimationDrawable
-//            }
-//
-//            rocketImage.setOnClickListener({ rainbowanimation.start() })
-
             initializeBackground()
             initializeWatchFace()
         }
 
-        private lateinit var rocketAnimation: AnimationDrawable
-
-        private fun initializeBackground() {
-            mBackgroundPaint = Paint().apply {
-                color = Color.BLACK
-            }
-
-
+        private fun getHolidayBackground(): Bitmap {
             val sdf = SimpleDateFormat("EEE")
             val sdf1 = SimpleDateFormat("EEEE")
             val sdf2 = SimpleDateFormat("MMMM")
@@ -198,103 +182,100 @@ class MyWatchFace : CanvasWatchFaceService() {
             val monthOfYear: String = sdf2.format(d)
             val dayOfMonth: String = sdf3.format(d)
             val year4digits: String = sdf4.format(d)
-            val fullDateSpaces : String = sdf5.format(d)
-            val easterArray = arrayOf( "April 9 2023","March 31 2024", "April 20 2025", "April 5 2026", "March 28 2027", "April 16 2028", "April 1 2029", "April 21 2030", "April 13 2031", "March 28 2032" )
+            val fullDateSpaces: String = sdf5.format(d)
+            val easterArray = arrayOf(
+                "April 9 2023",
+                "March 31 2024",
+                "April 20 2025",
+                "April 5 2026",
+                "March 28 2027",
+                "April 16 2028",
+                "April 1 2029",
+                "April 21 2030",
+                "April 13 2031",
+                "March 28 2032"
+            )
 
-            if (monthOfYear == "October") {
-                if (dayOfMonth == "31" || dayOfMonth == "30" || dayOfMonth == "1" ) {
-                    mBackgroundBitmap =
-                        BitmapFactory.decodeResource(resources, R.drawable.october1)}
-                else {
-                    mBackgroundBitmap =
-                        BitmapFactory.decodeResource(resources, R.drawable.october2)}}
-            else if (monthOfYear == "November") {
-                if (dayOfTheWeek == "Mon" || dayOfTheWeek == "Wed" || dayOfTheWeek == "Fri") {
-                    mBackgroundBitmap =
-                        BitmapFactory.decodeResource(resources, R.drawable.november1)}
-                else {
-                    mBackgroundBitmap =
-                        BitmapFactory.decodeResource(resources, R.drawable.november2)}}
-            else if (monthOfYear == "December") {
-                //Christmas & Christmas Eve
-                if (dayOfMonth == "25" || dayOfMonth == "24") {
-                    mBackgroundBitmap =
-                        BitmapFactory.decodeResource(resources, R.drawable.december1)}
-                //https://www.calendardate.com/hanukkah_2030.htm has dates up to 2030 for Hanukah or use HebrewCalendar (YEAR, 2, 25)
-                else if ((Integer.parseInt(year4digits) == 2022 && Integer.parseInt(dayOfMonth) in 18..23 ) ||
-                    (Integer.parseInt(year4digits) == 2023 && Integer.parseInt(dayOfMonth) in 7..15 ) ||
-                    (Integer.parseInt(year4digits) == 2024 && Integer.parseInt(dayOfMonth) in 26..30 ) ||
-                    (Integer.parseInt(year4digits) == 2025 && Integer.parseInt(dayOfMonth) in 14..22 ) ||
-                    (Integer.parseInt(year4digits) == 2026 && Integer.parseInt(dayOfMonth) in 4..12 ) ||
-                    (Integer.parseInt(year4digits) == 2027 && Integer.parseInt(dayOfMonth) in 26..30 ) ||
-                    (Integer.parseInt(year4digits) == 2028 && Integer.parseInt(dayOfMonth) in 12..20 ) ||
-                    (Integer.parseInt(year4digits) == 2029 && Integer.parseInt(dayOfMonth) in 1..9 ) ||
-                    (Integer.parseInt(year4digits) == 2030 && Integer.parseInt(dayOfMonth) in 20..23 )) {
-                    mBackgroundBitmap =
-                        BitmapFactory.decodeResource(resources, R.drawable.jewishholiday)}
-                else {
-                    mBackgroundBitmap =
-                        BitmapFactory.decodeResource(resources, R.drawable.december2)}}
-            else if (monthOfYear == "February") {
-                if (Integer.parseInt(dayOfMonth) in 1..15 ){
-                    mBackgroundBitmap =
-                        BitmapFactory.decodeResource(resources, R.drawable.feb14) }}
-            else if (monthOfYear == "March") {
-                if (Integer.parseInt(dayOfMonth) in 1..18 ){
-                    mBackgroundBitmap =
-                        BitmapFactory.decodeResource(resources, R.drawable.march17)}
-                else if (easterArray.contains(fullDateSpaces)) {
-                    mBackgroundBitmap =
-                        BitmapFactory.decodeResource(resources, R.drawable.easter)}}
-            else if (monthOfYear == "April") {
-                if (easterArray.contains(fullDateSpaces)) {
-                    mBackgroundBitmap =
-                        BitmapFactory.decodeResource(resources, R.drawable.easter)}
-                else {
-                    mBackgroundBitmap =
-                        BitmapFactory.decodeResource(resources, R.drawable.springflower)}}
-            else if (monthOfYear == "July" || monthOfYear == "August") {
-                mBackgroundBitmap =
-                    BitmapFactory.decodeResource(resources, R.drawable.summerbeach) }
-            else {
-                mBackgroundBitmap = BitmapFactory.decodeResource(
-                    resources,
-                    when(dayOfTheWeek) {
-                        "Mon" -> R.drawable.monday
-                        "Tue" -> R.drawable.tuesday
-                        "Wed" -> R.drawable.wednesday
-                        "Thu" -> R.drawable.thursday
-                        "Fri" -> R.drawable.friday
-                        "Sat" -> R.drawable.saturday
-                        "Sun" -> R.drawable.sunday
-                        else -> R.drawable.icerainbow
-                    })
+            val backgroundBitmap: Bitmap =
+                if (monthOfYear == "October") {
+                    if (dayOfMonth == "31" || dayOfMonth == "30" || dayOfMonth == "1") {
+                        BitmapFactory.decodeResource(resources, R.drawable.october1)
+                    } else {
+                        BitmapFactory.decodeResource(resources, R.drawable.october2)
+                    }
+                } else if (monthOfYear == "November") {
+                    if (dayOfTheWeek == "Mon" || dayOfTheWeek == "Wed" || dayOfTheWeek == "Fri") {
+                        BitmapFactory.decodeResource(resources, R.drawable.november1)
+                    } else {
+                        BitmapFactory.decodeResource(resources, R.drawable.november2)
+                    }
+                } else if (monthOfYear == "December") {
+                    //Christmas & Christmas Eve
+                    if (dayOfMonth == "25" || dayOfMonth == "24") {
+                        BitmapFactory.decodeResource(resources, R.drawable.december1)
+                    }
+                    //https://www.calendardate.com/hanukkah_2030.htm has dates up to 2030 for Hanukah or use HebrewCalendar (YEAR, 2, 25)
+                    else if ((Integer.parseInt(year4digits) == 2022 && Integer.parseInt(dayOfMonth) in 18..23) ||
+                        (Integer.parseInt(year4digits) == 2023 && Integer.parseInt(dayOfMonth) in 7..15) ||
+                        (Integer.parseInt(year4digits) == 2024 && Integer.parseInt(dayOfMonth) in 26..30) ||
+                        (Integer.parseInt(year4digits) == 2025 && Integer.parseInt(dayOfMonth) in 14..22) ||
+                        (Integer.parseInt(year4digits) == 2026 && Integer.parseInt(dayOfMonth) in 4..12) ||
+                        (Integer.parseInt(year4digits) == 2027 && Integer.parseInt(dayOfMonth) in 26..30) ||
+                        (Integer.parseInt(year4digits) == 2028 && Integer.parseInt(dayOfMonth) in 12..20) ||
+                        (Integer.parseInt(year4digits) == 2029 && Integer.parseInt(dayOfMonth) in 1..9) ||
+                        (Integer.parseInt(year4digits) == 2030 && Integer.parseInt(dayOfMonth) in 20..23)
+                    ) {
+                        BitmapFactory.decodeResource(resources, R.drawable.jewishholiday)
+                    } else {
+                        BitmapFactory.decodeResource(resources, R.drawable.december2)
+                    }
+                } else if (monthOfYear == "February") {
+                    if (Integer.parseInt(dayOfMonth) in 1..15) {
+                        BitmapFactory.decodeResource(resources, R.drawable.feb14)
+                    } else {
+                        BitmapFactory.decodeResource(resources, R.drawable.springflower)
+                    }
+                } else if (monthOfYear == "March") {
+                    if (Integer.parseInt(dayOfMonth) in 1..18) {
+                        BitmapFactory.decodeResource(resources, R.drawable.march17)
+                    } else if (easterArray.contains(fullDateSpaces)) {
+                        BitmapFactory.decodeResource(resources, R.drawable.easter)
+                    } else {
+                        BitmapFactory.decodeResource(resources, R.drawable.springflower)
+                    }
+                } else if (monthOfYear == "April") {
+                    if (easterArray.contains(fullDateSpaces)) {
+                        BitmapFactory.decodeResource(resources, R.drawable.easter)
+                    } else {
+                        BitmapFactory.decodeResource(resources, R.drawable.springflower)
+                    }
+                } else if (monthOfYear == "July" || monthOfYear == "August") {
+                    BitmapFactory.decodeResource(resources, R.drawable.summerbeach)
+                } else {
+                    BitmapFactory.decodeResource(
+                        resources,
+                        when (dayOfTheWeek) {
+                            "Mon" -> R.drawable.monday
+                            "Tue" -> R.drawable.tuesday
+                            "Wed" -> R.drawable.wednesday
+                            "Thu" -> R.drawable.thursday
+                            "Fri" -> R.drawable.friday
+                            "Sat" -> R.drawable.saturday
+                            "Sun" -> R.drawable.sunday
+                            else -> R.drawable.icerainbow
+                        }
+                    )
+                }
 
-//                if (dayOfTheWeek == "Mon") {
-//                    mBackgroundBitmap =
-//                        BitmapFactory.decodeResource(resources, R.drawable.monday) }
-//                else if (dayOfTheWeek == "Tue") {
-//                    mBackgroundBitmap =
-//                        BitmapFactory.decodeResource(resources, R.drawable.tuesday) }
-//                else if (dayOfTheWeek == "Wed") {
-//                    mBackgroundBitmap =
-//                        BitmapFactory.decodeResource(resources, R.drawable.wednesday) }
-//                else if (dayOfTheWeek == "Thu") {
-//                    mBackgroundBitmap =
-//                        BitmapFactory.decodeResource(resources, R.drawable.icerainbow) }
-//                else if (dayOfTheWeek == "Fri") {
-//                    mBackgroundBitmap =
-//                        BitmapFactory.decodeResource(resources, R.drawable.friday) }
-//                else if (dayOfTheWeek == "Sat") {
-//                    mBackgroundBitmap =
-//                        BitmapFactory.decodeResource(resources, R.drawable.saturday) }
-//                else if (dayOfTheWeek == "Sun") {
-//                    mBackgroundBitmap =
-//                        BitmapFactory.decodeResource(resources, R.drawable.sunday) }
-//                else {
-//                    mBackgroundBitmap =
-//                        BitmapFactory.decodeResource(resources, R.drawable.icerainbow)}
+            return backgroundBitmap
+        }
+
+        private fun initializeBackground() {
+            mBackgroundPaint = Paint().apply {
+                color = Color.BLACK
             }
+
+            mBackgroundBitmap = getHolidayBackground()
 
             /* Extracts colors from background image to improve watchface style. */
             Palette.from(mBackgroundBitmap).generate {
@@ -497,7 +478,7 @@ class MyWatchFace : CanvasWatchFaceService() {
             colorMatrix.setSaturation(0f)
             val filter = ColorMatrixColorFilter(colorMatrix)
             grayPaint.colorFilter = filter
-            canvas.drawBitmap(mBackgroundBitmap, 0f, 0f, grayPaint)
+            //canvas.drawBitmap(mBackgroundBitmap, 0f, 0f, grayPaint)
         }
 
         /**
@@ -570,12 +551,17 @@ class MyWatchFace : CanvasWatchFaceService() {
         }
 
         private fun drawBackground(canvas: Canvas) {
-
             if (mAmbient && (mLowBitAmbient || mBurnInProtection)) {
                 canvas.drawColor(Color.BLACK)
             } else if (mAmbient) {
                 canvas.drawBitmap(mGrayBackgroundBitmap, 0f, 0f, mBackgroundPaint)
             } else {
+                mBackgroundBitmap = Bitmap.createScaledBitmap(
+                    getHolidayBackground(),
+                    mBackgroundBitmap.width,
+                    mBackgroundBitmap.height, true
+                )
+
                 canvas.drawBitmap(mBackgroundBitmap, 0f, 0f, mBackgroundPaint)
             }
         }
