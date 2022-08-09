@@ -1,8 +1,5 @@
 package com.academy.testwatch3
 
-import android.R.attr.*
-
-
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -20,6 +17,7 @@ import androidx.palette.graphics.Palette
 import java.lang.ref.WeakReference
 import java.util.*
 import java.text.SimpleDateFormat
+import java.time.Year
 
 
 /**
@@ -178,62 +176,76 @@ class MyWatchFace : CanvasWatchFaceService() {
             val sdf1 = SimpleDateFormat("EEEE")
             val sdf2 = SimpleDateFormat("MMMM")
             val sdf3 = SimpleDateFormat("d")
+            val sdf4 = SimpleDateFormat("yyyy")
+            val sdf5 = SimpleDateFormat("MMMM d yyyy")
             val d = Date()
             val dayOfTheWeek: String = sdf.format(d)
             val dayOfTheWeekLong: String = sdf1.format(d)
             val monthOfYear: String = sdf2.format(d)
             val dayOfMonth: String = sdf3.format(d)
-            if (monthOfYear == "October") {
+            val year4digits: String = sdf4.format(d)
+            val fullDateSpaces : String = sdf5.format(d)
+            val easterArray = arrayOf( "April 9 2023","March 31 2024", "April 20 2025", "April 5 2026", "March 28 2027", "April 16 2028", "April 1 2029", "April 21 2030", "April 13 2031", "March 28 2032" )
+
+
+                if (monthOfYear == "October") {
                 if (dayOfMonth == "31" || dayOfMonth == "30" || dayOfMonth == "1" ) {
                     mBackgroundBitmap =
-                        BitmapFactory.decodeResource(resources, R.drawable.october1)
-                } else {
+                        BitmapFactory.decodeResource(resources, R.drawable.october1) }
+                else {
                     mBackgroundBitmap =
-                        BitmapFactory.decodeResource(resources, R.drawable.october2)
-                }
-            } else if (monthOfYear == "November") {
-                if (dayOfMonth == "25" || dayOfMonth == "1" || dayOfMonth == "24") {
+                        BitmapFactory.decodeResource(resources, R.drawable.october2)} }
+            else if (monthOfYear == "November") {
+                if (dayOfTheWeek == "Mon" || dayOfTheWeek == "Wed" || dayOfTheWeek == "Fri") {
                     mBackgroundBitmap =
-                        BitmapFactory.decodeResource(resources, R.drawable.november1)
-                } else {
+                        BitmapFactory.decodeResource(resources, R.drawable.november1) }
+                else {
                     mBackgroundBitmap =
-                        BitmapFactory.decodeResource(resources, R.drawable.november2)
-                }
-            } else if (monthOfYear == "December") {
+                        BitmapFactory.decodeResource(resources, R.drawable.november2)} }
+            else if (monthOfYear == "December") {
                 if (dayOfMonth == "25" || dayOfMonth == "1" || dayOfMonth == "24"){
                 mBackgroundBitmap =
-                    BitmapFactory.decodeResource(resources, R.drawable.december1)
-            } else {
+                    BitmapFactory.decodeResource(resources, R.drawable.december1) }
+                else {
                 mBackgroundBitmap =
-                    BitmapFactory.decodeResource(resources, R.drawable.december2)
-            }
-        } else {
+                    BitmapFactory.decodeResource(resources, R.drawable.december2)} }
+            else if (monthOfYear == "February") {
+                if (dayOfMonth == "13" || dayOfMonth == "14" || dayOfMonth == "15"){
+                    mBackgroundBitmap =
+                        BitmapFactory.decodeResource(resources, R.drawable.feb14) }}
+                else if (monthOfYear == "March") {
+                    if (dayOfMonth == "16" || dayOfMonth == "17" || dayOfMonth == "18"){
+                        mBackgroundBitmap =
+                            BitmapFactory.decodeResource(resources, R.drawable.march17) }}
+            else if (easterArray.contains(fullDateSpaces)) {
+                    mBackgroundBitmap =
+                        BitmapFactory.decodeResource(resources, R.drawable.easter) }
+            else {
 
                 if (dayOfTheWeek == "Mon") {
                     mBackgroundBitmap =
-                        BitmapFactory.decodeResource(resources, R.drawable.monday)
-                } else if (dayOfTheWeek == "Tue") {
+                        BitmapFactory.decodeResource(resources, R.drawable.monday) }
+                else if (dayOfTheWeek == "Tue") {
                     mBackgroundBitmap =
-                        BitmapFactory.decodeResource(resources, R.drawable.tuesday)
-                } else if (dayOfTheWeek == "Wed") {
+                        BitmapFactory.decodeResource(resources, R.drawable.tuesday) }
+                else if (dayOfTheWeek == "Wed") {
                     mBackgroundBitmap =
-                        BitmapFactory.decodeResource(resources, R.drawable.wednesday)
-                } else if (dayOfTheWeek == "Thu") {
+                        BitmapFactory.decodeResource(resources, R.drawable.wednesday) }
+                else if (dayOfTheWeek == "Thu") {
                     mBackgroundBitmap =
-                        BitmapFactory.decodeResource(resources, R.drawable.icerainbow)
-                } else if (dayOfTheWeek == "Fri") {
+                        BitmapFactory.decodeResource(resources, R.drawable.icerainbow) }
+                else if (dayOfTheWeek == "Fri") {
                     mBackgroundBitmap =
-                        BitmapFactory.decodeResource(resources, R.drawable.friday)
-                } else if (dayOfTheWeek == "Sat") {
+                        BitmapFactory.decodeResource(resources, R.drawable.friday) }
+                else if (dayOfTheWeek == "Sat") {
                     mBackgroundBitmap =
-                        BitmapFactory.decodeResource(resources, R.drawable.saturday)
-                } else if (dayOfTheWeek == "Sun") {
+                        BitmapFactory.decodeResource(resources, R.drawable.saturday) }
+                else if (dayOfTheWeek == "Sun") {
                     mBackgroundBitmap =
-                        BitmapFactory.decodeResource(resources, R.drawable.sunday)
-                } else {
+                        BitmapFactory.decodeResource(resources, R.drawable.sunday) }
+                else {
                     mBackgroundBitmap =
-                        BitmapFactory.decodeResource(resources, R.drawable.icerainbow)
-                }
+                        BitmapFactory.decodeResource(resources, R.drawable.icerainbow)}
             }
 
             /* Extracts colors from background image to improve watchface style. */
