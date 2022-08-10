@@ -836,9 +836,31 @@ class MyWatchFace : CanvasWatchFaceService() {
                     else -> R.drawable.birthday2
                 }
 
-                "Thanksgiving" -> when ((mCalendar.timeInMillis % (2 * frameTime)) / frameTime) {
+                "Thanksgiving" -> when ((mCalendar.timeInMillis % (24 * frameTime)) / frameTime) {
                     0L -> R.drawable.turkey0
                     1L -> R.drawable.turkey1
+                    2L -> R.drawable.turkey0
+                    3L -> R.drawable.turkey1
+                    4L -> R.drawable.turkey0
+                    5L -> R.drawable.turkey1
+                    6L -> R.drawable.turkey0
+                    7L -> R.drawable.turkey1
+                    8L -> R.drawable.turkey0
+                    9L -> R.drawable.turkey1
+                    10L -> R.drawable.turkey0
+                    11L -> R.drawable.turkey1
+                    12L -> R.drawable.squirrel0
+                    13L -> R.drawable.squirrel1
+                    14L -> R.drawable.squirrel0
+                    15L -> R.drawable.squirrel1
+                    16L -> R.drawable.squirrel0
+                    17L -> R.drawable.squirrel1
+                    18L -> R.drawable.squirrel0
+                    19L -> R.drawable.squirrel1
+                    20L -> R.drawable.squirrel0
+                    21L -> R.drawable.squirrel1
+                    22L -> R.drawable.squirrel0
+                    23L -> R.drawable.squirrel1
                     else -> R.drawable.turkey0
                 }
 
@@ -1013,7 +1035,7 @@ class MyWatchFace : CanvasWatchFaceService() {
                     else -> R.drawable.green0
                 }
 
-                "Fall" -> when ((mCalendar.timeInMillis % (16 * frameTime)) / frameTime) {
+                "Fall" -> when ((mCalendar.timeInMillis % (34 * frameTime)) / frameTime) {
                     0L -> R.drawable.cow0
                     1L -> R.drawable.cow1
                     2L -> R.drawable.cow0
@@ -1029,18 +1051,24 @@ class MyWatchFace : CanvasWatchFaceService() {
                     12L -> R.drawable.gnome1
                     13L -> R.drawable.gnome0
                     15L -> R.drawable.gnome1
-                    16L -> R.drawable.bee0
-                    17L -> R.drawable.bee1
-                    18L -> R.drawable.bee0
-                    19L -> R.drawable.bee1
-                    20L -> R.drawable.bee0
-                    21L -> R.drawable.bee1
-                    22L -> R.drawable.squirrel0
-                    23L -> R.drawable.squirrel1
-                    24L -> R.drawable.squirrel0
-                    25L -> R.drawable.squirrel1
-                    26L -> R.drawable.squirrel0
-                    27L -> R.drawable.squirrel1
+                    16L -> R.drawable.gnome0
+                    17L -> R.drawable.gnome1
+                    18L -> R.drawable.gnome0
+                    19L -> R.drawable.gnome1
+                    20L -> R.drawable.gnome0
+                    21L -> R.drawable.gnome1
+                    22L -> R.drawable.bee0
+                    23L -> R.drawable.bee1
+                    24L -> R.drawable.bee0
+                    25L -> R.drawable.bee1
+                    26L -> R.drawable.bee0
+                    27L -> R.drawable.bee1
+                    28L -> R.drawable.bee0
+                    29L -> R.drawable.bee1
+                    30L -> R.drawable.bee0
+                    31L -> R.drawable.bee1
+                    32L -> R.drawable.bee0
+                    33L -> R.drawable.bee1
                     else -> R.drawable.turkey1
                 }
 
