@@ -326,7 +326,7 @@ class MyWatchFace : CanvasWatchFaceService() {
                         (Integer.parseInt(year4digits) == 2029 && Integer.parseInt(dayOfMonth) in 1..9) ||
                         (Integer.parseInt(year4digits) == 2030 && Integer.parseInt(dayOfMonth) in 20..23)
                     ) {
-                        "JewishHoliday"
+                        "Jewish"
                     } else {
                         "Winter"
                     }
@@ -714,11 +714,14 @@ class MyWatchFace : CanvasWatchFaceService() {
                     1L -> R.drawable.turkey1
                     else -> R.drawable.heart0
                 }
+
+
                 "October" -> when ((mCalendar.timeInMillis % (36 * frameTime)) / frameTime) {
                     0L -> R.drawable.bat1
-                    2L -> R.drawable.bat2
-                    3L -> R.drawable.bat1
-                    4L -> R.drawable.bat2
+                    1L -> R.drawable.bat2
+                    2L -> R.drawable.bat1
+                    3L -> R.drawable.bat2
+                    4L -> R.drawable.bat1
                     5L -> R.drawable.batpumpkin0
                     6L -> R.drawable.batpumpkin1
                     7L -> R.drawable.batpumpkin0
@@ -750,7 +753,36 @@ class MyWatchFace : CanvasWatchFaceService() {
                     33L -> R.drawable.candle3
                     34L -> R.drawable.candle4
                     35L -> R.drawable.candle1
-                    else -> R.drawable.starfish1
+                    else -> R.drawable.bat1}
+
+
+                "Jewish" -> when ((mCalendar.timeInMillis % (36 * frameTime)) / frameTime) {
+                    0L -> R.drawable.jewstar0
+                    1L -> R.drawable.jewstar1
+                    2L -> R.drawable.jewstar2
+                    3L -> R.drawable.jewstar1
+                    4L -> R.drawable.jewstar0
+                    5L -> R.drawable.jewstar0
+                    6L -> R.drawable.jewstar1
+                    7L -> R.drawable.jewstar2
+                    8L -> R.drawable.jewstar1
+                    9L -> R.drawable.jewstar2
+                    10L -> R.drawable.jewstar0
+                    11L -> R.drawable.jewishcandle0
+                    12L -> R.drawable.jewishcandle1
+                    13L -> R.drawable.jewishcandle0
+                    14L -> R.drawable.jewishcandle1
+                    15L -> R.drawable.jewishcandle0
+                    16L -> R.drawable.jewishcandle1
+                    17L -> R.drawable.candle3
+                    18L -> R.drawable.candle4
+                    19L -> R.drawable.candle3
+                    20L -> R.drawable.candle4
+                    21L -> R.drawable.candle4
+                    22L -> R.drawable.candle1
+                    23L -> R.drawable.candle4
+                    24L -> R.drawable.candle1
+                    else -> R.drawable.jewstar0
                 }
 
 
