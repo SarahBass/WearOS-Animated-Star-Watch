@@ -706,13 +706,51 @@ class MyWatchFace : CanvasWatchFaceService() {
                 "Easter" -> when ((mCalendar.timeInMillis % (2 * frameTime)) / frameTime) {
                     0L -> R.drawable.bunnyblue0
                     1L -> R.drawable.bunnyblue1
-                    else -> R.drawable.heart0
+                    2L -> R.drawable.bunnyblue0
+                    3L -> R.drawable.bunnyblue1
+                    4L -> R.drawable.bunnybluepeep1
+                    5L -> R.drawable.bunnybluepeep2
+                    6L -> R.drawable.bunnybluepeep1
+                    7L -> R.drawable.bunnybluepeep2
+                    else -> R.drawable.bunnyblue0
+                }
+
+                "Birthday" -> when ((mCalendar.timeInMillis % (3 * frameTime)) / frameTime) {
+                    0L -> R.drawable.birthday0
+                    1L -> R.drawable.birthday1
+                    2L -> R.drawable.birthday2
+                    else -> R.drawable.birthday2
                 }
 
                 "Thanksgiving" -> when ((mCalendar.timeInMillis % (2 * frameTime)) / frameTime) {
                     0L -> R.drawable.turkey0
                     1L -> R.drawable.turkey1
-                    else -> R.drawable.heart0
+                    else -> R.drawable.turkey0
+                }
+
+                "Halloween" -> when ((mCalendar.timeInMillis % (20 * frameTime)) / frameTime) {
+                    0L -> R.drawable.witch0
+                    1L -> R.drawable.witch1
+                    2L -> R.drawable.witch0
+                    3L -> R.drawable.witch1
+                    4L -> R.drawable.witch0
+                    5L -> R.drawable.witch1
+                    6L -> R.drawable.witch0
+                    7L -> R.drawable.witch1
+                    8L -> R.drawable.pumpkin0
+                    9L -> R.drawable.pumpkin1
+                    10L -> R.drawable.pumpkin2
+                    11L -> R.drawable.pumpkin0
+                    12L -> R.drawable.pumpkin1
+                    13L -> R.drawable.pumpkin2
+                    14L -> R.drawable.pumpkin0
+                    15L -> R.drawable.pumpkin1
+                    16L -> R.drawable.pumpkin2
+                    17L -> R.drawable.pumpkin0
+                    18L -> R.drawable.pumpkin1
+                    19L -> R.drawable.pumpkin2
+
+                    else -> R.drawable.witch0
                 }
 
 
@@ -756,7 +794,7 @@ class MyWatchFace : CanvasWatchFaceService() {
                     else -> R.drawable.bat1}
 
 
-                "Jewish" -> when ((mCalendar.timeInMillis % (36 * frameTime)) / frameTime) {
+                "Jewish" -> when ((mCalendar.timeInMillis % (25 * frameTime)) / frameTime) {
                     0L -> R.drawable.jewstar0
                     1L -> R.drawable.jewstar1
                     2L -> R.drawable.jewstar2
@@ -814,7 +852,7 @@ class MyWatchFace : CanvasWatchFaceService() {
                     else -> R.drawable.starfish1
                 }
 
-                "Irish" -> when ((mCalendar.timeInMillis % (24 * frameTime)) / frameTime) {
+                "Irish" -> when ((mCalendar.timeInMillis % (30 * frameTime)) / frameTime) {
                     0L -> R.drawable.green0
                     1L -> R.drawable.green1
                     2L -> R.drawable.green0
@@ -839,6 +877,12 @@ class MyWatchFace : CanvasWatchFaceService() {
                     21L -> R.drawable.lucky37
                     22L -> R.drawable.green0
                     23L -> R.drawable.green1
+                    24L -> R.drawable.green0
+                    25L -> R.drawable.green1
+                    26L -> R.drawable.green0
+                    27L -> R.drawable.green1
+                    28L -> R.drawable.green0
+                    29L -> R.drawable.green1
                     else -> R.drawable.green0
                 }
 
