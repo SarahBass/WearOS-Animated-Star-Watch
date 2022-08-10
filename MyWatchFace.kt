@@ -375,6 +375,8 @@ class MyWatchFace : CanvasWatchFaceService() {
         }
 
 
+
+
         private fun initializeBackground() {
             mBackgroundPaint = Paint().apply {
                 color = Color.BLACK
@@ -627,8 +629,11 @@ class MyWatchFace : CanvasWatchFaceService() {
 
             val starsCount = 2
             val timeTimeSwitch = 20000
-            val drawable = when ((mCalendar.timeInMillis % (timeTimeSwitch * starsCount)) / timeTimeSwitch) {
-                0L -> when ((mCalendar.timeInMillis % (12 * frameTime)) / frameTime) {
+
+
+
+            val drawable = when (getAnimationCase()) {
+                "Winter" -> when ((mCalendar.timeInMillis % (12 * frameTime)) / frameTime) {
                     0L -> R.drawable.rainbow1
                     1L -> R.drawable.rainbow2
                     2L -> R.drawable.rainbow1
@@ -641,10 +646,83 @@ class MyWatchFace : CanvasWatchFaceService() {
                     9L -> R.drawable.rainbow6
                     10L -> R.drawable.rainbow5
                     11L -> R.drawable.rainbow6
+                    12L -> R.drawable.rainbow1
+                    13L -> R.drawable.rainbow2
+                    14L -> R.drawable.rainbow3
+                    15L -> R.drawable.rainbow2
+                    16L -> R.drawable.rainbow1
+                    17L -> R.drawable.rainbow2
+                    18L -> R.drawable.rainbow3
+                    19L -> R.drawable.rainbow4
+                    20L -> R.drawable.rainbow5
+                    21L -> R.drawable.rainbow6
+
                     else -> R.drawable.rainbow1
                 }
 
-                1L -> when ((mCalendar.timeInMillis % (12 * frameTime)) / frameTime) {
+                "Spring" -> when ((mCalendar.timeInMillis % (18 * frameTime)) / frameTime) {
+                    0L -> R.drawable.seed0
+                    1L -> R.drawable.seed1
+                    2L -> R.drawable.seed2
+                    3L -> R.drawable.seed0
+                    4L -> R.drawable.seed1
+                    5L -> R.drawable.seed2
+                    6L -> R.drawable.seed0
+                    7L -> R.drawable.seedjump1
+                    8L -> R.drawable.seed0
+                    9L -> R.drawable.seedjump1
+                    10L -> R.drawable.seed0
+                    11L -> R.drawable.seedwave1
+                    12L -> R.drawable.seedwave2
+                    13L -> R.drawable.seedwave3
+                    14L -> R.drawable.seed0
+                    15L -> R.drawable.seedwave1
+                    16L -> R.drawable.seedwave2
+                    17L -> R.drawable.seedwave3
+                    else -> R.drawable.seed0
+                }
+
+                 "Summer" -> when ((mCalendar.timeInMillis % (24 * frameTime)) / frameTime) {
+                    0L -> R.drawable.starfish1
+                    1L -> R.drawable.starfish2
+                    2L -> R.drawable.starfish1
+                    3L -> R.drawable.starfish2
+                    4L -> R.drawable.starfish1
+                    5L -> R.drawable.starfish2
+                    6L -> R.drawable.starfishcoconut0
+                    7L -> R.drawable.starfishcoconut1
+                    8L -> R.drawable.starfishcoconut0
+                    9L -> R.drawable.starfishcoconut1
+                    10L -> R.drawable.starfishcoconut0
+                    11L -> R.drawable.starfishcoconut1
+                     12L -> R.drawable.rainbow1
+                     13L -> R.drawable.rainbow2
+                     14L -> R.drawable.rainbow1
+                     15L -> R.drawable.rainbow2
+                     16L -> R.drawable.rainbow3
+                     17L -> R.drawable.rainbow4
+                     18L -> R.drawable.rainbow3
+                     19L -> R.drawable.rainbow4
+                     20L -> R.drawable.rainbow5
+                     21L -> R.drawable.rainbow6
+                     22L -> R.drawable.rainbow5
+                     23L -> R.drawable.rainbow6
+                    else -> R.drawable.starfish1
+                }
+                "Fall" -> when ((mCalendar.timeInMillis % (2 * frameTime)) / frameTime) {
+                    0L -> R.drawable.cow0
+                    1L -> R.drawable.cow1
+                    2L -> R.drawable.cow0
+                    3L -> R.drawable.cow1
+                    4L -> R.drawable.turkey0
+                    5L -> R.drawable.turkey1
+                    6L -> R.drawable.turkey0
+                    7L -> R.drawable.turkey1
+
+                    else -> R.drawable.turkey1
+                }
+
+                else -> when ((mCalendar.timeInMillis % (12 * frameTime)) / frameTime) {
                     0L -> R.drawable.starfish1
                     1L -> R.drawable.starfish2
                     2L -> R.drawable.starfish1
@@ -659,8 +737,6 @@ class MyWatchFace : CanvasWatchFaceService() {
                     11L -> R.drawable.starfishcoconut1
                     else -> R.drawable.starfish1
                 }
-
-                else -> R.drawable.rainbow1
             }
 
             canvas.drawBitmap(
