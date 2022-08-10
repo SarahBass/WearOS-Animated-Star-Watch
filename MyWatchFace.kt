@@ -333,7 +333,7 @@ class MyWatchFace : CanvasWatchFaceService() {
                     if (dayOfMonth == "31" || dayOfMonth == "30" || dayOfMonth == "1") {"Halloween"
                     } else {"October"}
                 } else if (monthOfYear == "November") {
-                    if (dayOfTheWeek == "Mon" || dayOfTheWeek == "Wed" || dayOfTheWeek == "Fri") {
+                    if (dayOfTheWeekLong == "Wednesday" || dayOfTheWeekLong == "Thursday" || dayOfTheWeekLong == "Fri") {
                         "Thanksgiving"
                     } else {"Fall"}
                 } else if (monthOfYear == "December") {
