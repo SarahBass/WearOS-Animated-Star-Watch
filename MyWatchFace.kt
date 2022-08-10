@@ -665,7 +665,94 @@ class MyWatchFace : CanvasWatchFaceService() {
                     else -> R.drawable.rainbow1
                 }
 
-                "Spring" -> when ((mCalendar.timeInMillis % (18 * frameTime)) / frameTime) {
+                "Winter" -> when ((mCalendar.timeInMillis % (40 * frameTime)) / frameTime) {
+                    0L -> R.drawable.reindeer0
+                    1L -> R.drawable.reindeer1
+                    2L -> R.drawable.reindeer0
+                    3L -> R.drawable.reindeer1
+                    4L -> R.drawable.reindeer0
+                    5L -> R.drawable.reindeer1
+                    6L -> R.drawable.snowman0
+                    7L -> R.drawable.snowman1
+                    8L -> R.drawable.snowman2
+                    9L -> R.drawable.snowman0
+                    10L -> R.drawable.snowman1
+                    11L -> R.drawable.snowman2
+                    12L -> R.drawable.mint6
+                    13L -> R.drawable.mint5
+                    14L -> R.drawable.mint6
+                    15L -> R.drawable.mint5
+                    16L -> R.drawable.mint0
+                    17L -> R.drawable.mint1
+                    18L -> R.drawable.mint2
+                    19L -> R.drawable.mint3
+                    20L -> R.drawable.mint4
+                    21L -> R.drawable.mint5
+                    22L -> R.drawable.mint6
+                    23L -> R.drawable.mint5
+                    24L -> R.drawable.mint6
+                    25L -> R.drawable.peppermint0
+                    26L -> R.drawable.peppermint1
+                    27L -> R.drawable.peppermint2
+                    28L -> R.drawable.peppermint0
+                    29L -> R.drawable.peppermint1
+                    30L -> R.drawable.peppermint2
+                    31L -> R.drawable.peppermint0
+                    32L -> R.drawable.peppermint1
+                    33L -> R.drawable.peppermint2
+                    34L -> R.drawable.reindeer0
+                    35L -> R.drawable.reindeer1
+                    36L -> R.drawable.reindeer0
+                    37L -> R.drawable.reindeer0
+                    38L -> R.drawable.reindeer1
+                    39L -> R.drawable.reindeer0
+                    else -> R.drawable.peppermint0
+                }
+                "Christmas" -> when ((mCalendar.timeInMillis % (40 * frameTime)) / frameTime) {
+                0L -> R.drawable.reindeer0
+                1L -> R.drawable.reindeer1
+                2L -> R.drawable.reindeer0
+                3L -> R.drawable.reindeer1
+                4L -> R.drawable.reindeer0
+                5L -> R.drawable.reindeer1
+                6L -> R.drawable.cookiesanta0
+                7L -> R.drawable.cookiesanta1
+                8L -> R.drawable.cookiesanta0
+                9L -> R.drawable.cookiesanta1
+                11L -> R.drawable.cookiesanta0
+                12L -> R.drawable.cookiesanta1
+                13L -> R.drawable.cookiesanta0
+                14L -> R.drawable.cookiesanta1
+                15L -> R.drawable.cookiesanta0
+                16L -> R.drawable.cookiesanta1
+                17L -> R.drawable.ginger0
+                18L -> R.drawable.ginger1
+                19L -> R.drawable.ginger0
+                20L -> R.drawable.ginger1
+                21L -> R.drawable.ginger0
+                22L -> R.drawable.ginger1
+                23L -> R.drawable.ginger0
+                24L -> R.drawable.ginger1
+                25L -> R.drawable.peppermint0
+                26L -> R.drawable.peppermint1
+                27L -> R.drawable.peppermint2
+                28L -> R.drawable.peppermint0
+                29L -> R.drawable.peppermint1
+                30L -> R.drawable.peppermint2
+                31L -> R.drawable.peppermint0
+                32L -> R.drawable.peppermint1
+                33L -> R.drawable.peppermint2
+                34L -> R.drawable.reindeer0
+                35L -> R.drawable.reindeer1
+                36L -> R.drawable.reindeer0
+                37L -> R.drawable.reindeer0
+                38L -> R.drawable.reindeer1
+                39L -> R.drawable.reindeer0
+                else -> R.drawable.peppermint0
+            }
+
+
+            "Spring" -> when ((mCalendar.timeInMillis % (18 * frameTime)) / frameTime) {
                     0L -> R.drawable.seed0
                     1L -> R.drawable.seed1
                     2L -> R.drawable.seed2
@@ -687,7 +774,7 @@ class MyWatchFace : CanvasWatchFaceService() {
                     else -> R.drawable.seed0
                 }
 
-                "Valentine" -> when ((mCalendar.timeInMillis % (12 * frameTime)) / frameTime) {
+                "Valentine" -> when ((mCalendar.timeInMillis % (15 * frameTime)) / frameTime) {
                     0L -> R.drawable.heart0
                     1L -> R.drawable.heart1
                     2L -> R.drawable.heart0
@@ -701,9 +788,11 @@ class MyWatchFace : CanvasWatchFaceService() {
                     10L -> R.drawable.heartsleep1
                     11L -> R.drawable.heart0
                     12L -> R.drawable.heartkiss
+                    13L -> R.drawable.heart0
+                    14L -> R.drawable.heartkiss
                     else -> R.drawable.heart0
                 }
-                "Easter" -> when ((mCalendar.timeInMillis % (2 * frameTime)) / frameTime) {
+                "Easter" -> when ((mCalendar.timeInMillis % (8 * frameTime)) / frameTime) {
                     0L -> R.drawable.bunnyblue0
                     1L -> R.drawable.bunnyblue1
                     2L -> R.drawable.bunnyblue0
