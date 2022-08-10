@@ -334,7 +334,7 @@ class MyWatchFace : CanvasWatchFaceService() {
                     if (Integer.parseInt(dayOfMonth) in 1..15) {
                         "IceRainbow"
                     } else {
-                        "Winter"}}
+                        "IceRainbow"}}
                 else if (monthOfYear == "February") {
                     if (Integer.parseInt(dayOfMonth) in 1..15) {
                         "Valentine"
@@ -633,7 +633,7 @@ class MyWatchFace : CanvasWatchFaceService() {
 
 
             val drawable = when (getAnimationCase()) {
-                "Winter" -> when ((mCalendar.timeInMillis % (12 * frameTime)) / frameTime) {
+                "IceRainbow" -> when ((mCalendar.timeInMillis % (28 * frameTime)) / frameTime) {
                     0L -> R.drawable.rainbow1
                     1L -> R.drawable.rainbow2
                     2L -> R.drawable.rainbow1
@@ -656,7 +656,12 @@ class MyWatchFace : CanvasWatchFaceService() {
                     19L -> R.drawable.rainbow4
                     20L -> R.drawable.rainbow5
                     21L -> R.drawable.rainbow6
-
+                    22L -> R.drawable.snowman0
+                    23L -> R.drawable.snowman1
+                    24L -> R.drawable.snowman2
+                    25L -> R.drawable.snowman0
+                    26L -> R.drawable.snowman1
+                    27L -> R.drawable.snowman2
                     else -> R.drawable.rainbow1
                 }
 
@@ -680,6 +685,34 @@ class MyWatchFace : CanvasWatchFaceService() {
                     16L -> R.drawable.seedwave2
                     17L -> R.drawable.seedwave3
                     else -> R.drawable.seed0
+                }
+
+                "Valentine" -> when ((mCalendar.timeInMillis % (12 * frameTime)) / frameTime) {
+                    0L -> R.drawable.heart0
+                    1L -> R.drawable.heart1
+                    2L -> R.drawable.heart0
+                    3L -> R.drawable.heart1
+                    4L -> R.drawable.heart0
+                    5L -> R.drawable.heartsleep0
+                    6L -> R.drawable.heartsleep1
+                    7L -> R.drawable.heartsleep0
+                    8L -> R.drawable.heartsleep1
+                    9L -> R.drawable.heartsleep0
+                    10L -> R.drawable.heartsleep1
+                    11L -> R.drawable.heart0
+                    12L -> R.drawable.heartkiss
+                    else -> R.drawable.heart0
+                }
+                "Easter" -> when ((mCalendar.timeInMillis % (2 * frameTime)) / frameTime) {
+                    0L -> R.drawable.bunnyblue0
+                    1L -> R.drawable.bunnyblue1
+                    else -> R.drawable.heart0
+                }
+
+                "Thanksgiving" -> when ((mCalendar.timeInMillis % (2 * frameTime)) / frameTime) {
+                    0L -> R.drawable.turkey0
+                    1L -> R.drawable.turkey1
+                    else -> R.drawable.heart0
                 }
 
                  "Summer" -> when ((mCalendar.timeInMillis % (24 * frameTime)) / frameTime) {
@@ -709,33 +742,78 @@ class MyWatchFace : CanvasWatchFaceService() {
                      23L -> R.drawable.rainbow6
                     else -> R.drawable.starfish1
                 }
-                "Fall" -> when ((mCalendar.timeInMillis % (2 * frameTime)) / frameTime) {
+
+                "Irish" -> when ((mCalendar.timeInMillis % (24 * frameTime)) / frameTime) {
+                    0L -> R.drawable.green0
+                    1L -> R.drawable.green1
+                    2L -> R.drawable.green0
+                    3L -> R.drawable.green1
+                    4L -> R.drawable.green0
+                    5L -> R.drawable.green1
+                    6L -> R.drawable.lucky21
+                    7L -> R.drawable.lucky22
+                    8L -> R.drawable.lucky23
+                    9L -> R.drawable.lucky24
+                    10L -> R.drawable.lucky25
+                    11L -> R.drawable.lucky26
+                    12L -> R.drawable.lucky27
+                    13L -> R.drawable.lucky29
+                    14L -> R.drawable.lucky30
+                    15L -> R.drawable.lucky31
+                    16L -> R.drawable.lucky32
+                    17L -> R.drawable.lucky33
+                    18L -> R.drawable.lucky34
+                    19L -> R.drawable.lucky35
+                    20L -> R.drawable.lucky36
+                    21L -> R.drawable.lucky37
+                    22L -> R.drawable.green0
+                    23L -> R.drawable.green1
+                    else -> R.drawable.starfish1
+                }
+
+                "Fall" -> when ((mCalendar.timeInMillis % (16 * frameTime)) / frameTime) {
                     0L -> R.drawable.cow0
                     1L -> R.drawable.cow1
                     2L -> R.drawable.cow0
                     3L -> R.drawable.cow1
-                    4L -> R.drawable.turkey0
-                    5L -> R.drawable.turkey1
-                    6L -> R.drawable.turkey0
-                    7L -> R.drawable.turkey1
-
+                    4L -> R.drawable.cow0
+                    5L -> R.drawable.cow1
+                    6L -> R.drawable.cow0
+                    7L -> R.drawable.cow1
+                    8L -> R.drawable.cow0
+                    9L -> R.drawable.turkey0
+                    10L -> R.drawable.turkey1
+                    11L -> R.drawable.turkey0
+                    12L -> R.drawable.turkey1
+                    13L -> R.drawable.turkey0
+                    15L -> R.drawable.turkey1
                     else -> R.drawable.turkey1
                 }
 
-                else -> when ((mCalendar.timeInMillis % (12 * frameTime)) / frameTime) {
-                    0L -> R.drawable.starfish1
-                    1L -> R.drawable.starfish2
-                    2L -> R.drawable.starfish1
-                    3L -> R.drawable.starfish2
-                    4L -> R.drawable.starfish1
-                    5L -> R.drawable.starfish2
-                    6L -> R.drawable.starfishcoconut0
-                    7L -> R.drawable.starfishcoconut1
-                    8L -> R.drawable.starfishcoconut0
-                    9L -> R.drawable.starfishcoconut1
-                    10L -> R.drawable.starfishcoconut0
-                    11L -> R.drawable.starfishcoconut1
-                    else -> R.drawable.starfish1
+                else -> when ((mCalendar.timeInMillis % (22 * frameTime)) / frameTime) {
+                    0L -> R.drawable.rainbow1
+                    1L -> R.drawable.rainbow2
+                    2L -> R.drawable.rainbow1
+                    3L -> R.drawable.rainbow2
+                    4L -> R.drawable.rainbow3
+                    5L -> R.drawable.rainbow4
+                    6L -> R.drawable.rainbow3
+                    7L -> R.drawable.rainbow4
+                    8L -> R.drawable.rainbow5
+                    9L -> R.drawable.rainbow6
+                    10L -> R.drawable.rainbow5
+                    11L -> R.drawable.rainbow6
+                    12L -> R.drawable.rainbow1
+                    13L -> R.drawable.rainbow2
+                    14L -> R.drawable.rainbow3
+                    15L -> R.drawable.rainbow2
+                    16L -> R.drawable.rainbow1
+                    17L -> R.drawable.rainbow2
+                    18L -> R.drawable.rainbow3
+                    19L -> R.drawable.rainbow4
+                    20L -> R.drawable.rainbow5
+                    21L -> R.drawable.rainbow6
+                    else -> R.drawable.rainbow1
                 }
             }
 
