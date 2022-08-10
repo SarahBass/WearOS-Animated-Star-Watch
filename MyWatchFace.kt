@@ -658,23 +658,23 @@ class MyWatchFace : CanvasWatchFaceService() {
 
 
             val drawable = when (getAnimationCase()) {
-                "IceRainbow" -> when ((mCalendar.timeInMillis % (28 * frameTime)) / frameTime) {
+                "IceRainbow" -> when ((mCalendar.timeInMillis % (34 * frameTime)) / frameTime) {
                     0L -> R.drawable.rainbow1
                     1L -> R.drawable.rainbow2
                     2L -> R.drawable.rainbow1
                     3L -> R.drawable.rainbow2
-                    4L -> R.drawable.rainbow3
-                    5L -> R.drawable.rainbow4
+                    4L -> R.drawable.rainbow1
+                    5L -> R.drawable.rainbow2
                     6L -> R.drawable.rainbow3
                     7L -> R.drawable.rainbow4
                     8L -> R.drawable.rainbow5
                     9L -> R.drawable.rainbow6
-                    10L -> R.drawable.rainbow5
-                    11L -> R.drawable.rainbow6
-                    12L -> R.drawable.rainbow1
-                    13L -> R.drawable.rainbow2
-                    14L -> R.drawable.rainbow3
-                    15L -> R.drawable.rainbow2
+                    10L -> R.drawable.rainbow1
+                    11L -> R.drawable.rainbow2
+                    12L -> R.drawable.rainbow3
+                    13L -> R.drawable.rainbow4
+                    14L -> R.drawable.rainbow5
+                    15L -> R.drawable.rainbow6
                     16L -> R.drawable.rainbow1
                     17L -> R.drawable.rainbow2
                     18L -> R.drawable.rainbow3
@@ -687,6 +687,12 @@ class MyWatchFace : CanvasWatchFaceService() {
                     25L -> R.drawable.snowman0
                     26L -> R.drawable.snowman1
                     27L -> R.drawable.snowman2
+                    28L -> R.drawable.snowman0
+                    29L -> R.drawable.snowman1
+                    30L -> R.drawable.snowman2
+                    31L -> R.drawable.snowman0
+                    32L -> R.drawable.snowman1
+                    33L -> R.drawable.snowman2
                     else -> R.drawable.rainbow1
                 }
 
@@ -952,16 +958,16 @@ class MyWatchFace : CanvasWatchFaceService() {
 
                 "Jewish" -> when ((mCalendar.timeInMillis % (25 * frameTime)) / frameTime) {
                     0L -> R.drawable.jewstar0
-                    1L -> R.drawable.jewstar1
-                    2L -> R.drawable.jewstar2
-                    3L -> R.drawable.jewstar1
+                    1L -> R.drawable.jewstar2
+                    2L -> R.drawable.jewstar0
+                    3L -> R.drawable.jewstar2
                     4L -> R.drawable.jewstar0
-                    5L -> R.drawable.jewstar0
-                    6L -> R.drawable.jewstar1
-                    7L -> R.drawable.jewstar2
-                    8L -> R.drawable.jewstar1
-                    9L -> R.drawable.jewstar2
-                    10L -> R.drawable.jewstar0
+                    5L -> R.drawable.jewstar2
+                    6L -> R.drawable.jewstar0
+                    7L -> R.drawable.jewstar1
+                    8L -> R.drawable.jewstar2
+                    9L -> R.drawable.jewishcandle0
+                    10L -> R.drawable.jewishcandle1
                     11L -> R.drawable.jewishcandle0
                     12L -> R.drawable.jewishcandle1
                     13L -> R.drawable.jewishcandle0
@@ -1008,37 +1014,37 @@ class MyWatchFace : CanvasWatchFaceService() {
                     else -> R.drawable.starfish1
                 }
 
-                "Irish" -> when ((mCalendar.timeInMillis % (30 * frameTime)) / frameTime) {
+                "Irish" -> when ((mCalendar.timeInMillis % (2 * frameTime)) / frameTime) {
                     0L -> R.drawable.green0
                     1L -> R.drawable.green1
-                    2L -> R.drawable.green0
-                    3L -> R.drawable.green1
-                    4L -> R.drawable.green0
-                    5L -> R.drawable.green1
-                    6L -> R.drawable.lucky21
-                    7L -> R.drawable.lucky22
-                    8L -> R.drawable.lucky23
-                    9L -> R.drawable.lucky24
-                    10L -> R.drawable.lucky25
-                    11L -> R.drawable.lucky26
-                    12L -> R.drawable.lucky27
-                    13L -> R.drawable.lucky29
-                    14L -> R.drawable.lucky30
-                    15L -> R.drawable.lucky31
-                    16L -> R.drawable.lucky32
-                    17L -> R.drawable.lucky33
-                    18L -> R.drawable.lucky34
-                    19L -> R.drawable.lucky35
-                    20L -> R.drawable.lucky36
-                    21L -> R.drawable.lucky37
-                    22L -> R.drawable.green0
-                    23L -> R.drawable.green1
-                    24L -> R.drawable.green0
-                    25L -> R.drawable.green1
-                    26L -> R.drawable.green0
-                    27L -> R.drawable.green1
-                    28L -> R.drawable.green0
-                    29L -> R.drawable.green1
+                    /*    2L -> R.drawable.green0
+                       3L -> R.drawable.green1
+                       4L -> R.drawable.green0
+                       5L -> R.drawable.green1
+                      6L -> R.drawable.lucky21
+                       7L -> R.drawable.lucky22
+                       8L -> R.drawable.lucky23
+                       9L -> R.drawable.lucky24
+                       10L -> R.drawable.lucky25
+                       11L -> R.drawable.lucky26
+                       12L -> R.drawable.lucky27
+                       13L -> R.drawable.lucky29
+                       14L -> R.drawable.lucky30
+                       15L -> R.drawable.lucky31
+                       16L -> R.drawable.lucky32
+                       17L -> R.drawable.lucky33
+                       18L -> R.drawable.lucky34
+                       19L -> R.drawable.lucky35
+                       20L -> R.drawable.lucky36
+                       21L -> R.drawable.lucky37
+                       22L -> R.drawable.green0
+                       23L -> R.drawable.green1
+                       24L -> R.drawable.green0
+                       25L -> R.drawable.green1
+                       26L -> R.drawable.green0
+                       27L -> R.drawable.green1
+                       28L -> R.drawable.green0
+                       29L -> R.drawable.green1*/
                     else -> R.drawable.green0
                 }
 
