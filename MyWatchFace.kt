@@ -714,6 +714,45 @@ class MyWatchFace : CanvasWatchFaceService() {
                     1L -> R.drawable.turkey1
                     else -> R.drawable.heart0
                 }
+                "October" -> when ((mCalendar.timeInMillis % (36 * frameTime)) / frameTime) {
+                    0L -> R.drawable.bat1
+                    2L -> R.drawable.bat2
+                    3L -> R.drawable.bat1
+                    4L -> R.drawable.bat2
+                    5L -> R.drawable.batpumpkin0
+                    6L -> R.drawable.batpumpkin1
+                    7L -> R.drawable.batpumpkin0
+                    8L -> R.drawable.batpumpkin1
+                    9L -> R.drawable.bat1
+                    10L -> R.drawable.bat2
+                    11L -> R.drawable.bat1
+                    12L -> R.drawable.bat2
+                    13L -> R.drawable.witchcookie0
+                    14L -> R.drawable.witchcookie1
+                    15L -> R.drawable.witchcookie2
+                    16L -> R.drawable.witchcookie1
+                    17L -> R.drawable.witchcookie0
+                    18L -> R.drawable.candle0
+                    19L -> R.drawable.candle2
+                    20L -> R.drawable.candle0
+                    21L -> R.drawable.candle2
+                    22L -> R.drawable.candle3
+                    23L -> R.drawable.candle4
+                    24L -> R.drawable.candle3
+                    25L -> R.drawable.candle4
+                    26L -> R.drawable.candle4
+                    27L -> R.drawable.candle1
+                    28L -> R.drawable.candle4
+                    29L -> R.drawable.candle1
+                    30L -> R.drawable.candle0
+                    31L -> R.drawable.candle1
+                    32L -> R.drawable.candle2
+                    33L -> R.drawable.candle3
+                    34L -> R.drawable.candle4
+                    35L -> R.drawable.candle1
+                    else -> R.drawable.starfish1
+                }
+
 
                  "Summer" -> when ((mCalendar.timeInMillis % (24 * frameTime)) / frameTime) {
                     0L -> R.drawable.starfish1
@@ -768,7 +807,7 @@ class MyWatchFace : CanvasWatchFaceService() {
                     21L -> R.drawable.lucky37
                     22L -> R.drawable.green0
                     23L -> R.drawable.green1
-                    else -> R.drawable.starfish1
+                    else -> R.drawable.green0
                 }
 
                 "Fall" -> when ((mCalendar.timeInMillis % (16 * frameTime)) / frameTime) {
