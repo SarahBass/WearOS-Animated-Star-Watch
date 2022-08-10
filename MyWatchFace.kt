@@ -868,7 +868,7 @@ class MyWatchFace : CanvasWatchFaceService() {
                 }
 
 
-                "October" -> when ((mCalendar.timeInMillis % (36 * frameTime)) / frameTime) {
+                "October" -> when ((mCalendar.timeInMillis % (49 * frameTime)) / frameTime) {
                     0L -> R.drawable.bat1
                     1L -> R.drawable.bat2
                     2L -> R.drawable.bat1
@@ -887,24 +887,37 @@ class MyWatchFace : CanvasWatchFaceService() {
                     15L -> R.drawable.witchcookie2
                     16L -> R.drawable.witchcookie1
                     17L -> R.drawable.witchcookie0
-                    18L -> R.drawable.candle0
-                    19L -> R.drawable.candle2
-                    20L -> R.drawable.candle0
-                    21L -> R.drawable.candle2
-                    22L -> R.drawable.candle3
-                    23L -> R.drawable.candle4
-                    24L -> R.drawable.candle3
-                    25L -> R.drawable.candle4
-                    26L -> R.drawable.candle4
-                    27L -> R.drawable.candle1
+                    18L -> R.drawable.witchcookie0
+                    19L -> R.drawable.witchcookie1
+                    20L -> R.drawable.witchcookie2
+                    21L -> R.drawable.witchcookie1
+                    22L -> R.drawable.witchcookie0
+                    23L -> R.drawable.candle0
+                    24L -> R.drawable.candle2
+                    25L -> R.drawable.candle0
+                    26L -> R.drawable.candle2
+                    27L -> R.drawable.candle3
                     28L -> R.drawable.candle4
-                    29L -> R.drawable.candle1
+                    29L -> R.drawable.candle3
                     30L -> R.drawable.candle0
                     31L -> R.drawable.candle1
                     32L -> R.drawable.candle2
                     33L -> R.drawable.candle3
                     34L -> R.drawable.candle4
                     35L -> R.drawable.candle1
+                    36L -> R.drawable.bat1
+                    37L -> R.drawable.bat2
+                    38L -> R.drawable.bat1
+                    39L -> R.drawable.bat2
+                    40L -> R.drawable.bat1
+                    41L -> R.drawable.batpumpkin0
+                    42L -> R.drawable.batpumpkin1
+                    43L -> R.drawable.batpumpkin0
+                    44L -> R.drawable.batpumpkin1
+                    45L -> R.drawable.bat1
+                    46L -> R.drawable.bat2
+                    47L -> R.drawable.bat1
+                    48L -> R.drawable.bat2
                     else -> R.drawable.bat1}
 
 
