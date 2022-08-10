@@ -717,14 +717,14 @@ class MyWatchFace : CanvasWatchFaceService() {
                     23L -> R.drawable.mint5
                     24L -> R.drawable.mint6
                     25L -> R.drawable.peppermint0
-                    26L -> R.drawable.peppermint1
-                    27L -> R.drawable.peppermint2
-                    28L -> R.drawable.peppermint0
-                    29L -> R.drawable.peppermint1
-                    30L -> R.drawable.peppermint2
+                    26L -> R.drawable.peppermint4
+                    27L -> R.drawable.peppermint0
+                    28L -> R.drawable.peppermint4
+                    29L -> R.drawable.peppermint0
+                    30L -> R.drawable.peppermint4
                     31L -> R.drawable.peppermint0
-                    32L -> R.drawable.peppermint1
-                    33L -> R.drawable.peppermint2
+                    32L -> R.drawable.peppermint4
+                    33L -> R.drawable.peppermint0
                     34L -> R.drawable.reindeer0
                     35L -> R.drawable.reindeer1
                     36L -> R.drawable.reindeer0
@@ -733,7 +733,7 @@ class MyWatchFace : CanvasWatchFaceService() {
                     39L -> R.drawable.reindeer0
                     else -> R.drawable.peppermint0
                 }
-                "Christmas" -> when ((mCalendar.timeInMillis % (40 * frameTime)) / frameTime) {
+                "Christmas" -> when ((mCalendar.timeInMillis % (46 * frameTime)) / frameTime) {
                 0L -> R.drawable.reindeer0
                 1L -> R.drawable.reindeer1
                 2L -> R.drawable.reindeer0
@@ -760,20 +760,26 @@ class MyWatchFace : CanvasWatchFaceService() {
                 23L -> R.drawable.ginger0
                 24L -> R.drawable.ginger1
                 25L -> R.drawable.peppermint0
-                26L -> R.drawable.peppermint1
-                27L -> R.drawable.peppermint2
-                28L -> R.drawable.peppermint0
-                29L -> R.drawable.peppermint1
-                30L -> R.drawable.peppermint2
+                26L -> R.drawable.peppermint4
+                27L -> R.drawable.peppermint0
+                28L -> R.drawable.peppermint4
+                29L -> R.drawable.peppermint0
+                30L -> R.drawable.peppermint4
                 31L -> R.drawable.peppermint0
-                32L -> R.drawable.peppermint1
-                33L -> R.drawable.peppermint2
+                32L -> R.drawable.peppermint4
+                33L -> R.drawable.peppermint0
                 34L -> R.drawable.reindeer0
                 35L -> R.drawable.reindeer1
                 36L -> R.drawable.reindeer0
                 37L -> R.drawable.reindeer0
                 38L -> R.drawable.reindeer1
                 39L -> R.drawable.reindeer0
+                    40L -> R.drawable.reindeer0
+                    41L -> R.drawable.reindeer1
+                    42L -> R.drawable.reindeer0
+                    43L -> R.drawable.reindeer0
+                    44L -> R.drawable.reindeer1
+                    45L -> R.drawable.reindeer0
                 else -> R.drawable.peppermint0
             }
 
