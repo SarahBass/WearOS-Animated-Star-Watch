@@ -1050,13 +1050,14 @@ class MyWatchFace : CanvasWatchFaceService() {
                     11L -> R.drawable.gnome0
                     12L -> R.drawable.gnome1
                     13L -> R.drawable.gnome0
-                    15L -> R.drawable.gnome1
-                    16L -> R.drawable.gnome0
-                    17L -> R.drawable.gnome1
-                    18L -> R.drawable.gnome0
-                    19L -> R.drawable.gnome1
-                    20L -> R.drawable.gnome0
-                    21L -> R.drawable.gnome1
+                    14L -> R.drawable.gnome1
+                    15L -> R.drawable.gnome0
+                    16L -> R.drawable.gnome1
+                    17L -> R.drawable.gnome0
+                    18L -> R.drawable.gnome1
+                    19L -> R.drawable.gnome0
+                    20L -> R.drawable.gnome1
+                    21L -> R.drawable.gnome0
                     22L -> R.drawable.bee0
                     23L -> R.drawable.bee1
                     24L -> R.drawable.bee0
