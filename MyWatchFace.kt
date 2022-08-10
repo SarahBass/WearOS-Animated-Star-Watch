@@ -1,12 +1,10 @@
 package com.academy.testwatch3
-//Import Animation ---------------------------------
-//--------------------------------------------------
+
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.*
-import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
@@ -25,7 +23,7 @@ import java.util.*
  * Updates rate in milliseconds for interactive mode. We update once a second to advance the
  * second hand.
  */
-private const val INTERACTIVE_UPDATE_RATE_MS = 1000
+private const val INTERACTIVE_UPDATE_RATE_MS = 600
 
 /**
  * Handler message id for updating the time periodically in interactive mode.
@@ -228,8 +226,13 @@ class MyWatchFace : CanvasWatchFaceService() {
                         BitmapFactory.decodeResource(resources, R.drawable.jewishholiday)
                     } else {
                         BitmapFactory.decodeResource(resources, R.drawable.december2)
-                    }
-                } else if (monthOfYear == "February") {
+                    }}
+                    else if (monthOfYear == "January") {
+                    if (Integer.parseInt(dayOfMonth) in 1..15) {
+                        BitmapFactory.decodeResource(resources, R.drawable.icerainbow)
+                    } else {
+                        BitmapFactory.decodeResource(resources, R.drawable.tuesday)}
+                    }else if (monthOfYear == "February") {
                     if (Integer.parseInt(dayOfMonth) in 1..15) {
                         BitmapFactory.decodeResource(resources, R.drawable.feb14)
                     } else {
@@ -269,6 +272,108 @@ class MyWatchFace : CanvasWatchFaceService() {
 
             return backgroundBitmap
         }
+
+
+   private fun getAnimationCase(): String {
+
+
+            val sdf = SimpleDateFormat("EEE")
+            val sdf1 = SimpleDateFormat("EEEE")
+            val sdf2 = SimpleDateFormat("MMMM")
+            val sdf3 = SimpleDateFormat("d")
+            val sdf4 = SimpleDateFormat("yyyy")
+            val sdf5 = SimpleDateFormat("MMMM d yyyy")
+            val d = Date()
+            val dayOfTheWeek: String = sdf.format(d)
+            val dayOfTheWeekLong: String = sdf1.format(d)
+            val monthOfYear: String = sdf2.format(d)
+            val dayOfMonth: String = sdf3.format(d)
+            val year4digits: String = sdf4.format(d)
+            val fullDateSpaces: String = sdf5.format(d)
+            val easterArray = arrayOf(
+                "April 9 2023",
+                "March 31 2024",
+                "April 20 2025",
+                "April 5 2026",
+                "March 28 2027",
+                "April 16 2028",
+                "April 1 2029",
+                "April 21 2030",
+                "April 13 2031",
+                "March 28 2032"
+            )
+
+            val caseString =
+                if (monthOfYear == "October") {
+                    if (dayOfMonth == "31" || dayOfMonth == "30" || dayOfMonth == "1") {"Halloween"
+                    } else {"October"}
+                } else if (monthOfYear == "November") {
+                    if (dayOfTheWeek == "Mon" || dayOfTheWeek == "Wed" || dayOfTheWeek == "Fri") {
+                        "Thanksgiving"
+                    } else {"Fall"}
+                } else if (monthOfYear == "December") {
+                    //Christmas & Christmas Eve
+                    if (dayOfMonth == "25" || dayOfMonth == "24") {"Christmas"
+                    }
+                    //https://www.calendardate.com/hanukkah_2030.htm has dates up to 2030 for Hanukah or use HebrewCalendar (YEAR, 2, 25)
+                    else if ((Integer.parseInt(year4digits) == 2022 && Integer.parseInt(dayOfMonth) in 18..23) ||
+                        (Integer.parseInt(year4digits) == 2023 && Integer.parseInt(dayOfMonth) in 7..15) ||
+                        (Integer.parseInt(year4digits) == 2024 && Integer.parseInt(dayOfMonth) in 26..30) ||
+                        (Integer.parseInt(year4digits) == 2025 && Integer.parseInt(dayOfMonth) in 14..22) ||
+                        (Integer.parseInt(year4digits) == 2026 && Integer.parseInt(dayOfMonth) in 4..12) ||
+                        (Integer.parseInt(year4digits) == 2027 && Integer.parseInt(dayOfMonth) in 26..30) ||
+                        (Integer.parseInt(year4digits) == 2028 && Integer.parseInt(dayOfMonth) in 12..20) ||
+                        (Integer.parseInt(year4digits) == 2029 && Integer.parseInt(dayOfMonth) in 1..9) ||
+                        (Integer.parseInt(year4digits) == 2030 && Integer.parseInt(dayOfMonth) in 20..23)
+                    ) {
+                        "JewishHoliday"
+                    } else {
+                        "Winter"
+                    }
+                }else if (monthOfYear == "January") {
+                    if (Integer.parseInt(dayOfMonth) in 1..15) {
+                        "IceRainbow"
+                    } else {
+                        "Winter"}}
+                else if (monthOfYear == "February") {
+                    if (Integer.parseInt(dayOfMonth) in 1..15) {
+                        "Valentine"
+                    } else {
+                        "Spring"
+                    }
+                } else if (monthOfYear == "March") {
+                    if (Integer.parseInt(dayOfMonth) in 1..18) {
+                       "Irish"
+                    } else if (easterArray.contains(fullDateSpaces)) {
+                        "Easter"
+                    } else {
+                       "Spring"
+                    }
+                } else if (monthOfYear == "April") {
+                    if (easterArray.contains(fullDateSpaces)) {
+                        "Easter"
+                    } else {
+                       "Spring"
+                    }
+                } else if (monthOfYear == "July" || monthOfYear == "August") {
+                    "Summer"
+                } else {
+                        when (dayOfTheWeek) {
+                            "Mon" -> "Monday"
+                            "Tue" -> "Tuesday"
+                            "Wed" -> "Wednesday"
+                            "Thu" -> "Thursday"
+                            "Fri" -> "Friday"
+                            "Sat" -> "Saturday"
+                            "Sun" -> "Sunday"
+                            else -> "RainbowIce"
+                        }
+
+                }
+
+            return caseString
+        }
+
 
         private fun initializeBackground() {
             mBackgroundPaint = Paint().apply {
@@ -521,21 +626,37 @@ class MyWatchFace : CanvasWatchFaceService() {
             val frameTime = INTERACTIVE_UPDATE_RATE_MS
 
             val starsCount = 2
-            val timeTimeSwitch = 5000
+            val timeTimeSwitch = 20000
             val drawable = when ((mCalendar.timeInMillis % (timeTimeSwitch * starsCount)) / timeTimeSwitch) {
-                0L -> when ((mCalendar.timeInMillis % (6 * frameTime)) / frameTime) {
+                0L -> when ((mCalendar.timeInMillis % (12 * frameTime)) / frameTime) {
                     0L -> R.drawable.rainbow1
                     1L -> R.drawable.rainbow2
-                    2L -> R.drawable.rainbow3
-                    3L -> R.drawable.rainbow4
-                    4L -> R.drawable.rainbow5
-                    5L -> R.drawable.rainbow6
+                    2L -> R.drawable.rainbow1
+                    3L -> R.drawable.rainbow2
+                    4L -> R.drawable.rainbow3
+                    5L -> R.drawable.rainbow4
+                    6L -> R.drawable.rainbow3
+                    7L -> R.drawable.rainbow4
+                    8L -> R.drawable.rainbow5
+                    9L -> R.drawable.rainbow6
+                    10L -> R.drawable.rainbow5
+                    11L -> R.drawable.rainbow6
                     else -> R.drawable.rainbow1
                 }
 
-                1L -> when ((mCalendar.timeInMillis % (2 * frameTime)) / frameTime) {
+                1L -> when ((mCalendar.timeInMillis % (12 * frameTime)) / frameTime) {
                     0L -> R.drawable.starfish1
                     1L -> R.drawable.starfish2
+                    2L -> R.drawable.starfish1
+                    3L -> R.drawable.starfish2
+                    4L -> R.drawable.starfish1
+                    5L -> R.drawable.starfish2
+                    6L -> R.drawable.starfishcoconut0
+                    7L -> R.drawable.starfishcoconut1
+                    8L -> R.drawable.starfishcoconut0
+                    9L -> R.drawable.starfishcoconut1
+                    10L -> R.drawable.starfishcoconut0
+                    11L -> R.drawable.starfishcoconut1
                     else -> R.drawable.starfish1
                 }
 
