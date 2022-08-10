@@ -744,12 +744,13 @@ class MyWatchFace : CanvasWatchFaceService() {
                 7L -> R.drawable.cookiesanta1
                 8L -> R.drawable.cookiesanta0
                 9L -> R.drawable.cookiesanta1
-                11L -> R.drawable.cookiesanta0
-                12L -> R.drawable.cookiesanta1
-                13L -> R.drawable.cookiesanta0
-                14L -> R.drawable.cookiesanta1
-                15L -> R.drawable.cookiesanta0
-                16L -> R.drawable.cookiesanta1
+                10L -> R.drawable.cookiesanta0
+                11L -> R.drawable.cookiesanta1
+                12L -> R.drawable.cookiesanta0
+                13L -> R.drawable.cookiesanta1
+                14L -> R.drawable.cookiesanta0
+                15L -> R.drawable.cookiesanta1
+                16L -> R.drawable.cookiesanta0
                 17L -> R.drawable.ginger0
                 18L -> R.drawable.ginger1
                 19L -> R.drawable.ginger0
