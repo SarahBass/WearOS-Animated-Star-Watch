@@ -205,68 +205,6 @@ class MyWatchFace : CanvasWatchFaceService() {
                 "February 13 2029",
                 "February 2 2030"
             )
-            //Horoscope Function
-            //January 1... 19 -> "Capricorn"
-            //January20...31 -> "Aquarius"
-            //February 1...18 -> "Aquarius"
-         //February 19...30 -> "Pisces"
-         //range March 1...march20 -> "Pisces"
-         //range March 21...31 -> "Aries"
-            //April 1...19 -> "Aries"
-            //April 21...31 -> "Taurus"
-            // May 1...20 -> "Taurus"
-            // May 20...31 -> "Taurus"
-            // June 1...20 -> "Gemini"
-//June 21...31 -> "Cancer"
-            //July 1...22 -> "Cancer"
-            //July 23..31 -> "Leo"
-            //August 1...22 -> "Leo"
-                //August 23...31 -> "Virgo"
-            //September 1...22 -> "Virgo"
-            //September 22...31 -> "Libra"
-            //October 1...22 -> "Libra"
-            //October 23...31 -> "Scorpio"
-            //November 1...21 -> "Scorpio"
-            //November 22...31 -> "Sagittarius"
-           //December 1...21 -> "Sagittarius"
-            //December 21...31-> "Capricorn"
-
-
-            //arrayNewMoon
-            //When 2022 January
-            //January 31 2022
-            //March 2 2022
-            //April 30 2022
-            //May 30 2022
-            //June 28 2022
-            //July 28 2022
-            //August 27 2022
-            //September 25 2022
-            //October 25 2022
-            //November 23 2022
-            //December 23 2022
-
-
-           // Date date = sdf5.parse(arrayNewMoon());
-           //long diff = endDateValue.getTime() - startDateValue.getTime();
-            //TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS));
-
-         //Moon Phases Function
-         //moon phase length is roughly 29.5 days
-          //get number of days in year current date, subtract days from newmoon
-            //fraction less than 1 = newmoon 0-10% and 90%-100% newmoon
-            //0-10% newmoon
-            //10 - 25% crescent right
-            //25%-35% halfmoon right
-            //35-45% gib moon right
-            // 45% to 55%  full moon
-            // 55% to 65%  gib left moon
-            //65% - 75% halfmoon left
-            //75-90% crescent left
-            //90-100% newmoon
-
-            //daysSinceNewMoon  / 29.5 days
-
 
 
             val birthdayArray = arrayOf(
@@ -736,8 +674,11 @@ class MyWatchFace : CanvasWatchFaceService() {
                 WatchFaceService.TAP_TYPE_TOUCH_CANCEL -> {
                     // The user has started a different gesture or otherwise cancelled the tap.
                 }
-                //WatchFaceService.TAP_TYPE_TAP ->
-                // The user has completed the tap gesture.
+                WatchFaceService.TAP_TYPE_TAP -> {
+
+
+                }
+                 //The user has completed the tap gesture.
                 //Can user open up xml or pages
             }
             invalidate()
@@ -765,7 +706,6 @@ class MyWatchFace : CanvasWatchFaceService() {
 
             val starsCount = 2
             val timeTimeSwitch = 20000
-
 
 
             val drawable = when (getAnimationCase()) {
@@ -1438,5 +1378,121 @@ class MyWatchFace : CanvasWatchFaceService() {
                 mUpdateTimeHandler.sendEmptyMessageDelayed(MSG_UPDATE_TIME, delayMs)
             }
         }
+        private fun getHoroscope(): String {
+
+            val sdf = SimpleDateFormat("EEE")
+            val sdf1 = SimpleDateFormat("EEEE")
+            val sdf2 = SimpleDateFormat("MMMM")
+            val sdf3 = SimpleDateFormat("d")
+            val sdf4 = SimpleDateFormat("yyyy")
+            val sdf5 = SimpleDateFormat("MMMM d yyyy")
+            val d = Date()
+            val dayOfTheWeek: String = sdf.format(d)
+            val dayOfTheWeekLong: String = sdf1.format(d)
+            val monthOfYear: String = sdf2.format(d)
+            val dayOfMonth: String = sdf3.format(d)
+            val year4digits: String = sdf4.format(d)
+            val fullDateSpaces: String = sdf5.format(d)
+
+            val horoscopeString = when(monthOfYear){
+                "January" -> if(Integer.parseInt(dayOfMonth) in 1..19){ "Capricorn" }
+                else {"Aquarius" }
+                "February" ->  if(Integer.parseInt(dayOfMonth) in 1..18 ){"Aquarius"}
+                else {"Pisces"}
+                "March" -> if(Integer.parseInt(dayOfMonth) in 1..20 ){"Pisces"}
+                else{ "Aries"}
+                "April" -> if(Integer.parseInt(dayOfMonth) in 1..19 ){"Aries"}
+                else {"Taurus"}
+                "May" -> {"Taurus"}
+                "June" -> if(Integer.parseInt(dayOfMonth) in 1..20 ){"Gemini"}
+                else{"Cancer"}
+                "July" -> if(Integer.parseInt(dayOfMonth) in 1..22) {"Cancer"}
+                else {"Leo"}
+                "August" ->if(Integer.parseInt(dayOfMonth) in 1..22){ "Leo"}
+                else {"Virgo"}
+                "September" -> if(Integer.parseInt(dayOfMonth) in 1..22) {"Virgo"}
+               else{"Libra"}
+                "October" -> if(Integer.parseInt(dayOfMonth) in 1..22) {"Libra"}
+                else {"Scorpio"}
+                "November" ->if(Integer.parseInt(dayOfMonth) in 1..21) { "Scorpio"}
+                else {"Sagittarius"}
+                "December" -> if(Integer.parseInt(dayOfMonth) in 1..21) { "Sagittarius"}
+                else{ "Capricorn"}
+                else -> "not found" }
+            return horoscopeString
+        }
+/*
+        private fun getMoonPhase(): String {
+            val sdf = SimpleDateFormat("EEE")
+            val sdf1 = SimpleDateFormat("EEEE")
+            val sdf2 = SimpleDateFormat("MMMM")
+            val sdf3 = SimpleDateFormat("d")
+            val sdf4 = SimpleDateFormat("yyyy")
+            val sdf5 = SimpleDateFormat("MMMM d yyyy")
+            val d = Date()
+            val dayOfTheWeek: String = sdf.format(d)
+            val dayOfTheWeekLong: String = sdf1.format(d)
+            val monthOfYear: String = sdf2.format(d)
+            val dayOfMonth: String = sdf3.format(d)
+            val year4digits: String = sdf4.format(d)
+            val fullDateSpaces: String = sdf5.format(d)
+            val moonPercent : Double = 0.5
+
+        val moonString = if((moonPercent * 100) in 0..10 || (moonPercent * 100) in 90..100){"Newmoon"}
+            else if (toInt(moonPercent * 100) in 45..54) {"Full Moon"}
+            else if((moonPercent * 100) in 10..24) {"Right Crescent Moon"}
+            else if((moonPercent * 100) in 75..89) {"Left Crescent Moon"}
+            else if((moonPercent * 100) in 35..44) {"Right Gib Moon"}
+            else if((moonPercent * 100) in 55..64) {"left Gib Moon"}
+        else if((moonPercent * 100) in 55..64) {"left Gib Moon"}
+            else {"half moon"}
+        //0-10% newmoon
+        //10 - 25% crescent right
+        //25%-35% halfmoon right
+        //35-45% gib moon right
+        // 45% to 55%  full moon
+        // 55% to 65%  gib left moon
+        //65% - 75% halfmoon left
+        //75-90% crescent left
+        //90-100% newmoon
+
+
+
+            //array
+            //January 31 2022
+            //March 2 2022
+            //April 30 2022
+            //May 30 2022
+            //June 28 2022
+            //July 28 2022
+            //August 27 2022
+            //September 25 2022
+            //October 25 2022
+            //November 23 2022
+            //December 23 2022
+
+
+            // Date date = sdf5.parse(arrayNewMoon());
+            //long diff = endDateValue.getTime() - startDateValue.getTime();
+            //TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS));
+
+            //Moon Phases Function
+            //moon phase length is roughly 29.5 days
+            //get number of days in year current date, subtract days from newmoon
+            //fraction less than 1 = newmoon 0-10% and 90%-100% newmoon
+            //0-10% newmoon
+            //10 - 25% crescent right
+            //25%-35% halfmoon right
+            //35-45% gib moon right
+            // 45% to 55%  full moon
+            // 55% to 65%  gib left moon
+            //65% - 75% halfmoon left
+            //75-90% crescent left
+            //90-100% newmoon
+
+            //daysSinceNewMoon  / 29.5 days
+        }
+            return moonString
+        }*/
     }
 }
