@@ -94,7 +94,7 @@ Birthday Surprise Mode:
 
 <img src="https://github.com/SarahBass/AndroidTicWatchE3/blob/main/birthday%20gif.gif" width="300" height="300">
 
-Animated Sprites Synced with Second Hand:
+Animated Sprites Synced with Time:
 
 <img src="https://github.com/SarahBass/AndroidTicWatchE3/blob/main/halloweengif.gif" width="300" height="300">
 
