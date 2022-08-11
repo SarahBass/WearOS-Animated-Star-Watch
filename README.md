@@ -41,9 +41,15 @@ Chanukah
 
 <img src="https://github.com/SarahBass/AndroidTicWatchE3/blob/main/Galaxywatch360%204.vectornator.png" width="300" height="300">
 
+
 Valentine's Day
 
 <img src="https://github.com/SarahBass/AndroidTicWatchE3/blob/main/valentinesexample.png" width="300" height="300">
+
+Chinese New Year
+
+<img src="https://github.com/SarahBass/AndroidTicWatchE3/blob/main/chineseexample.png" width="300" height="300">
+
 
 Easter
 
@@ -52,6 +58,10 @@ Easter
 Saint Patrick's Day
 
 <img src="https://github.com/SarahBass/AndroidTicWatchE3/blob/main/patrickexamplebigger.png" width="300" height="300">
+
+Cinco De Mayo
+
+<img src="https://github.com/SarahBass/AndroidTicWatchE3/blob/main/cincoexample.png" width="300" height="300">
 
 -----------------------
 
@@ -75,6 +85,20 @@ Winter
 <img src="https://github.com/SarahBass/AndroidTicWatchE3/blob/main/winterexample.png" width="300" height="300">
 
 
+-----------------------
+
+
+## Animation Mode Samples:
+
+Birthday Surprise Mode:
+
+<img src="https://github.com/SarahBass/AndroidTicWatchE3/blob/main/birthday%20gif.gif" width="300" height="300">
+
+Animated Sprites Synced with Second Hand:
+
+<img src="https://github.com/SarahBass/AndroidTicWatchE3/blob/main/halloweengif.gif" width="300" height="300">
+
+
 -----------
 
 Contents | Description
@@ -82,3 +106,7 @@ Contents | Description
 AndroidManifest.xml | Extra Code to bypass security to make the workflow better on Simulation Device
 ------------- | -------------
 MyWatchFace.kt | Kotlin/Java Code for Changing Background, using Clock rotation animations, samples BG colors
+------------- | -------------
+Animated.xml | Used only to Preview Animations, not in final Code
+------------- | -------------
+Star.xml      | Used to Preview Layout , not used in final Code
