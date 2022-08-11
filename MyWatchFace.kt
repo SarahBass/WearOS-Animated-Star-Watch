@@ -231,6 +231,26 @@ class MyWatchFace : CanvasWatchFaceService() {
            //December 1...21 -> "Sagittarius"
             //December 21...31-> "Capricorn"
 
+
+            //arrayNewMoon
+            //When 2022 January
+            //January 31 2022
+            //March 2 2022
+            //April 30 2022
+            //May 30 2022
+            //June 28 2022
+            //July 28 2022
+            //August 27 2022
+            //September 25 2022
+            //October 25 2022
+            //November 23 2022
+            //December 23 2022
+
+
+           // Date date = sdf5.parse(arrayNewMoon());
+           //long diff = endDateValue.getTime() - startDateValue.getTime();
+            //TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS));
+
          //Moon Phases Function
          //moon phase length is roughly 29.5 days
           //get number of days in year current date, subtract days from newmoon
@@ -246,9 +266,6 @@ class MyWatchFace : CanvasWatchFaceService() {
             //90-100% newmoon
 
             //daysSinceNewMoon  / 29.5 days
-
-
-
 
 
 
@@ -295,16 +312,22 @@ class MyWatchFace : CanvasWatchFaceService() {
                         (Integer.parseInt(year4digits) == 2030 && Integer.parseInt(dayOfMonth) in 20..23)
                     ) {
                         BitmapFactory.decodeResource(resources, R.drawable.jewishholiday)
-                    } else {
+                    } else if (dayOfMonth == "31"){BitmapFactory.decodeResource(resources, R.drawable.newyear)}
+                    else {
                         BitmapFactory.decodeResource(resources, R.drawable.december2)
                     }}
                     else if (monthOfYear == "January") {
-                    if (Integer.parseInt(dayOfMonth) in 1..15) {
+                        if (dayOfMonth == "1"){BitmapFactory.decodeResource(resources, R.drawable.newyear)}
+                    else if(lunarArray.contains(fullDateSpaces)) {
+                        BitmapFactory.decodeResource(resources, R.drawable.chinese)
+                    }else if (Integer.parseInt(dayOfMonth) in 2..15) {
                         BitmapFactory.decodeResource(resources, R.drawable.icerainbow)
                     } else {
                         BitmapFactory.decodeResource(resources, R.drawable.tuesday)}
                     }else if (monthOfYear == "February") {
-                    if (Integer.parseInt(dayOfMonth) in 1..15) {
+                    if (lunarArray.contains(fullDateSpaces)) {
+                        BitmapFactory.decodeResource(resources, R.drawable.chinese)
+                    } else if (Integer.parseInt(dayOfMonth) in 1..15) {
                         BitmapFactory.decodeResource(resources, R.drawable.feb14)
                     } else {
                         BitmapFactory.decodeResource(resources, R.drawable.springflower)
@@ -320,6 +343,12 @@ class MyWatchFace : CanvasWatchFaceService() {
                 } else if (monthOfYear == "April") {
                     if (easterArray.contains(fullDateSpaces)) {
                         BitmapFactory.decodeResource(resources, R.drawable.easter)
+                    } else {
+                        BitmapFactory.decodeResource(resources, R.drawable.springflower)
+                    }
+                }else if (monthOfYear == "May") {
+                    if (dayOfMonth == "5")  {
+                        BitmapFactory.decodeResource(resources, R.drawable.cincodemayo)
                     } else {
                         BitmapFactory.decodeResource(resources, R.drawable.springflower)
                     }
@@ -374,6 +403,18 @@ class MyWatchFace : CanvasWatchFaceService() {
                 "April 13 2031",
                 "March 28 2032"
             )
+
+       val lunarArray = arrayOf(
+           "February 1 2022",
+           "January 22 2023",
+           "February 10 2024",
+           "January 29 2025",
+           "February 17 2026",
+           "February 7 2027",
+           "January 26 2028",
+           "February 13 2029",
+           "February 2 2030"
+       )
        val sdf6 = SimpleDateFormat("MMMM d")
        val birthdaySpaces: String = sdf6.format(d)
        val birthdayArray = arrayOf(
@@ -411,16 +452,21 @@ class MyWatchFace : CanvasWatchFaceService() {
                         (Integer.parseInt(year4digits) == 2030 && Integer.parseInt(dayOfMonth) in 20..23)
                     ) {
                         "Jewish"
-                    } else {
+                    } else if (dayOfMonth == "31"){"New Year"}
+                    else {
                         "Winter"
                     }
                 }else if (monthOfYear == "January") {
-                    if (Integer.parseInt(dayOfMonth) in 1..15) {
+                    if (lunarArray.contains(fullDateSpaces) || dayOfMonth == "1") {
+                        "New Year"
+                    } else if (Integer.parseInt(dayOfMonth) in 2..15) {
                         "IceRainbow"
                     } else {
                         "IceRainbow"}}
                 else if (monthOfYear == "February") {
-                    if (Integer.parseInt(dayOfMonth) in 1..15) {
+                    if (lunarArray.contains(fullDateSpaces)) {
+                        "New Year"
+                    } else if (Integer.parseInt(dayOfMonth) in 1..15) {
                         "Valentine"
                     } else {
                         "Spring"
@@ -438,6 +484,12 @@ class MyWatchFace : CanvasWatchFaceService() {
                         "Easter"
                     } else {
                        "Spring"
+                    }
+                }else if (monthOfYear == "May") {
+                    if (dayOfMonth == "5"){
+                    "Cinco de Mayo"
+                    } else {
+                        "Spring"
                     }
                 } else if (monthOfYear == "July" || monthOfYear == "August") {
                     "Summer"
@@ -910,13 +962,13 @@ class MyWatchFace : CanvasWatchFaceService() {
                     else -> R.drawable.bunnyblue0
                 }
 
-                "NewYear" -> when ((mCalendar.timeInMillis % (2 * frameTime)) / frameTime) {
+                "New Year" -> when ((mCalendar.timeInMillis % (2 * frameTime)) / frameTime) {
                     0L -> R.drawable.darkergold1
                     1L -> R.drawable.darkergold2
                     else -> R.drawable.darkergold1
                 }
 
-                "CincoDeMayo" -> when ((mCalendar.timeInMillis % (2 * frameTime)) / frameTime) {
+                "Cinco de Mayo" -> when ((mCalendar.timeInMillis % (2 * frameTime)) / frameTime) {
                     0L -> R.drawable.cinco0
                     1L -> R.drawable.cinco1
                     else -> R.drawable.cinco0
