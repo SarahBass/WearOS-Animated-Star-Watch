@@ -193,6 +193,65 @@ class MyWatchFace : CanvasWatchFaceService() {
                 "April 13 2031",
                 "March 28 2032"
             )
+            //Chinese New Year Starts on New Moon
+            val lunarArray = arrayOf(
+                "February 1 2022",
+                "January 22 2023",
+                "February 10 2024",
+                "January 29 2025",
+                "February 17 2026",
+                "February 7 2027",
+                "January 26 2028",
+                "February 13 2029",
+                "February 2 2030"
+            )
+            //Horoscope Function
+            //January 1... 19 -> "Capricorn"
+            //January20...31 -> "Aquarius"
+            //February 1...18 -> "Aquarius"
+         //February 19...30 -> "Pisces"
+         //range March 1...march20 -> "Pisces"
+         //range March 21...31 -> "Aries"
+            //April 1...19 -> "Aries"
+            //April 21...31 -> "Taurus"
+            // May 1...20 -> "Taurus"
+            // May 20...31 -> "Taurus"
+            // June 1...20 -> "Gemini"
+//June 21...31 -> "Cancer"
+            //July 1...22 -> "Cancer"
+            //July 23..31 -> "Leo"
+            //August 1...22 -> "Leo"
+                //August 23...31 -> "Virgo"
+            //September 1...22 -> "Virgo"
+            //September 22...31 -> "Libra"
+            //October 1...22 -> "Libra"
+            //October 23...31 -> "Scorpio"
+            //November 1...21 -> "Scorpio"
+            //November 22...31 -> "Sagittarius"
+           //December 1...21 -> "Sagittarius"
+            //December 21...31-> "Capricorn"
+
+         //Moon Phases Function
+         //moon phase length is roughly 29.5 days
+          //get number of days in year current date, subtract days from newmoon
+            //fraction less than 1 = newmoon 0-10% and 90%-100% newmoon
+            //0-10% newmoon
+            //10 - 25% crescent right
+            //25%-35% halfmoon right
+            //35-45% gib moon right
+            // 45% to 55%  full moon
+            // 55% to 65%  gib left moon
+            //65% - 75% halfmoon left
+            //75-90% crescent left
+            //90-100% newmoon
+
+            //daysSinceNewMoon  / 29.5 days
+
+
+
+
+
+
             val birthdayArray = arrayOf(
                 "April 5",
                 "December 28",
@@ -658,7 +717,7 @@ class MyWatchFace : CanvasWatchFaceService() {
 
 
             val drawable = when (getAnimationCase()) {
-                "IceRainbow" -> when ((mCalendar.timeInMillis % (34 * frameTime)) / frameTime) {
+                "IceRainbow" -> when ((mCalendar.timeInMillis % (43 * frameTime)) / frameTime) {
                     0L -> R.drawable.rainbow1
                     1L -> R.drawable.rainbow2
                     2L -> R.drawable.rainbow1
@@ -693,6 +752,15 @@ class MyWatchFace : CanvasWatchFaceService() {
                     31L -> R.drawable.snowman0
                     32L -> R.drawable.snowman1
                     33L -> R.drawable.snowman2
+                    34L -> R.drawable.snowman0
+                    35L -> R.drawable.whitebright0
+                    36L -> R.drawable.whitebright1
+                    37L -> R.drawable.whitebright0
+                    38L -> R.drawable.whitebright1
+                    39L -> R.drawable.whitebright0
+                    40L -> R.drawable.whitebright1
+                    41L -> R.drawable.whitebright0
+                    42L -> R.drawable.whitebright1
                     else -> R.drawable.rainbow1
                 }
 
@@ -842,11 +910,46 @@ class MyWatchFace : CanvasWatchFaceService() {
                     else -> R.drawable.bunnyblue0
                 }
 
-                "Birthday" -> when ((mCalendar.timeInMillis % (3 * frameTime)) / frameTime) {
-                    0L -> R.drawable.birthday0
-                    1L -> R.drawable.birthday1
-                    2L -> R.drawable.birthday2
-                    else -> R.drawable.birthday2
+                "NewYear" -> when ((mCalendar.timeInMillis % (2 * frameTime)) / frameTime) {
+                    0L -> R.drawable.darkergold1
+                    1L -> R.drawable.darkergold2
+                    else -> R.drawable.darkergold1
+                }
+
+                "CincoDeMayo" -> when ((mCalendar.timeInMillis % (2 * frameTime)) / frameTime) {
+                    0L -> R.drawable.cinco0
+                    1L -> R.drawable.cinco1
+                    else -> R.drawable.cinco0
+                }
+
+                "Birthday" -> when ((mCalendar.timeInMillis % (26 * frameTime)) / frameTime) {
+                    0L -> R.drawable.eatcake0
+                    1L -> R.drawable.eatcake2
+                    2L -> R.drawable.eatcake0
+                    3L -> R.drawable.eatcake2
+                    4L -> R.drawable.eatcake0
+                    5L -> R.drawable.eatcake2
+                    6L -> R.drawable.candle5
+                    7L -> R.drawable.candle1
+                    8L -> R.drawable.candle5
+                    9L -> R.drawable.candle1
+                    10L -> R.drawable.candle5
+                    11L -> R.drawable.candle1
+                    12L -> R.drawable.candle5
+                    13L -> R.drawable.candle1
+                    14L -> R.drawable.candle5
+                    15L -> R.drawable.candle1
+                    16L -> R.drawable.heart0
+                    17L -> R.drawable.heartkiss
+                    18L -> R.drawable.heart0
+                    19L -> R.drawable.heartkiss
+                    20L -> R.drawable.heart0
+                    21L -> R.drawable.heartkiss
+                    22L -> R.drawable.heart0
+                    23L -> R.drawable.heartkiss
+                    24L -> R.drawable.eatcake0
+                    25L -> R.drawable.eatcake2
+                    else -> R.drawable.candle1
                 }
 
                 "Thanksgiving" -> when ((mCalendar.timeInMillis % (24 * frameTime)) / frameTime) {
@@ -931,26 +1034,26 @@ class MyWatchFace : CanvasWatchFaceService() {
                     24L -> R.drawable.candle2
                     25L -> R.drawable.candle0
                     26L -> R.drawable.candle2
-                    27L -> R.drawable.candle3
-                    28L -> R.drawable.candle4
-                    29L -> R.drawable.candle3
-                    30L -> R.drawable.candle0
-                    31L -> R.drawable.candle1
-                    32L -> R.drawable.candle2
-                    33L -> R.drawable.candle3
-                    34L -> R.drawable.candle4
-                    35L -> R.drawable.candle1
-                    36L -> R.drawable.bat1
-                    37L -> R.drawable.bat2
-                    38L -> R.drawable.bat1
-                    39L -> R.drawable.bat2
-                    40L -> R.drawable.bat1
+                    27L -> R.drawable.candle5
+                    28L -> R.drawable.candle1
+                    29L -> R.drawable.candle5
+                    30L -> R.drawable.candle1
+                    31L -> R.drawable.candle5
+                    32L -> R.drawable.candle1
+                    33L -> R.drawable.bat1
+                    34L -> R.drawable.bat2
+                    35L -> R.drawable.bat1
+                    36L -> R.drawable.bat2
+                    37L -> R.drawable.bat1
+                    38L -> R.drawable.bat2
+                    39L -> R.drawable.bat1
+                    40L -> R.drawable.batpumpkin1
                     41L -> R.drawable.batpumpkin0
                     42L -> R.drawable.batpumpkin1
                     43L -> R.drawable.batpumpkin0
                     44L -> R.drawable.batpumpkin1
-                    45L -> R.drawable.bat1
-                    46L -> R.drawable.bat2
+                    45L -> R.drawable.batpumpkin0
+                    46L -> R.drawable.batpumpkin1
                     47L -> R.drawable.bat1
                     48L -> R.drawable.bat2
                     else -> R.drawable.bat1}
@@ -1014,29 +1117,29 @@ class MyWatchFace : CanvasWatchFaceService() {
                     else -> R.drawable.starfish1
                 }
 
-                "Irish" -> when ((mCalendar.timeInMillis % (2 * frameTime)) / frameTime) {
+                "Irish" -> when ((mCalendar.timeInMillis % (30 * frameTime)) / frameTime) {
                     0L -> R.drawable.green0
                     1L -> R.drawable.green1
-                    /*    2L -> R.drawable.green0
+                    2L -> R.drawable.green0
                        3L -> R.drawable.green1
                        4L -> R.drawable.green0
                        5L -> R.drawable.green1
-                      6L -> R.drawable.lucky21
-                       7L -> R.drawable.lucky22
-                       8L -> R.drawable.lucky23
-                       9L -> R.drawable.lucky24
-                       10L -> R.drawable.lucky25
-                       11L -> R.drawable.lucky26
-                       12L -> R.drawable.lucky27
-                       13L -> R.drawable.lucky29
-                       14L -> R.drawable.lucky30
-                       15L -> R.drawable.lucky31
-                       16L -> R.drawable.lucky32
-                       17L -> R.drawable.lucky33
-                       18L -> R.drawable.lucky34
-                       19L -> R.drawable.lucky35
-                       20L -> R.drawable.lucky36
-                       21L -> R.drawable.lucky37
+                      6L -> R.drawable.green0
+                       7L -> R.drawable.green1
+                       8L -> R.drawable.green0
+                       9L -> R.drawable.green1
+                       10L -> R.drawable.darkergold1
+                       11L -> R.drawable.darkergold2
+                       12L -> R.drawable.darkergold1
+                       13L -> R.drawable.darkergold2
+                       14L -> R.drawable.darkergold1
+                       15L -> R.drawable.darkergold2
+                       16L -> R.drawable.darkergold1
+                       17L -> R.drawable.darkergold2
+                       18L -> R.drawable.darkergold1
+                       19L -> R.drawable.darkergold2
+                       20L -> R.drawable.darkergold1
+                       21L -> R.drawable.darkergold2
                        22L -> R.drawable.green0
                        23L -> R.drawable.green1
                        24L -> R.drawable.green0
@@ -1044,7 +1147,7 @@ class MyWatchFace : CanvasWatchFaceService() {
                        26L -> R.drawable.green0
                        27L -> R.drawable.green1
                        28L -> R.drawable.green0
-                       29L -> R.drawable.green1*/
+                       29L -> R.drawable.green1
                     else -> R.drawable.green0
                 }
 
@@ -1091,24 +1194,24 @@ class MyWatchFace : CanvasWatchFaceService() {
                     1L -> R.drawable.rainbow2
                     2L -> R.drawable.rainbow1
                     3L -> R.drawable.rainbow2
-                    4L -> R.drawable.rainbow3
-                    5L -> R.drawable.rainbow4
+                    4L -> R.drawable.rainbow1
+                    5L -> R.drawable.rainbow2
                     6L -> R.drawable.rainbow3
                     7L -> R.drawable.rainbow4
                     8L -> R.drawable.rainbow5
                     9L -> R.drawable.rainbow6
-                    10L -> R.drawable.rainbow5
-                    11L -> R.drawable.rainbow6
-                    12L -> R.drawable.rainbow1
-                    13L -> R.drawable.rainbow2
-                    14L -> R.drawable.rainbow3
-                    15L -> R.drawable.rainbow2
-                    16L -> R.drawable.rainbow1
-                    17L -> R.drawable.rainbow2
-                    18L -> R.drawable.rainbow3
-                    19L -> R.drawable.rainbow4
-                    20L -> R.drawable.rainbow5
-                    21L -> R.drawable.rainbow6
+                    10L -> R.drawable.whitebright0
+                    11L -> R.drawable.whitebright1
+                    12L -> R.drawable.whitebright0
+                    13L -> R.drawable.whitebright1
+                    14L -> R.drawable.whitebright0
+                    15L -> R.drawable.whitebright1
+                    16L -> R.drawable.whitebright0
+                    17L -> R.drawable.rainbow1
+                    18L -> R.drawable.rainbow2
+                    19L -> R.drawable.rainbow3
+                    20L -> R.drawable.rainbow4
+                    21L -> R.drawable.rainbow5
                     else -> R.drawable.rainbow1
                 }
             }
