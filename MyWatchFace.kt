@@ -298,8 +298,8 @@ class MyWatchFace : CanvasWatchFaceService() {
                         when (dayOfTheWeek) {
                             "Mon" -> R.drawable.monday
                             "Tue" -> R.drawable.tuesday
-                            "Wed" -> R.drawable.wednesday
-                            "Thu" -> R.drawable.thursday
+                            "Wed" -> R.drawable.icerainbow
+                            "Thu" -> R.drawable.icerainbow
                             "Fri" -> R.drawable.friday
                             "Sat" -> R.drawable.saturday
                             "Sun" -> R.drawable.sunday
@@ -709,6 +709,7 @@ class MyWatchFace : CanvasWatchFaceService() {
 
 
             val drawable = when (getAnimationCase()) {
+
                 "IceRainbow" -> when ((mCalendar.timeInMillis % (43 * frameTime)) / frameTime) {
                     0L -> R.drawable.rainbow1
                     1L -> R.drawable.rainbow2
@@ -1205,8 +1206,112 @@ class MyWatchFace : CanvasWatchFaceService() {
                     20L -> R.drawable.rainbow4
                     21L -> R.drawable.rainbow5
                     else -> R.drawable.rainbow1
+
+                /*Animation of Horoscope and moonphase
+                    1L -> when(getHoroscope()) {
+                        "Aquarius" -> R.drawable.aquarius
+                        "Aries" -> R.drawable.aries
+                        "Cancer" -> R.drawable.cancer1
+                        "Capricorn" -> R.drawable.capricorn
+                        "Gemini" -> R.drawable.gemini
+                        "Leo" -> R.drawable.leo
+                        "Libra" -> R.drawable.libra
+                        "Pisces" -> R.drawable.pices
+                        "Sagittarius" -> R.drawable.sagitarius
+                        "Scorpio" -> R.drawable.scorpio
+                        "Taurus" -> R.drawable.taurus
+                        "Virgo" -> R.drawable.virgo
+                     else -> R.drawable.rainbow1 }
+                    2L -> when(getHoroscope()) {
+                        "Aquarius" -> R.drawable.aquarius
+                        "Aries" -> R.drawable.aries
+                        "Cancer" -> R.drawable.cancer2
+                        "Capricorn" -> R.drawable.capricorn
+                        "Gemini" -> R.drawable.gemini
+                        "Leo" -> R.drawable.leo
+                        "Libra" -> R.drawable.libra
+                        "Pisces" -> R.drawable.pices
+                        "Sagittarius" -> R.drawable.sagitarius
+                        "Scorpio" -> R.drawable.scorpio
+                        "Taurus" -> R.drawable.taurus
+                        "Virgo" -> R.drawable.virgo
+                        else -> R.drawable.rainbow1 }
+                    3L -> when(getHoroscope()) {
+                        "Aquarius" -> R.drawable.aquarius
+                        "Aries" -> R.drawable.aries
+                        "Cancer" -> R.drawable.cancer0
+                        "Capricorn" -> R.drawable.capricorn
+                        "Gemini" -> R.drawable.gemini
+                        "Leo" -> R.drawable.leo
+                        "Libra" -> R.drawable.libra
+                        "Pisces" -> R.drawable.pices
+                        "Sagittarius" -> R.drawable.sagitarius
+                        "Scorpio" -> R.drawable.scorpio
+                        "Taurus" -> R.drawable.taurus
+                        "Virgo" -> R.drawable.virgo
+                        else -> R.drawable.rainbow1 }
+                    4L -> when(getHoroscope()) {
+                        "Aquarius" -> R.drawable.aquarius
+                        "Aries" -> R.drawable.aries
+                        "Cancer" -> R.drawable.cancer2
+                        "Capricorn" -> R.drawable.capricorn
+                        "Gemini" -> R.drawable.gemini
+                        "Leo" -> R.drawable.leo
+                        "Libra" -> R.drawable.libra
+                        "Pisces" -> R.drawable.pices
+                        "Sagittarius" -> R.drawable.sagitarius
+                        "Scorpio" -> R.drawable.scorpio
+                        "Taurus" -> R.drawable.taurus
+                        "Virgo" -> R.drawable.virgo
+                        else -> R.drawable.rainbow1 }
+                    5L -> when(getHoroscope()) {
+                        "Aquarius" -> R.drawable.aquarius
+                        "Aries" -> R.drawable.aries
+                        "Cancer" -> R.drawable.cancer0
+                        "Capricorn" -> R.drawable.capricorn
+                        "Gemini" -> R.drawable.gemini
+                        "Leo" -> R.drawable.leo
+                        "Libra" -> R.drawable.libra
+                        "Pisces" -> R.drawable.pices
+                        "Sagittarius" -> R.drawable.sagitarius
+                        "Scorpio" -> R.drawable.scorpio
+                        "Taurus" -> R.drawable.taurus
+                        "Virgo" -> R.drawable.virgo
+                        else -> R.drawable.rainbow1 }
+                    6L -> when(getHoroscope()) {
+                        "Aquarius" -> R.drawable.aquarius
+                        "Aries" -> R.drawable.aries
+                        "Cancer" -> R.drawable.cancer1
+                        "Capricorn" -> R.drawable.capricorn
+                        "Gemini" -> R.drawable.gemini
+                        "Leo" -> R.drawable.leo
+                        "Libra" -> R.drawable.libra
+                        "Pisces" -> R.drawable.pices
+                        "Sagittarius" -> R.drawable.sagitarius
+                        "Scorpio" -> R.drawable.scorpio
+                        "Taurus" -> R.drawable.taurus
+                        "Virgo" -> R.drawable.virgo
+                        else -> R.drawable.rainbow1 }
+                    7L ->  when(getMoonPhase()){
+                       //0-10% newmoon
+        "crescent right" -> R.drawable.quartermoon0
+        "halfmoon right" -> R.drawable.halfmoon
+        "gib moon right" -> R.drawable.gib0
+        "full moon" -> R.drawable.fullmoon
+        "gib left moon" -> R.drawable.gib1
+        "halfmoon left" -> R.drawable.halfmoon
+        "crescent left" -> R.drawable.moon
+        "newmoon" -> R.drawable.quartermoon1
+         else -> R.drawable.moon1 }
+                    }
+
+                    */
+
+
+
                 }
             }
+
 
             canvas.drawBitmap(
                 BitmapFactory.decodeResource(applicationContext.resources, drawable),
@@ -1418,7 +1523,7 @@ class MyWatchFace : CanvasWatchFaceService() {
                 else {"Sagittarius"}
                 "December" -> if(Integer.parseInt(dayOfMonth) in 1..21) { "Sagittarius"}
                 else{ "Capricorn"}
-                else -> "not found" }
+                else -> "Cancer" }
             return horoscopeString
         }
 /*
