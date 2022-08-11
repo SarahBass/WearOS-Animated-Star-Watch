@@ -94,6 +94,10 @@ Animated Sprites Synced with Time:
 
 -----------
 
+## Contents:
+
+<img src="https://github.com/SarahBass/WearOS-Animated-Star-Watch/blob/main/logoStarWatchOS.jpeg" width="600" height="300">
+
 Contents | Description
 -------- | ----------
 AndroidManifest.xml | Extra Code to bypass security to make the workflow better on Simulation Device
