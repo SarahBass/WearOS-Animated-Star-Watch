@@ -357,7 +357,7 @@ class MyWatchFace : CanvasWatchFaceService() {
        val birthdaySpaces: String = sdf6.format(d)
        val birthdayArray = arrayOf(
            "April 5",
-           "December 28",
+           "December 27",
            "January 24",
            "July 11",
            "May 12"
@@ -659,7 +659,7 @@ class MyWatchFace : CanvasWatchFaceService() {
             colorMatrix.setSaturation(0f)
             val filter = ColorMatrixColorFilter(colorMatrix)
             grayPaint.colorFilter = filter
-            //canvas.drawBitmap(mBackgroundBitmap, 0f, 0f, grayPaint)
+            canvas.drawBitmap(mBackgroundBitmap, 0f, 0f, grayPaint)
         }
 
         /**
@@ -687,28 +687,19 @@ class MyWatchFace : CanvasWatchFaceService() {
         override fun onDraw(canvas: Canvas, bounds: Rect) {
             val now = System.currentTimeMillis()
             mCalendar.timeInMillis = now
-
+            updateWatchHandStyle()
             drawBackground(canvas)
             drawWatchFace(canvas)
             drawAnimation(canvas, bounds)
         }
 
         private fun drawAnimation(canvas: Canvas, bounds: Rect) {
-            val scale = 1.5
-            val dst = Rect(
-                (bounds.left / scale).toInt(),
-                (bounds.top / scale).toInt(),
-                (bounds.right / scale).toInt(),
-                (bounds.bottom / scale).toInt()
-            )
-
             val frameTime = INTERACTIVE_UPDATE_RATE_MS
 
-            val starsCount = 2
-            val timeTimeSwitch = 20000
+            //val starsCount = 2
+            //val timeTimeSwitch = 20000
 
-
-            val drawable = when (getAnimationCase()) {
+            var drawable = when (getAnimationCase()) {
 
                 "IceRainbow" -> when ((mCalendar.timeInMillis % (43 * frameTime)) / frameTime) {
                     0L -> R.drawable.rainbow1
@@ -1210,21 +1201,30 @@ class MyWatchFace : CanvasWatchFaceService() {
                 }
             }
 
+            if (mAmbient) {
+                drawable = R.drawable.whitebright0
+            }
+
+            val bitmap = BitmapFactory.decodeResource(applicationContext.resources, drawable)
+
+            val src = Rect(0, 0, bitmap.height, bitmap.width)
+            val dst = Rect(bounds.left, bounds.top, bounds.right, bounds.bottom)
 
             canvas.drawBitmap(
-                BitmapFactory.decodeResource(applicationContext.resources, drawable),
-                bounds,
+                bitmap,
+                src,
                 dst,
                 null
             )
         }
 
         private fun drawBackground(canvas: Canvas) {
-            if (mAmbient && (mLowBitAmbient || mBurnInProtection)) {
-                canvas.drawColor(Color.BLACK)
-            } else if (mAmbient) {
-                canvas.drawBitmap(mGrayBackgroundBitmap, 0f, 0f, mBackgroundPaint)
-            } else {
+            //if (mAmbient && (mLowBitAmbient || mBurnInProtection)) {
+            //    canvas.drawColor(Color.BLACK)
+            //} else
+            //if (mAmbient) {
+            //    canvas.drawBitmap(mGrayBackgroundBitmap, 0f, 0f, mBackgroundPaint)
+            //} else {
                 mBackgroundBitmap = Bitmap.createScaledBitmap(
                     getHolidayBackground(),
                     mBackgroundBitmap.width,
@@ -1232,7 +1232,7 @@ class MyWatchFace : CanvasWatchFaceService() {
                 )
 
                 canvas.drawBitmap(mBackgroundBitmap, 0f, 0f, mBackgroundPaint)
-            }
+            //}
         }
 
         private fun drawWatchFace(canvas: Canvas) {
@@ -1305,7 +1305,6 @@ class MyWatchFace : CanvasWatchFaceService() {
                     mCenterY - mSecondHandLength,
                     mSecondPaint
                 )
-
             }
             canvas.drawCircle(
                 mCenterX,
@@ -1381,6 +1380,6 @@ class MyWatchFace : CanvasWatchFaceService() {
                 mUpdateTimeHandler.sendEmptyMessageDelayed(MSG_UPDATE_TIME, delayMs)
             }
         }
-        
+
     }
 }
