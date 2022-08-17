@@ -1,7 +1,5 @@
 # AndroidTicWatchE3
-Android TicWatch E-3 API 28 in Kotlin Android Studio -
-
-NOW COMPLETE
+-WEAR OS API 28 in Kotlin Android Studio- [CODE SNIPPETS]
 
 ## TicWatch E-3 Virtual Star Pet
 
@@ -103,6 +101,8 @@ Animated Sprites Synced with Time:
 ## Contents:
 
 <img src="https://github.com/SarahBass/WearOS-Animated-Star-Watch/blob/main/SamplePngforGITHUBONLY/logoStarWatchOS.jpeg" width="300" height="150">
+
+[NOT A FULL PACKAGE]
 
 Contents | Description
 -------- | ----------
