@@ -5,7 +5,7 @@ NOW COMPLETE
 
 ## TicWatch E-3 Virtual Star Pet
 
-<img src="https://github.com/SarahBass/AndroidTicWatchE3/blob/main/virtualstaricon.png" width="300" height="300">
+<img src="https://github.com/SarahBass/WearOS-Animated-Star-Watch/blob/main/SamplePngforGITHUBONLY/Galaxywatch360.jpeg" width="300" height="300">
 
 
 ----------
@@ -34,7 +34,7 @@ Christmas
 
 Chanukah
 
-<img src="https://github.com/SarahBass/WearOS-Animated-Star-Watch/blob/main/jewishholidayexample.png" width="300" height="300">
+<img src="https://github.com/SarahBass/WearOS-Animated-Star-Watch/blob/main/SamplePngforGITHUBONLY/jewishholidayexample.png" width="300" height="300">
 
 
 Valentine's Day
