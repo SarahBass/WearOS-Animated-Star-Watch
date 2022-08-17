@@ -7,6 +7,7 @@ NOW COMPLETE
 
 <img src="https://github.com/SarahBass/AndroidTicWatchE3/blob/main/virtualstaricon.png" width="300" height="300">
 
+
 ----------
 Features:
 -----------
@@ -16,6 +17,7 @@ Features:
 
 > Animated Sprite Character
 
+>Ambient Mode with User Data
 
 -------------
 
@@ -79,7 +81,11 @@ Winter
 
 
 -----------------------
+## Ambient Mode:
 
+<img src="https://github.com/SarahBass/WearOS-Animated-Star-Watch/blob/main/blackandwhitesample.png" width="300" height="300">
+
+-----------------------
 
 ## Animation Mode Samples:
 
