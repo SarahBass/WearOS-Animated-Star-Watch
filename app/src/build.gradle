@@ -1,0 +1,43 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+}
+
+android {
+    compileSdk 31
+
+    defaultConfig {
+        applicationId "com.academy.testwatch3"
+        minSdk 28
+        targetSdk 31
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+
+    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'com.google.android.gms:play-services-wearable:17.1.0'
+    implementation 'androidx.percentlayout:percentlayout:1.0.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    implementation 'com.google.android.support:wearable:2.9.0'
+    implementation 'com.google.android.gms:play-services-base:18.1.0'
+    implementation 'androidx.palette:palette-ktx:1.0.0'
+    compileOnly 'com.google.android.wearable:wearable:2.9.0'
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'com.android.support:support-annotations:28.0.0'
+    testImplementation 'com.android.support.test:runner:1.0.2'
+    testImplementation 'com.android.support.test:rules:1.0.2'
+    testImplementation "androidx.test:core:1.4.0"
+    testImplementation "org.mockito:mockito-core:2.28.2"
+
+}
