@@ -110,6 +110,13 @@ AndroidManifest.xml | Extra Code to bypass security to make the workflow better 
 ------------- | -------------
 MyWatchFace.kt | Kotlin/Java Code for Changing Background, using Clock rotation animations, samples BG colors
 ------------- | -------------
+MyWatchFaceUtils.kt | Unit Test Utils
+------------- | -------------
+MyWatchFaceTest.kt | Unit Test Backgrounds and Dates 
+------------- | -------------
 Animated.xml | Used only to Preview Animations, not in final Code
 ------------- | -------------
 Star.xml      | Used to Preview Layout , not used in final Code
+------------- | -------------
+PNG Files     | No Watch PNGs are included. Create your own Art Files as Substitute.
+
