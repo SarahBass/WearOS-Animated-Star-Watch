@@ -106,17 +106,10 @@ Animated Sprites Synced with Time:
 
 Contents | Description
 -------- | ----------
-AndroidManifest.xml | Extra Code to bypass security to make the workflow better on Simulation Device
-------------- | -------------
-MyWatchFace.kt | Kotlin/Java Code for Changing Background, using Clock rotation animations, samples BG colors
-------------- | -------------
-MyWatchFaceUtils.kt | Unit Test Utils
-------------- | -------------
-MyWatchFaceTest.kt | Unit Test Backgrounds and Dates 
-------------- | -------------
-Animated.xml | Used only to Preview Animations, not in final Code
-------------- | -------------
-Star.xml      | Used to Preview Layout , not used in final Code
-------------- | -------------
-PNG Files     | No Watch PNGs are included. Create your own Art Files as Substitute.
-
+[AndroidManifest.xml](https://github.com/SarahBass/WearOS-Animated-Star-Watch/blob/main/app/src/main/AndroidManifest.xml) | Extra Code to bypass security to make the workflow better on Simulation Device
+[MyWatchFace.kt](https://github.com/SarahBass/WearOS-Animated-Star-Watch/blob/main/app/src/main/java/com/academy/testwatch3/MyWatchFace.kt) | Kotlin/Java Code for Changing Background, using Clock rotation animations, samples BG colors
+[MyWatchFaceUtils.kt](https://github.com/SarahBass/WearOS-Animated-Star-Watch/blob/main/app/src/main/java/com/academy/testwatch3/MyWatchFaceUtils.kt) | Unit Test Utils
+[MyWatchFaceTest.kt](https://github.com/SarahBass/WearOS-Animated-Star-Watch/blob/main/app/src/test/java/com/academy/testwatch3/MyWatchFaceTest.kt) | Unit Test Backgrounds and Dates 
+[Animated.xml](https://github.com/SarahBass/WearOS-Animated-Star-Watch/blob/main/FilesforFormatingOnly/rainbowanimation.xml) | Used only to Preview Animations, not in final Code
+[Star.xml](https://github.com/SarahBass/WearOS-Animated-Star-Watch/blob/main/FilesforFormatingOnly/star.xml)      | Used to Preview Layout , not used in final Code
+[PNG Files](https://github.com/SarahBass/WearOS-Animated-Star-Watch/tree/main/SamplePngforGITHUBONLY)     | No Drawables or APP Art is included on Github
