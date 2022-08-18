@@ -113,3 +113,9 @@ Contents | Description
 [Animated.xml](https://github.com/SarahBass/WearOS-Animated-Star-Watch/blob/main/FilesforFormatingOnly/rainbowanimation.xml) | Used only to Preview Animations, not in final Code
 [Star.xml](https://github.com/SarahBass/WearOS-Animated-Star-Watch/blob/main/FilesforFormatingOnly/star.xml)      | Used to Preview Layout , not used in final Code
 [PNG Files](https://github.com/SarahBass/WearOS-Animated-Star-Watch/tree/main/SamplePngforGITHUBONLY)     | No Drawables or APP Art is included on Github
+
+## Connect Device :
+
+> Useful Terminal Command : adb forward tcp:[#### your number] localabstract:/adb-hub
+
+> Useful Terminal Command : adb connect localhost: [#### your number]     
