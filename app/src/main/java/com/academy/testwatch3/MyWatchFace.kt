@@ -888,13 +888,13 @@ class MyWatchFace : CanvasWatchFaceService() {
                     8L -> R.drawable.motherdaystar0
                     9L -> R.drawable.motherdaystar1
                     10L -> R.drawable.seed0
-                    11L -> R.drawable.seedwave1
-                    12L -> R.drawable.seedwave2
-                    13L -> R.drawable.seedwave3
-                    14L -> R.drawable.seed0
-                    15L -> R.drawable.seedwave1
-                    16L -> R.drawable.seedwave2
-                    17L -> R.drawable.seedwave3
+                    11L -> R.drawable.seed1
+                    12L -> R.drawable.seed2
+                    13L -> R.drawable.seed0
+                    14L -> R.drawable.seed1
+                    15L -> R.drawable.seed2
+                    16L -> R.drawable.seed0
+                    17L -> R.drawable.seedjump1
                     18L -> R.drawable.bee0
                     19L -> R.drawable.bee1
                     20L -> R.drawable.bee0
