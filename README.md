@@ -116,6 +116,6 @@ Contents | Description
 
 ## Connect Device :
 
-> Useful Terminal Command : adb forward tcp:[#### your number] localabstract:/adb-hub
+> Terminal Command : adb forward tcp:[#### your number] localabstract:/adb-hub
 
-> Useful Terminal Command : adb connect localhost: [#### your number]     
+> Terminal Command : adb connect localhost: [#### your number] 
