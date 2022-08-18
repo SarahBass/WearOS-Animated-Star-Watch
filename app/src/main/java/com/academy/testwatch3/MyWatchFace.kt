@@ -710,6 +710,9 @@ class MyWatchFace : CanvasWatchFaceService() {
             drawBackground(canvas)
             drawWatchFace(canvas)
             drawAnimation(canvas, bounds)
+            initGrayBackgroundBitmap()
+            
+
         }
 
         private fun drawAnimation(canvas: Canvas, bounds: Rect) {
