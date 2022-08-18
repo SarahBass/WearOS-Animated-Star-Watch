@@ -81,7 +81,7 @@ Winter
 -----------------------
 ## Ambient Mode:
 
-<img src="https://github.com/SarahBass/WearOS-Animated-Star-Watch/blob/main/SamplePngforGITHUBONLY/blackandwhitesample.png" width="300" height="300">
+<img src="https://github.com/SarahBass/WearOS-Animated-Star-Watch/blob/main/SamplePngforGITHUBONLY/ambientmode.gif" width="300" height="300">
 
 -----------------------
 
