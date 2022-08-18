@@ -1,5 +1,5 @@
 # AndroidTicWatchE3
--WEAR OS API 28 in Kotlin Android Studio- [CODE SNIPPETS ONLY]
+-WEAR OS API 28 in Kotlin Android Studio- [CODE SNIPPETS]
 
 ## TicWatch E-3 Virtual Star Pet
 
