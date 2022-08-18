@@ -876,7 +876,7 @@ class MyWatchFace : CanvasWatchFaceService() {
                     else -> R.drawable.seed0
                 }
 
-                "Mother" -> when ((mCalendar.timeInMillis % (18 * frameTime)) / frameTime) {
+                "Mother" -> when ((mCalendar.timeInMillis % (30 * frameTime)) / frameTime) {
                     0L -> R.drawable.motherdaystar0
                     1L -> R.drawable.motherdaystar1
                     2L -> R.drawable.motherdaystar0
@@ -895,6 +895,18 @@ class MyWatchFace : CanvasWatchFaceService() {
                     15L -> R.drawable.seedwave1
                     16L -> R.drawable.seedwave2
                     17L -> R.drawable.seedwave3
+                    18L -> R.drawable.bee0
+                    19L -> R.drawable.bee1
+                    20L -> R.drawable.bee0
+                    21L -> R.drawable.bee1
+                    22L -> R.drawable.bee0
+                    23L -> R.drawable.bee1
+                    24L -> R.drawable.bee0
+                    25L -> R.drawable.bee1
+                    26L -> R.drawable.bee0
+                    27L -> R.drawable.bee1
+                    28L -> R.drawable.bee0
+                    29L -> R.drawable.bee1
                     else -> R.drawable.seed0
                 }
 
