@@ -102,7 +102,7 @@ Animated Sprites Synced with Time:
 
 <img src="https://github.com/SarahBass/WearOS-Animated-Star-Watch/blob/main/SamplePngforGITHUBONLY/logoStarWatchOS.jpeg" width="300" height="150">
 
-[NOT A FULL PACKAGE]
+[NOT A FULL PACKAGE - ONLY CONTAINS CODE SNIPPETS TO PROTECT CREATOR AND ARTIST PROPERTY]
 
 Contents | Description
 -------- | ----------
