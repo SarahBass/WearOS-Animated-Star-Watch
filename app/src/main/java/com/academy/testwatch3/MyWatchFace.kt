@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.*
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
@@ -13,6 +14,7 @@ import android.support.wearable.watchface.WatchFaceService
 import android.support.wearable.watchface.WatchFaceStyle
 import android.util.Log
 import android.view.SurfaceHolder
+import androidx.annotation.VisibleForTesting
 import androidx.palette.graphics.Palette
 import java.lang.ref.WeakReference
 import java.text.SimpleDateFormat
@@ -167,7 +169,8 @@ class MyWatchFace : CanvasWatchFaceService() {
             initializeWatchFace()
         }
 
-        private fun getHolidayBackground(): Bitmap {
+
+        fun getHolidayBackground(): Bitmap {
             val sdf = SimpleDateFormat("EEE")
             val sdf1 = SimpleDateFormat("EEEE")
             val sdf2 = SimpleDateFormat("MMMM")
@@ -195,7 +198,7 @@ class MyWatchFace : CanvasWatchFaceService() {
             )
             //Chinese New Year Starts on New Moon
             val lunarArray = arrayOf(
-                "February 1 2022",
+                "February 1 X2022",
                 "January 22 2023",
                 "February 10 2024",
                 "January 29 2025",
@@ -226,7 +229,13 @@ class MyWatchFace : CanvasWatchFaceService() {
                         BitmapFactory.decodeResource(resources, R.drawable.october1)
                     } else {
                         BitmapFactory.decodeResource(resources, R.drawable.october2)
-                    }
+                    }}
+                    else if (monthOfYear == "September") {
+                        if (dayOfTheWeek == "Mon" || dayOfTheWeek == "Wed") {
+                            BitmapFactory.decodeResource(resources, R.drawable.school0)
+                        } else {
+                            BitmapFactory.decodeResource(resources, R.drawable.school1)
+                        }
                 } else if (monthOfYear == "November") {
                     if (dayOfTheWeek == "Mon" || dayOfTheWeek == "Wed" || dayOfTheWeek == "Fri") {
                         BitmapFactory.decodeResource(resources, R.drawable.november2)
@@ -288,7 +297,7 @@ class MyWatchFace : CanvasWatchFaceService() {
                     if (dayOfMonth == "5")  {
                         BitmapFactory.decodeResource(resources, R.drawable.cincodemayo)
                     } else {
-                        BitmapFactory.decodeResource(resources, R.drawable.springflower)
+                        BitmapFactory.decodeResource(resources, R.drawable.motherday)
                     }
                 } else if (monthOfYear == "July" || monthOfYear == "August") {
                     BitmapFactory.decodeResource(resources, R.drawable.summerbeach)
@@ -427,11 +436,14 @@ class MyWatchFace : CanvasWatchFaceService() {
                     if (dayOfMonth == "5"){
                     "Cinco de Mayo"
                     } else {
-                        "Spring"
+                        "Mother"
                     }
                 } else if (monthOfYear == "July" || monthOfYear == "August") {
                     "Summer"
-                } else {
+                }else if (monthOfYear == "September") {
+                    "School"
+                }
+                else {
                         when (dayOfTheWeek) {
                             "Mon" -> "Monday"
                             "Tue" -> "Tuesday"
@@ -864,6 +876,28 @@ class MyWatchFace : CanvasWatchFaceService() {
                     else -> R.drawable.seed0
                 }
 
+                "Mother" -> when ((mCalendar.timeInMillis % (18 * frameTime)) / frameTime) {
+                    0L -> R.drawable.motherdaystar0
+                    1L -> R.drawable.motherdaystar1
+                    2L -> R.drawable.motherdaystar0
+                    3L -> R.drawable.motherdaystar1
+                    4L -> R.drawable.motherdaystar0
+                    5L -> R.drawable.motherdaystar1
+                    6L -> R.drawable.motherdaystar0
+                    7L -> R.drawable.motherdaystar1
+                    8L -> R.drawable.motherdaystar0
+                    9L -> R.drawable.motherdaystar1
+                    10L -> R.drawable.seed0
+                    11L -> R.drawable.seedwave1
+                    12L -> R.drawable.seedwave2
+                    13L -> R.drawable.seedwave3
+                    14L -> R.drawable.seed0
+                    15L -> R.drawable.seedwave1
+                    16L -> R.drawable.seedwave2
+                    17L -> R.drawable.seedwave3
+                    else -> R.drawable.seed0
+                }
+
                 "Valentine" -> when ((mCalendar.timeInMillis % (15 * frameTime)) / frameTime) {
                     0L -> R.drawable.heart0
                     1L -> R.drawable.heart1
@@ -897,6 +931,34 @@ class MyWatchFace : CanvasWatchFaceService() {
                 "New Year" -> when ((mCalendar.timeInMillis % (2 * frameTime)) / frameTime) {
                     0L -> R.drawable.darkergold1
                     1L -> R.drawable.darkergold2
+                    else -> R.drawable.darkergold1
+                }
+
+                "School" -> when ((mCalendar.timeInMillis % (24 * frameTime)) / frameTime) {
+                    0L -> R.drawable.schoolstar0
+                    1L -> R.drawable.schoolstar1
+                    2L -> R.drawable.schoolstar0
+                    3L -> R.drawable.schoolstar1
+                    4L -> R.drawable.schoolstar0
+                    5L -> R.drawable.schoolstar1
+                    6L -> R.drawable.schoolstar2
+                    7L -> R.drawable.schoolstar3
+                    8L -> R.drawable.schoolstar2
+                    9L -> R.drawable.schoolstar3
+                    10L -> R.drawable.schoolstar2
+                    11L -> R.drawable.schoolstar3
+                    12L -> R.drawable.schoolstar4
+                    13L -> R.drawable.schoolstar5
+                    14L -> R.drawable.schoolstar4
+                    15L -> R.drawable.schoolstar5
+                    16L -> R.drawable.schoolstar4
+                    17L -> R.drawable.schoolstar5
+                    18L -> R.drawable.darkrainbow0
+                    19L -> R.drawable.darkrainbow1
+                    20L -> R.drawable.darkrainbow0
+                    21L -> R.drawable.darkrainbow1
+                    22L -> R.drawable.darkrainbow0
+                    23L -> R.drawable.darkrainbow1
                     else -> R.drawable.darkergold1
                 }
 
