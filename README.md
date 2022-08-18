@@ -118,6 +118,6 @@ Contents | Description
 
 > Terminal Command: adb devices
 
-> Terminal Command : adb forward tcp:[#### your number] localabstract:/adb-hub
+> Terminal Command : adb forward tcp:[#### localhost number] localabstract:/adb-hub
 
-> Terminal Command : adb connect localhost: [#### your number] 
+> Terminal Command : adb connect localhost: [#### localhost number] 
