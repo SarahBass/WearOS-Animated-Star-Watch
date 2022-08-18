@@ -116,6 +116,8 @@ Contents | Description
 
 ## Connect Device :
 
+> Terminal Command: adb devices
+
 > Terminal Command : adb forward tcp:[#### your number] localabstract:/adb-hub
 
 > Terminal Command : adb connect localhost: [#### your number] 
