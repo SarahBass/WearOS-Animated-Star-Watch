@@ -1,42 +1,45 @@
-package com.academy.testwatch3
+package com.academy.horoscopewatch
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.*
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
 import android.support.wearable.watchface.CanvasWatchFaceService
 import android.support.wearable.watchface.WatchFaceService
 import android.support.wearable.watchface.WatchFaceStyle
-import android.util.Log
+import android.text.Html
+import android.view.Gravity
 import android.view.SurfaceHolder
-import androidx.annotation.VisibleForTesting
+import android.widget.Toast
 import androidx.palette.graphics.Palette
 import java.lang.ref.WeakReference
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.abs
 
 
 /**
  * Updates rate in milliseconds for interactive mode. We update once a second to advance the
  * second hand.
  */
-private const val INTERACTIVE_UPDATE_RATE_MS = 600
+private const val INTERACTIVE_UPDATE_RATE_MS = 1000
 
 /**
  * Handler message id for updating the time periodically in interactive mode.
  */
 private const val MSG_UPDATE_TIME = 0
-private const val HOUR_STROKE_WIDTH = 12f
-private const val MINUTE_STROKE_WIDTH = 10f
-private const val SECOND_TICK_STROKE_WIDTH = 5f
-private const val CENTER_GAP_AND_CIRCLE_RADIUS = 4f
-private const val SHADOW_RADIUS = 7f
 
+private const val HOUR_STROKE_WIDTH = 9f
+private const val MINUTE_STROKE_WIDTH = 7f
+private const val SECOND_TICK_STROKE_WIDTH = 2f
+
+private const val CENTER_GAP_AND_CIRCLE_RADIUS = 4f
+
+private const val SHADOW_RADIUS = 6f
 
 /**
  * Analog watch face with a ticking second hand. In ambient mode, the second hand isn"t
@@ -53,52 +56,14 @@ private const val SHADOW_RADIUS = 7f
  */
 
 
-
 class MyWatchFace : CanvasWatchFaceService() {
-
-
-
-    override fun onCreate() {
-        Log.i("tag", "onStart Service ${this.application.applicationInfo}")
-
-        super.onCreate()
-    }
-
-    override fun onStart(intent: Intent?, startId: Int) {
-        Log.i("tag", "onStart Service $intent")
-
-        super.onStart(intent, startId)
-    }
-
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Log.i("tag", "onStart Service $intent")
-
-//        val CHANNEL_ID = "my_channel_01"
-//        val channel = NotificationChannel(
-//            CHANNEL_ID,
-//            "Channel human readable title",
-//            NotificationManager.IMPORTANCE_DEFAULT
-//        )
-//
-//        (getSystemService(NOTIFICATION_SERVICE) as NotificationManager).createNotificationChannel(
-//            channel
-//        )
-//
-//        val notification: Notification = Notification.Builder(this, CHANNEL_ID)
-//            .setContentTitle("")
-//            .setContentText("").build()
-//
-//        this.startForeground(1, notification)
-
-        return super.onStartCommand(intent, flags, startId)
-    }
 
     override fun onCreateEngine(): Engine {
         return Engine()
     }
 
-    private class EngineHandler(reference: MyWatchFace.Engine) : Handler() {
-        private val mWeakReference: WeakReference<MyWatchFace.Engine> = WeakReference(reference)
+    private class EngineHandler(reference: Engine) : Handler() {
+        private val mWeakReference: WeakReference<Engine> = WeakReference(reference)
 
         override fun handleMessage(msg: Message) {
             val engine = mWeakReference.get()
@@ -132,7 +97,6 @@ class MyWatchFace : CanvasWatchFaceService() {
         private lateinit var mMinutePaint: Paint
         private lateinit var mSecondPaint: Paint
         private lateinit var mTickAndCirclePaint: Paint
-
 
         private lateinit var mForegroundBitmap: Bitmap
 
@@ -170,301 +134,24 @@ class MyWatchFace : CanvasWatchFaceService() {
         }
 
 
-        fun getHolidayBackground(): Bitmap {
-            val sdf = SimpleDateFormat("EEE")
-            val sdf1 = SimpleDateFormat("EEEE")
-            val sdf2 = SimpleDateFormat("MMMM")
-            val sdf3 = SimpleDateFormat("d")
-            val sdf4 = SimpleDateFormat("yyyy")
-            val sdf5 = SimpleDateFormat("MMMM d yyyy")
+
+        private fun getMoonPhase(): String {
             val d = Date()
-            val dayOfTheWeek: String = sdf.format(d)
-            val dayOfTheWeekLong: String = sdf1.format(d)
-            val monthOfYear: String = sdf2.format(d)
-            val dayOfMonth: String = sdf3.format(d)
-            val year4digits: String = sdf4.format(d)
-            val fullDateSpaces: String = sdf5.format(d)
-            val easterArray = arrayOf(
-                "April 9 2023",
-                "March 31 2024",
-                "April 20 2025",
-                "April 5 2026",
-                "March 28 2027",
-                "April 16 2028",
-                "April 1 2029",
-                "April 21 2030",
-                "April 13 2031",
-                "March 28 2032"
-            )
-            //Chinese New Year Starts on New Moon
-            val lunarArray = arrayOf(
-                "February 1 X2022",
-                "January 22 2023",
-                "February 10 2024",
-                "January 29 2025",
-                "February 17 2026",
-                "February 7 2027",
-                "January 26 2028",
-                "February 13 2029",
-                "February 2 2030"
-            )
-
-
-            val birthdayArray = arrayOf(
-                "April 5",
-                "December 28",
-                "January 24",
-                "July 11",
-                "May 12"
-            )
-
-            val sdf6 = SimpleDateFormat("MMMM d")
-            val birthdaySpaces: String = sdf6.format(d)
-
-            val backgroundBitmap: Bitmap =
-                    if (birthdayArray.contains(birthdaySpaces)) {
-                        BitmapFactory.decodeResource(resources, R.drawable.birthday)
-                    } else if (monthOfYear == "October") {
-                        if (dayOfMonth == "31" || dayOfMonth == "30" || dayOfMonth == "1") {
-                            BitmapFactory.decodeResource(resources, R.drawable.october1)
-                        } else {
-                            BitmapFactory.decodeResource(resources, R.drawable.october2)
-                        }
-                    } else if (monthOfYear == "September") {
-                        if (dayOfTheWeek == "Mon" || dayOfTheWeek == "Wed") {
-                            BitmapFactory.decodeResource(resources, R.drawable.school0)
-                        } else {
-                            BitmapFactory.decodeResource(resources, R.drawable.school1)
-                        }
-                    } else if (monthOfYear == "November") {
-                        if (dayOfTheWeek == "Mon" || dayOfTheWeek == "Wed" || dayOfTheWeek == "Fri") {
-                            BitmapFactory.decodeResource(resources, R.drawable.november2)
-                        } else {
-                            BitmapFactory.decodeResource(resources, R.drawable.november1)
-                        }
-                    } else if (monthOfYear == "December") {
-                        //Christmas & Christmas Eve
-                        if (dayOfMonth == "25" || dayOfMonth == "24") {
-                            BitmapFactory.decodeResource(resources, R.drawable.december1)
-                        }
-                        //https://www.calendardate.com/hanukkah_2030.htm has dates up to 2030 for Hanukah or use HebrewCalendar (YEAR, 2, 25)
-                        else if ((Integer.parseInt(year4digits) == 2022 && Integer.parseInt(
-                                dayOfMonth
-                            ) in 18..23) ||
-                            (Integer.parseInt(year4digits) == 2023 && Integer.parseInt(dayOfMonth) in 7..15) ||
-                            (Integer.parseInt(year4digits) == 2024 && Integer.parseInt(dayOfMonth) in 26..30) ||
-                            (Integer.parseInt(year4digits) == 2025 && Integer.parseInt(dayOfMonth) in 14..22) ||
-                            (Integer.parseInt(year4digits) == 2026 && Integer.parseInt(dayOfMonth) in 4..12) ||
-                            (Integer.parseInt(year4digits) == 2027 && Integer.parseInt(dayOfMonth) in 26..30) ||
-                            (Integer.parseInt(year4digits) == 2028 && Integer.parseInt(dayOfMonth) in 12..20) ||
-                            (Integer.parseInt(year4digits) == 2029 && Integer.parseInt(dayOfMonth) in 1..9) ||
-                            (Integer.parseInt(year4digits) == 2030 && Integer.parseInt(dayOfMonth) in 20..23)
-                        ) {
-                            BitmapFactory.decodeResource(resources, R.drawable.jewishholiday)
-                        } else if (dayOfMonth == "31") {
-                            BitmapFactory.decodeResource(resources, R.drawable.newyear)
-                        } else {
-                            BitmapFactory.decodeResource(resources, R.drawable.december2)
-                        }
-                    } else if (monthOfYear == "January") {
-                        if (dayOfMonth == "1") {
-                            BitmapFactory.decodeResource(resources, R.drawable.newyear)
-                        } else if (lunarArray.contains(fullDateSpaces)) {
-                            BitmapFactory.decodeResource(resources, R.drawable.chinese)
-                        } else if (Integer.parseInt(dayOfMonth) in 2..15) {
-                            BitmapFactory.decodeResource(resources, R.drawable.icerainbow)
-                        } else {
-                            BitmapFactory.decodeResource(resources, R.drawable.tuesday)
-                        }
-                    } else if (monthOfYear == "February") {
-                        if (lunarArray.contains(fullDateSpaces)) {
-                            BitmapFactory.decodeResource(resources, R.drawable.chinese)
-                        } else if (Integer.parseInt(dayOfMonth) in 1..15) {
-                            BitmapFactory.decodeResource(resources, R.drawable.feb14)
-                        } else {
-                            BitmapFactory.decodeResource(resources, R.drawable.springflower)
-                        }
-                    } else if (monthOfYear == "March") {
-                        if (Integer.parseInt(dayOfMonth) in 1..18) {
-                            BitmapFactory.decodeResource(resources, R.drawable.march17)
-                        } else if (easterArray.contains(fullDateSpaces)) {
-                            BitmapFactory.decodeResource(resources, R.drawable.easter)
-                        } else {
-                            BitmapFactory.decodeResource(resources, R.drawable.springflower)
-                        }
-                    } else if (monthOfYear == "April") {
-                        if (easterArray.contains(fullDateSpaces)) {
-                            BitmapFactory.decodeResource(resources, R.drawable.easter)
-                        } else {
-                            BitmapFactory.decodeResource(resources, R.drawable.springflower)
-                        }
-                    } else if (monthOfYear == "May") {
-                        if (dayOfMonth == "5") {
-                            BitmapFactory.decodeResource(resources, R.drawable.cincodemayo)
-                        } else {
-                            BitmapFactory.decodeResource(resources, R.drawable.motherday)
-                        }
-                    } else if (monthOfYear == "July" || monthOfYear == "August") {
-                        BitmapFactory.decodeResource(resources, R.drawable.summerbeach)
-                    } else {
-                        BitmapFactory.decodeResource(
-                            resources,
-                            when (dayOfTheWeek) {
-                                "Mon" -> R.drawable.monday
-                                "Tue" -> R.drawable.tuesday
-                                "Wed" -> R.drawable.icerainbow
-                                "Thu" -> R.drawable.icerainbow
-                                "Fri" -> R.drawable.friday
-                                "Sat" -> R.drawable.saturday
-                                "Sun" -> R.drawable.sunday
-                                else -> R.drawable.icerainbow
-                            }
-                        )
-                    }
-
-
-
-            return backgroundBitmap
-        }
-
-
-   private fun getAnimationCase(): String {
-
-
-            val sdf = SimpleDateFormat("EEE")
-            val sdf1 = SimpleDateFormat("EEEE")
-            val sdf2 = SimpleDateFormat("MMMM")
-            val sdf3 = SimpleDateFormat("d")
-            val sdf4 = SimpleDateFormat("yyyy")
-            val sdf5 = SimpleDateFormat("MMMM d yyyy")
-
-            val d = Date()
-            val dayOfTheWeek: String = sdf.format(d)
-            val dayOfTheWeekLong: String = sdf1.format(d)
-            val monthOfYear: String = sdf2.format(d)
-            val dayOfMonth: String = sdf3.format(d)
-            val year4digits: String = sdf4.format(d)
-            val fullDateSpaces: String = sdf5.format(d)
-            val easterArray = arrayOf(
-                "April 9 2023",
-                "March 31 2024",
-                "April 20 2025",
-                "April 5 2026",
-                "March 28 2027",
-                "April 16 2028",
-                "April 1 2029",
-                "April 21 2030",
-                "April 13 2031",
-                "March 28 2032"
-            )
-
-       val lunarArray = arrayOf(
-           "February 1 2022",
-           "January 22 2023",
-           "February 10 2024",
-           "January 29 2025",
-           "February 17 2026",
-           "February 7 2027",
-           "January 26 2028",
-           "February 13 2029",
-           "February 2 2030"
-       )
-       val sdf6 = SimpleDateFormat("MMMM d")
-       val birthdaySpaces: String = sdf6.format(d)
-       val birthdayArray = arrayOf(
-           "April 5",
-           "December 27",
-           "January 24",
-           "July 11",
-           "May 12"
-       )
-
-            val caseString =
-                if (birthdayArray.contains(birthdaySpaces) ){
-                    "Birthday"
-                }
-       else if (monthOfYear == "October") {
-                    if (dayOfMonth == "31" || dayOfMonth == "30" || dayOfMonth == "1") {"Halloween"
-                    } else {"October"}
-                } else if (monthOfYear == "November") {
-                    if (dayOfTheWeekLong == "Wednesday" || dayOfTheWeekLong == "Thursday" || dayOfTheWeekLong == "Fri") {
-                        "Thanksgiving"
-                    } else {"Fall"}
-                } else if (monthOfYear == "December") {
-                    //Christmas & Christmas Eve
-                    if (dayOfMonth == "25" || dayOfMonth == "24") {"Christmas"
-                    }
-                    //https://www.calendardate.com/hanukkah_2030.htm has dates up to 2030 for Hanukah or use HebrewCalendar (YEAR, 2, 25)
-                    else if ((Integer.parseInt(year4digits) == 2022 && Integer.parseInt(dayOfMonth) in 18..23) ||
-                        (Integer.parseInt(year4digits) == 2023 && Integer.parseInt(dayOfMonth) in 7..15) ||
-                        (Integer.parseInt(year4digits) == 2024 && Integer.parseInt(dayOfMonth) in 26..30) ||
-                        (Integer.parseInt(year4digits) == 2025 && Integer.parseInt(dayOfMonth) in 14..22) ||
-                        (Integer.parseInt(year4digits) == 2026 && Integer.parseInt(dayOfMonth) in 4..12) ||
-                        (Integer.parseInt(year4digits) == 2027 && Integer.parseInt(dayOfMonth) in 26..30) ||
-                        (Integer.parseInt(year4digits) == 2028 && Integer.parseInt(dayOfMonth) in 12..20) ||
-                        (Integer.parseInt(year4digits) == 2029 && Integer.parseInt(dayOfMonth) in 1..9) ||
-                        (Integer.parseInt(year4digits) == 2030 && Integer.parseInt(dayOfMonth) in 20..23)
-                    ) {
-                        "Jewish"
-                    } else if (dayOfMonth == "31"){"New Year"}
-                    else {
-                        "Winter"
-                    }
-                }else if (monthOfYear == "January") {
-                    if (lunarArray.contains(fullDateSpaces) || dayOfMonth == "1") {
-                        "New Year"
-                    } else if (Integer.parseInt(dayOfMonth) in 2..15) {
-                        "IceRainbow"
-                    } else {
-                        "IceRainbow"}}
-                else if (monthOfYear == "February") {
-                    if (lunarArray.contains(fullDateSpaces)) {
-                        "New Year"
-                    } else if (Integer.parseInt(dayOfMonth) in 1..15) {
-                        "Valentine"
-                    } else {
-                        "Spring"
-                    }
-                } else if (monthOfYear == "March") {
-                    if (Integer.parseInt(dayOfMonth) in 1..18) {
-                       "Irish"
-                    } else if (easterArray.contains(fullDateSpaces)) {
-                        "Easter"
-                    } else {
-                       "Spring"
-                    }
-                } else if (monthOfYear == "April") {
-                    if (easterArray.contains(fullDateSpaces)) {
-                        "Easter"
-                    } else {
-                       "Spring"
-                    }
-                }else if (monthOfYear == "May") {
-                    if (dayOfMonth == "5"){
-                    "Cinco de Mayo"
-                    } else {
-                        "Mother"
-                    }
-                } else if (monthOfYear == "July" || monthOfYear == "August") {
-                    "Summer"
-                }else if (monthOfYear == "September") {
-                    "School"
-                }
-                else {
-                        when (dayOfTheWeek) {
-                            "Mon" -> "Monday"
-                            "Tue" -> "Tuesday"
-                            "Wed" -> "Wednesday"
-                            "Thu" -> "Thursday"
-                            "Fri" -> "Friday"
-                            "Sat" -> "Saturday"
-                            "Sun" -> "Sunday"
-                            else -> "RainbowIce"
-                        }
-
-                }
-
-            return caseString
+            val sdf1 = SimpleDateFormat("d")
+            val dayOfMonth: String = sdf1.format(d)
+            val LUNAR_MONTH = 29.530588853;
+            val newMoondifference = abs((Integer.parseInt(dayOfMonth)) - (Integer.parseInt(getnewMoonDate())))
+            val moonPercent : Double = newMoondifference / LUNAR_MONTH
+            val moonString : String = if(moonPercent < 0.05 ){"New Moon"}
+            else if (moonPercent >= .05 && moonPercent < 0.25 ){"Waning Crescent Moon"}
+            else if(moonPercent >=0.25 && moonPercent < 0.35){"Waning half Moon"}
+            else if(moonPercent >=0.35 && moonPercent < 0.47){"Waning Gibbous Moon"}
+            else if(moonPercent >=0.47 && moonPercent < 0.55){"Full Moon"}
+            else if(moonPercent >=0.55 && moonPercent < 0.65){"Waxing Gibbous Moon"}
+            else if(moonPercent >=0.65 && moonPercent < 0.75){"Waxing half Moon"}
+            else if(moonPercent >=0.75 && moonPercent < 0.95){"Waxing Crescent Moon"}
+            else {"New Moon"}
+            return moonString
         }
 
 
@@ -474,17 +161,18 @@ class MyWatchFace : CanvasWatchFaceService() {
             mBackgroundPaint = Paint().apply {
                 color = Color.BLACK
             }
-
-            mBackgroundBitmap = getHolidayBackground()
+            mBackgroundBitmap = getAstrologyBackground()
 
             /* Extracts colors from background image to improve watchface style. */
             Palette.from(mBackgroundBitmap).generate {
                 it?.let {
-                    mWatchHandHighlightColor = it.getVibrantColor(Color.WHITE)
+                    mWatchHandHighlightColor = it.getVibrantColor(Color.RED)
                     mWatchHandColor = it.getLightVibrantColor(Color.WHITE)
                     mWatchHandShadowColor = it.getDarkMutedColor(Color.BLACK)
                     updateWatchHandStyle()
                 }
+
+
             }
         }
 
@@ -543,15 +231,16 @@ class MyWatchFace : CanvasWatchFaceService() {
         override fun onPropertiesChanged(properties: Bundle) {
             super.onPropertiesChanged(properties)
             mLowBitAmbient = properties.getBoolean(
-                WatchFaceService.PROPERTY_LOW_BIT_AMBIENT, false
+                PROPERTY_LOW_BIT_AMBIENT, false
             )
             mBurnInProtection = properties.getBoolean(
-                WatchFaceService.PROPERTY_BURN_IN_PROTECTION, false
+                PROPERTY_BURN_IN_PROTECTION, false
             )
         }
 
         override fun onTimeTick() {
             super.onTimeTick()
+
             invalidate()
         }
 
@@ -611,7 +300,7 @@ class MyWatchFace : CanvasWatchFaceService() {
 
         override fun onInterruptionFilterChanged(interruptionFilter: Int) {
             super.onInterruptionFilterChanged(interruptionFilter)
-            val inMuteMode = interruptionFilter == WatchFaceService.INTERRUPTION_FILTER_NONE
+            val inMuteMode = interruptionFilter == INTERRUPTION_FILTER_NONE
 
             /* Dim display in mute mode. */
             if (mMuteMode != inMuteMode) {
@@ -639,11 +328,10 @@ class MyWatchFace : CanvasWatchFaceService() {
              */
             mSecondHandLength = (mCenterX * 0.6).toFloat()
             sMinuteHandLength = (mCenterX * 0.6).toFloat()
-            sHourHandLength = (mCenterX * 0.6).toFloat()
+            sHourHandLength = (mCenterX * 0.5).toFloat()
 
             /* Scale loaded background image (more efficient) if surface dimensions change. */
             val scale = width.toFloat() / mBackgroundBitmap.width.toFloat()
-
 
             mBackgroundBitmap = Bitmap.createScaledBitmap(
                 mBackgroundBitmap,
@@ -681,27 +369,7 @@ class MyWatchFace : CanvasWatchFaceService() {
             canvas.drawBitmap(mBackgroundBitmap, 0f, 0f, grayPaint)
         }
 
-        /**
-         * Captures tap event (and tap type). The [WatchFaceService.TAP_TYPE_TAP] case can be
-         * used for implementing specific logic to handle the gesture.
-         */
-        override fun onTapCommand(tapType: Int, x: Int, y: Int, eventTime: Long) {
-            when (tapType) {
-                WatchFaceService.TAP_TYPE_TOUCH -> {
-                    // The user has started touching the screen.
-                }
-                WatchFaceService.TAP_TYPE_TOUCH_CANCEL -> {
-                    // The user has started a different gesture or otherwise cancelled the tap.
-                }
-                WatchFaceService.TAP_TYPE_TAP -> {
 
-
-                }
-                 //The user has completed the tap gesture.
-                //Can user open up xml or pages
-            }
-            invalidate()
-        }
 
         override fun onDraw(canvas: Canvas, bounds: Rect) {
             val now = System.currentTimeMillis()
@@ -711,604 +379,14 @@ class MyWatchFace : CanvasWatchFaceService() {
             drawWatchFace(canvas)
             drawAnimation(canvas, bounds)
             initGrayBackgroundBitmap()
-            
-
-        }
-
-        private fun drawAnimation(canvas: Canvas, bounds: Rect) {
-            val frameTime = INTERACTIVE_UPDATE_RATE_MS
-
-            //val starsCount = 2
-            //val timeTimeSwitch = 20000
-
-            var drawable = when (getAnimationCase()) {
-
-                "IceRainbow" -> when ((mCalendar.timeInMillis % (43 * frameTime)) / frameTime) {
-                    0L -> R.drawable.rainbow1
-                    1L -> R.drawable.rainbow2
-                    2L -> R.drawable.rainbow1
-                    3L -> R.drawable.rainbow2
-                    4L -> R.drawable.rainbow1
-                    5L -> R.drawable.rainbow2
-                    6L -> R.drawable.rainbow3
-                    7L -> R.drawable.rainbow4
-                    8L -> R.drawable.rainbow5
-                    9L -> R.drawable.rainbow6
-                    10L -> R.drawable.rainbow1
-                    11L -> R.drawable.rainbow2
-                    12L -> R.drawable.rainbow3
-                    13L -> R.drawable.rainbow4
-                    14L -> R.drawable.rainbow5
-                    15L -> R.drawable.rainbow6
-                    16L -> R.drawable.rainbow1
-                    17L -> R.drawable.rainbow2
-                    18L -> R.drawable.rainbow3
-                    19L -> R.drawable.rainbow4
-                    20L -> R.drawable.rainbow5
-                    21L -> R.drawable.rainbow6
-                    22L -> R.drawable.snowman0
-                    23L -> R.drawable.snowman1
-                    24L -> R.drawable.snowman2
-                    25L -> R.drawable.snowman0
-                    26L -> R.drawable.snowman1
-                    27L -> R.drawable.snowman2
-                    28L -> R.drawable.snowman0
-                    29L -> R.drawable.snowman1
-                    30L -> R.drawable.snowman2
-                    31L -> R.drawable.snowman0
-                    32L -> R.drawable.snowman1
-                    33L -> R.drawable.snowman2
-                    34L -> R.drawable.snowman0
-                    35L -> R.drawable.whitebright0
-                    36L -> R.drawable.whitebright1
-                    37L -> R.drawable.whitebright0
-                    38L -> R.drawable.whitebright1
-                    39L -> R.drawable.whitebright0
-                    40L -> R.drawable.whitebright1
-                    41L -> R.drawable.whitebright0
-                    42L -> R.drawable.whitebright1
-                    else -> R.drawable.rainbow1
-                }
-
-                "Winter" -> when ((mCalendar.timeInMillis % (40 * frameTime)) / frameTime) {
-                    0L -> R.drawable.reindeer0
-                    1L -> R.drawable.reindeer1
-                    2L -> R.drawable.reindeer0
-                    3L -> R.drawable.reindeer1
-                    4L -> R.drawable.reindeer0
-                    5L -> R.drawable.reindeer1
-                    6L -> R.drawable.snowman0
-                    7L -> R.drawable.snowman1
-                    8L -> R.drawable.snowman2
-                    9L -> R.drawable.snowman0
-                    10L -> R.drawable.snowman1
-                    11L -> R.drawable.snowman2
-                    12L -> R.drawable.mint6
-                    13L -> R.drawable.mint5
-                    14L -> R.drawable.mint6
-                    15L -> R.drawable.mint5
-                    16L -> R.drawable.mint0
-                    17L -> R.drawable.mint1
-                    18L -> R.drawable.mint2
-                    19L -> R.drawable.mint3
-                    20L -> R.drawable.mint4
-                    21L -> R.drawable.mint5
-                    22L -> R.drawable.mint6
-                    23L -> R.drawable.mint5
-                    24L -> R.drawable.mint6
-                    25L -> R.drawable.peppermint0
-                    26L -> R.drawable.peppermint4
-                    27L -> R.drawable.peppermint0
-                    28L -> R.drawable.peppermint4
-                    29L -> R.drawable.peppermint0
-                    30L -> R.drawable.peppermint4
-                    31L -> R.drawable.peppermint0
-                    32L -> R.drawable.peppermint4
-                    33L -> R.drawable.peppermint0
-                    34L -> R.drawable.reindeer0
-                    35L -> R.drawable.reindeer1
-                    36L -> R.drawable.reindeer0
-                    37L -> R.drawable.reindeer0
-                    38L -> R.drawable.reindeer1
-                    39L -> R.drawable.reindeer0
-                    else -> R.drawable.peppermint0
-                }
-                "Christmas" -> when ((mCalendar.timeInMillis % (46 * frameTime)) / frameTime) {
-                0L -> R.drawable.reindeer0
-                1L -> R.drawable.reindeer1
-                2L -> R.drawable.reindeer0
-                3L -> R.drawable.reindeer1
-                4L -> R.drawable.reindeer0
-                5L -> R.drawable.reindeer1
-                6L -> R.drawable.cookiesanta0
-                7L -> R.drawable.cookiesanta1
-                8L -> R.drawable.cookiesanta0
-                9L -> R.drawable.cookiesanta1
-                10L -> R.drawable.cookiesanta0
-                11L -> R.drawable.cookiesanta1
-                12L -> R.drawable.cookiesanta0
-                13L -> R.drawable.cookiesanta1
-                14L -> R.drawable.cookiesanta0
-                15L -> R.drawable.cookiesanta1
-                16L -> R.drawable.cookiesanta0
-                17L -> R.drawable.ginger0
-                18L -> R.drawable.ginger1
-                19L -> R.drawable.ginger0
-                20L -> R.drawable.ginger1
-                21L -> R.drawable.ginger0
-                22L -> R.drawable.ginger1
-                23L -> R.drawable.ginger0
-                24L -> R.drawable.ginger1
-                25L -> R.drawable.peppermint0
-                26L -> R.drawable.peppermint4
-                27L -> R.drawable.peppermint0
-                28L -> R.drawable.peppermint4
-                29L -> R.drawable.peppermint0
-                30L -> R.drawable.peppermint4
-                31L -> R.drawable.peppermint0
-                32L -> R.drawable.peppermint4
-                33L -> R.drawable.peppermint0
-                34L -> R.drawable.reindeer0
-                35L -> R.drawable.reindeer1
-                36L -> R.drawable.reindeer0
-                37L -> R.drawable.reindeer0
-                38L -> R.drawable.reindeer1
-                39L -> R.drawable.reindeer0
-                    40L -> R.drawable.reindeer0
-                    41L -> R.drawable.reindeer1
-                    42L -> R.drawable.reindeer0
-                    43L -> R.drawable.reindeer0
-                    44L -> R.drawable.reindeer1
-                    45L -> R.drawable.reindeer0
-                else -> R.drawable.peppermint0
-            }
-
-
-            "Spring" -> when ((mCalendar.timeInMillis % (18 * frameTime)) / frameTime) {
-                    0L -> R.drawable.seed0
-                    1L -> R.drawable.seed1
-                    2L -> R.drawable.seed2
-                    3L -> R.drawable.seed0
-                    4L -> R.drawable.seed1
-                    5L -> R.drawable.seed2
-                    6L -> R.drawable.seed0
-                    7L -> R.drawable.seedjump1
-                    8L -> R.drawable.seed0
-                    9L -> R.drawable.seedjump1
-                    10L -> R.drawable.seed0
-                    11L -> R.drawable.seedwave1
-                    12L -> R.drawable.seedwave2
-                    13L -> R.drawable.seedwave3
-                    14L -> R.drawable.seed0
-                    15L -> R.drawable.seedwave1
-                    16L -> R.drawable.seedwave2
-                    17L -> R.drawable.seedwave3
-                    else -> R.drawable.seed0
-                }
-
-                "Mother" -> when ((mCalendar.timeInMillis % (30 * frameTime)) / frameTime) {
-                    0L -> R.drawable.motherdaystar0
-                    1L -> R.drawable.motherdaystar1
-                    2L -> R.drawable.motherdaystar0
-                    3L -> R.drawable.motherdaystar1
-                    4L -> R.drawable.motherdaystar0
-                    5L -> R.drawable.motherdaystar1
-                    6L -> R.drawable.motherdaystar0
-                    7L -> R.drawable.motherdaystar1
-                    8L -> R.drawable.motherdaystar0
-                    9L -> R.drawable.motherdaystar1
-                    10L -> R.drawable.seed0
-                    11L -> R.drawable.seed1
-                    12L -> R.drawable.seed2
-                    13L -> R.drawable.seed0
-                    14L -> R.drawable.seed1
-                    15L -> R.drawable.seed2
-                    16L -> R.drawable.seed0
-                    17L -> R.drawable.seedjump1
-                    18L -> R.drawable.bee0
-                    19L -> R.drawable.bee1
-                    20L -> R.drawable.bee0
-                    21L -> R.drawable.bee1
-                    22L -> R.drawable.bee0
-                    23L -> R.drawable.bee1
-                    24L -> R.drawable.bee0
-                    25L -> R.drawable.bee1
-                    26L -> R.drawable.bee0
-                    27L -> R.drawable.bee1
-                    28L -> R.drawable.bee0
-                    29L -> R.drawable.bee1
-                    else -> R.drawable.seed0
-                }
-
-                "Valentine" -> when ((mCalendar.timeInMillis % (15 * frameTime)) / frameTime) {
-                    0L -> R.drawable.heart0
-                    1L -> R.drawable.heart1
-                    2L -> R.drawable.heart0
-                    3L -> R.drawable.heart1
-                    4L -> R.drawable.heart0
-                    5L -> R.drawable.heartsleep0
-                    6L -> R.drawable.heartsleep1
-                    7L -> R.drawable.heartsleep0
-                    8L -> R.drawable.heartsleep1
-                    9L -> R.drawable.heartsleep0
-                    10L -> R.drawable.heartsleep1
-                    11L -> R.drawable.heart0
-                    12L -> R.drawable.heartkiss
-                    13L -> R.drawable.heart0
-                    14L -> R.drawable.heartkiss
-                    else -> R.drawable.heart0
-                }
-                "Easter" -> when ((mCalendar.timeInMillis % (8 * frameTime)) / frameTime) {
-                    0L -> R.drawable.bunnyblue0
-                    1L -> R.drawable.bunnyblue1
-                    2L -> R.drawable.bunnyblue0
-                    3L -> R.drawable.bunnyblue1
-                    4L -> R.drawable.bunnybluepeep1
-                    5L -> R.drawable.bunnybluepeep2
-                    6L -> R.drawable.bunnybluepeep1
-                    7L -> R.drawable.bunnybluepeep2
-                    else -> R.drawable.bunnyblue0
-                }
-
-                "New Year" -> when ((mCalendar.timeInMillis % (2 * frameTime)) / frameTime) {
-                    0L -> R.drawable.darkergold1
-                    1L -> R.drawable.darkergold2
-                    else -> R.drawable.darkergold1
-                }
-
-                "School" -> when ((mCalendar.timeInMillis % (24 * frameTime)) / frameTime) {
-                    0L -> R.drawable.schoolstar0
-                    1L -> R.drawable.schoolstar1
-                    2L -> R.drawable.schoolstar0
-                    3L -> R.drawable.schoolstar1
-                    4L -> R.drawable.schoolstar0
-                    5L -> R.drawable.schoolstar1
-                    6L -> R.drawable.schoolstar2
-                    7L -> R.drawable.schoolstar3
-                    8L -> R.drawable.schoolstar2
-                    9L -> R.drawable.schoolstar3
-                    10L -> R.drawable.schoolstar2
-                    11L -> R.drawable.schoolstar3
-                    12L -> R.drawable.schoolstar4
-                    13L -> R.drawable.schoolstar5
-                    14L -> R.drawable.schoolstar4
-                    15L -> R.drawable.schoolstar5
-                    16L -> R.drawable.schoolstar4
-                    17L -> R.drawable.schoolstar5
-                    18L -> R.drawable.darkrainbow0
-                    19L -> R.drawable.darkrainbow1
-                    20L -> R.drawable.darkrainbow0
-                    21L -> R.drawable.darkrainbow1
-                    22L -> R.drawable.darkrainbow0
-                    23L -> R.drawable.darkrainbow1
-                    else -> R.drawable.darkergold1
-                }
-
-                "Cinco de Mayo" -> when ((mCalendar.timeInMillis % (2 * frameTime)) / frameTime) {
-                    0L -> R.drawable.cinco0
-                    1L -> R.drawable.cinco1
-                    else -> R.drawable.cinco0
-                }
-
-                "Birthday" -> when ((mCalendar.timeInMillis % (26 * frameTime)) / frameTime) {
-                    0L -> R.drawable.eatcake0
-                    1L -> R.drawable.eatcake2
-                    2L -> R.drawable.eatcake0
-                    3L -> R.drawable.eatcake2
-                    4L -> R.drawable.eatcake0
-                    5L -> R.drawable.eatcake2
-                    6L -> R.drawable.candle5
-                    7L -> R.drawable.candle1
-                    8L -> R.drawable.candle5
-                    9L -> R.drawable.candle1
-                    10L -> R.drawable.candle5
-                    11L -> R.drawable.candle1
-                    12L -> R.drawable.candle5
-                    13L -> R.drawable.candle1
-                    14L -> R.drawable.candle5
-                    15L -> R.drawable.candle1
-                    16L -> R.drawable.heart0
-                    17L -> R.drawable.heartkiss
-                    18L -> R.drawable.heart0
-                    19L -> R.drawable.heartkiss
-                    20L -> R.drawable.heart0
-                    21L -> R.drawable.heartkiss
-                    22L -> R.drawable.heart0
-                    23L -> R.drawable.heartkiss
-                    24L -> R.drawable.eatcake0
-                    25L -> R.drawable.eatcake2
-                    else -> R.drawable.candle1
-                }
-
-                "Thanksgiving" -> when ((mCalendar.timeInMillis % (24 * frameTime)) / frameTime) {
-                    0L -> R.drawable.turkey0
-                    1L -> R.drawable.turkey1
-                    2L -> R.drawable.turkey0
-                    3L -> R.drawable.turkey1
-                    4L -> R.drawable.turkey0
-                    5L -> R.drawable.turkey1
-                    6L -> R.drawable.turkey0
-                    7L -> R.drawable.turkey1
-                    8L -> R.drawable.turkey0
-                    9L -> R.drawable.turkey1
-                    10L -> R.drawable.turkey0
-                    11L -> R.drawable.turkey1
-                    12L -> R.drawable.squirrel0
-                    13L -> R.drawable.squirrel1
-                    14L -> R.drawable.squirrel0
-                    15L -> R.drawable.squirrel1
-                    16L -> R.drawable.squirrel0
-                    17L -> R.drawable.squirrel1
-                    18L -> R.drawable.squirrel0
-                    19L -> R.drawable.squirrel1
-                    20L -> R.drawable.squirrel0
-                    21L -> R.drawable.squirrel1
-                    22L -> R.drawable.squirrel0
-                    23L -> R.drawable.squirrel1
-                    else -> R.drawable.turkey0
-                }
-
-                "Halloween" -> when ((mCalendar.timeInMillis % (20 * frameTime)) / frameTime) {
-                    0L -> R.drawable.witch0
-                    1L -> R.drawable.witch1
-                    2L -> R.drawable.witch0
-                    3L -> R.drawable.witch1
-                    4L -> R.drawable.witch0
-                    5L -> R.drawable.witch1
-                    6L -> R.drawable.witch0
-                    7L -> R.drawable.witch1
-                    8L -> R.drawable.pumpkin0
-                    9L -> R.drawable.pumpkin1
-                    10L -> R.drawable.pumpkin2
-                    11L -> R.drawable.pumpkin0
-                    12L -> R.drawable.pumpkin1
-                    13L -> R.drawable.pumpkin2
-                    14L -> R.drawable.pumpkin0
-                    15L -> R.drawable.pumpkin1
-                    16L -> R.drawable.pumpkin2
-                    17L -> R.drawable.pumpkin0
-                    18L -> R.drawable.pumpkin1
-                    19L -> R.drawable.pumpkin2
-
-                    else -> R.drawable.witch0
-                }
-
-
-                "October" -> when ((mCalendar.timeInMillis % (49 * frameTime)) / frameTime) {
-                    0L -> R.drawable.bat1
-                    1L -> R.drawable.bat2
-                    2L -> R.drawable.bat1
-                    3L -> R.drawable.bat2
-                    4L -> R.drawable.bat1
-                    5L -> R.drawable.batpumpkin0
-                    6L -> R.drawable.batpumpkin1
-                    7L -> R.drawable.batpumpkin0
-                    8L -> R.drawable.batpumpkin1
-                    9L -> R.drawable.bat1
-                    10L -> R.drawable.bat2
-                    11L -> R.drawable.bat1
-                    12L -> R.drawable.bat2
-                    13L -> R.drawable.witchcookie0
-                    14L -> R.drawable.witchcookie1
-                    15L -> R.drawable.witchcookie2
-                    16L -> R.drawable.witchcookie1
-                    17L -> R.drawable.witchcookie0
-                    18L -> R.drawable.witchcookie0
-                    19L -> R.drawable.witchcookie1
-                    20L -> R.drawable.witchcookie2
-                    21L -> R.drawable.witchcookie1
-                    22L -> R.drawable.witchcookie0
-                    23L -> R.drawable.candle0
-                    24L -> R.drawable.candle2
-                    25L -> R.drawable.candle0
-                    26L -> R.drawable.candle2
-                    27L -> R.drawable.candle5
-                    28L -> R.drawable.candle1
-                    29L -> R.drawable.candle5
-                    30L -> R.drawable.candle1
-                    31L -> R.drawable.candle5
-                    32L -> R.drawable.candle1
-                    33L -> R.drawable.bat1
-                    34L -> R.drawable.bat2
-                    35L -> R.drawable.bat1
-                    36L -> R.drawable.bat2
-                    37L -> R.drawable.bat1
-                    38L -> R.drawable.bat2
-                    39L -> R.drawable.bat1
-                    40L -> R.drawable.batpumpkin1
-                    41L -> R.drawable.batpumpkin0
-                    42L -> R.drawable.batpumpkin1
-                    43L -> R.drawable.batpumpkin0
-                    44L -> R.drawable.batpumpkin1
-                    45L -> R.drawable.batpumpkin0
-                    46L -> R.drawable.batpumpkin1
-                    47L -> R.drawable.bat1
-                    48L -> R.drawable.bat2
-                    else -> R.drawable.bat1}
-
-
-                "Jewish" -> when ((mCalendar.timeInMillis % (25 * frameTime)) / frameTime) {
-                    0L -> R.drawable.jewstar0
-                    1L -> R.drawable.jewstar2
-                    2L -> R.drawable.jewstar0
-                    3L -> R.drawable.jewstar2
-                    4L -> R.drawable.jewstar0
-                    5L -> R.drawable.jewstar2
-                    6L -> R.drawable.jewstar0
-                    7L -> R.drawable.jewstar1
-                    8L -> R.drawable.jewstar2
-                    9L -> R.drawable.jewishcandle0
-                    10L -> R.drawable.jewishcandle1
-                    11L -> R.drawable.jewishcandle0
-                    12L -> R.drawable.jewishcandle1
-                    13L -> R.drawable.jewishcandle0
-                    14L -> R.drawable.jewishcandle1
-                    15L -> R.drawable.jewishcandle0
-                    16L -> R.drawable.jewishcandle1
-                    17L -> R.drawable.candle3
-                    18L -> R.drawable.candle4
-                    19L -> R.drawable.candle3
-                    20L -> R.drawable.candle4
-                    21L -> R.drawable.candle4
-                    22L -> R.drawable.candle1
-                    23L -> R.drawable.candle4
-                    24L -> R.drawable.candle1
-                    else -> R.drawable.jewstar0
-                }
-
-
-                 "Summer" -> when ((mCalendar.timeInMillis % (24 * frameTime)) / frameTime) {
-                    0L -> R.drawable.starfish1
-                    1L -> R.drawable.starfish2
-                    2L -> R.drawable.starfish1
-                    3L -> R.drawable.starfish2
-                    4L -> R.drawable.starfish1
-                    5L -> R.drawable.starfish2
-                    6L -> R.drawable.starfishcoconut0
-                    7L -> R.drawable.starfishcoconut1
-                    8L -> R.drawable.starfishcoconut0
-                    9L -> R.drawable.starfishcoconut1
-                    10L -> R.drawable.starfishcoconut0
-                    11L -> R.drawable.starfishcoconut1
-                     12L -> R.drawable.rainbow1
-                     13L -> R.drawable.rainbow2
-                     14L -> R.drawable.rainbow1
-                     15L -> R.drawable.rainbow2
-                     16L -> R.drawable.rainbow3
-                     17L -> R.drawable.rainbow4
-                     18L -> R.drawable.rainbow3
-                     19L -> R.drawable.rainbow4
-                     20L -> R.drawable.rainbow5
-                     21L -> R.drawable.rainbow6
-                     22L -> R.drawable.rainbow5
-                     23L -> R.drawable.rainbow6
-                    else -> R.drawable.starfish1
-                }
-
-                "Irish" -> when ((mCalendar.timeInMillis % (30 * frameTime)) / frameTime) {
-                    0L -> R.drawable.green0
-                    1L -> R.drawable.green1
-                    2L -> R.drawable.green0
-                       3L -> R.drawable.green1
-                       4L -> R.drawable.green0
-                       5L -> R.drawable.green1
-                      6L -> R.drawable.green0
-                       7L -> R.drawable.green1
-                       8L -> R.drawable.green0
-                       9L -> R.drawable.green1
-                       10L -> R.drawable.darkergold1
-                       11L -> R.drawable.darkergold2
-                       12L -> R.drawable.darkergold1
-                       13L -> R.drawable.darkergold2
-                       14L -> R.drawable.darkergold1
-                       15L -> R.drawable.darkergold2
-                       16L -> R.drawable.darkergold1
-                       17L -> R.drawable.darkergold2
-                       18L -> R.drawable.darkergold1
-                       19L -> R.drawable.darkergold2
-                       20L -> R.drawable.darkergold1
-                       21L -> R.drawable.darkergold2
-                       22L -> R.drawable.green0
-                       23L -> R.drawable.green1
-                       24L -> R.drawable.green0
-                       25L -> R.drawable.green1
-                       26L -> R.drawable.green0
-                       27L -> R.drawable.green1
-                       28L -> R.drawable.green0
-                       29L -> R.drawable.green1
-                    else -> R.drawable.green0
-                }
-
-                "Fall" -> when ((mCalendar.timeInMillis % (34 * frameTime)) / frameTime) {
-                    0L -> R.drawable.cow0
-                    1L -> R.drawable.cow1
-                    2L -> R.drawable.cow0
-                    3L -> R.drawable.cow1
-                    4L -> R.drawable.cow0
-                    5L -> R.drawable.cow1
-                    6L -> R.drawable.cow0
-                    7L -> R.drawable.cow1
-                    8L -> R.drawable.cow0
-                    9L -> R.drawable.gnome0
-                    10L -> R.drawable.gnome1
-                    11L -> R.drawable.gnome0
-                    12L -> R.drawable.gnome1
-                    13L -> R.drawable.gnome0
-                    14L -> R.drawable.gnome1
-                    15L -> R.drawable.gnome0
-                    16L -> R.drawable.gnome1
-                    17L -> R.drawable.gnome0
-                    18L -> R.drawable.gnome1
-                    19L -> R.drawable.gnome0
-                    20L -> R.drawable.gnome1
-                    21L -> R.drawable.gnome0
-                    22L -> R.drawable.bee0
-                    23L -> R.drawable.bee1
-                    24L -> R.drawable.bee0
-                    25L -> R.drawable.bee1
-                    26L -> R.drawable.bee0
-                    27L -> R.drawable.bee1
-                    28L -> R.drawable.bee0
-                    29L -> R.drawable.bee1
-                    30L -> R.drawable.bee0
-                    31L -> R.drawable.bee1
-                    32L -> R.drawable.bee0
-                    33L -> R.drawable.bee1
-                    else -> R.drawable.turkey1
-                }
-
-                else -> when ((mCalendar.timeInMillis % (22 * frameTime)) / frameTime) {
-                    0L -> R.drawable.rainbow1
-                    1L -> R.drawable.rainbow2
-                    2L -> R.drawable.rainbow1
-                    3L -> R.drawable.rainbow2
-                    4L -> R.drawable.rainbow1
-                    5L -> R.drawable.rainbow2
-                    6L -> R.drawable.rainbow3
-                    7L -> R.drawable.rainbow4
-                    8L -> R.drawable.rainbow5
-                    9L -> R.drawable.rainbow6
-                    10L -> R.drawable.whitebright0
-                    11L -> R.drawable.whitebright1
-                    12L -> R.drawable.whitebright0
-                    13L -> R.drawable.whitebright1
-                    14L -> R.drawable.whitebright0
-                    15L -> R.drawable.whitebright1
-                    16L -> R.drawable.whitebright0
-                    17L -> R.drawable.rainbow1
-                    18L -> R.drawable.rainbow2
-                    19L -> R.drawable.rainbow3
-                    20L -> R.drawable.rainbow4
-                    21L -> R.drawable.rainbow5
-                    else -> R.drawable.rainbow1
-
-                }
-            }
-
-            if (mAmbient) {
-                drawable = R.drawable.blackandwhitestar
-            }
-
-            val bitmap = BitmapFactory.decodeResource(applicationContext.resources, drawable)
-
-            val src = Rect(0, 0, bitmap.height, bitmap.width)
-            val dst = Rect(bounds.left, bounds.top, bounds.right, bounds.bottom)
-
-            canvas.drawBitmap(
-                bitmap,
-                src,
-                dst,
-                null
-            )
         }
 
         private fun drawBackground(canvas: Canvas) {
-
-            if (mAmbient) {
+            if (mAmbient && (mLowBitAmbient || mBurnInProtection)) {
                 canvas.drawBitmap(mGrayBackgroundBitmap, 0f, 0f, mBackgroundPaint)
             } else {
                 mBackgroundBitmap = Bitmap.createScaledBitmap(
-                    getHolidayBackground(),
+                    getAstrologyBackground(),
                     mBackgroundBitmap.width,
                     mBackgroundBitmap.height, true
                 )
@@ -1326,17 +404,17 @@ class MyWatchFace : CanvasWatchFaceService() {
              */
             val innerTickRadius = mCenterX - 10
             val outerTickRadius = mCenterX
-            for (tickIndex in 0..11) {
+           /* for (tickIndex in 0..11) {
                 val tickRot = (tickIndex.toDouble() * Math.PI * 2.0 / 12).toFloat()
                 val innerX = Math.sin(tickRot.toDouble()).toFloat() * innerTickRadius
                 val innerY = (-Math.cos(tickRot.toDouble())).toFloat() * innerTickRadius
                 val outerX = Math.sin(tickRot.toDouble()).toFloat() * outerTickRadius
                 val outerY = (-Math.cos(tickRot.toDouble())).toFloat() * outerTickRadius
-//                canvas.drawLine(
-                //                  mCenterX + innerX, mCenterY + innerY,
-                //                mCenterX + outerX, mCenterY + outerY, mTickAndCirclePaint
-                //          )
-            }
+                canvas.drawLine(
+                    mCenterX + innerX, mCenterY + innerY,
+                    mCenterX + outerX, mCenterY + outerY, mTickAndCirclePaint
+                )
+            } */
 
             /*
              * These calculations reflect the rotation in degrees per unit of time, e.g.,
@@ -1357,14 +435,24 @@ class MyWatchFace : CanvasWatchFaceService() {
             canvas.save()
 
             canvas.rotate(hoursRotation, mCenterX, mCenterY)
-            canvas.drawLine(
-                mCenterX,
-                mCenterY - CENTER_GAP_AND_CIRCLE_RADIUS,
-                mCenterX,
-                mCenterY - sHourHandLength,
-                mHourPaint
-            )
 
+            if (mCalendar.get(Calendar.MINUTE) % 8 == 2) {
+                canvas.drawLine(
+                    mCenterX,
+                    mCenterY - CENTER_GAP_AND_CIRCLE_RADIUS,
+                    mCenterX,
+                    mCenterY - sHourHandLength,
+                    mHourPaint
+                )
+            }else if (mAmbient) {
+                canvas.drawLine(
+                    mCenterX,
+                    mCenterY - CENTER_GAP_AND_CIRCLE_RADIUS,
+                    mCenterX,
+                    mCenterY - sHourHandLength,
+                    mHourPaint
+                )
+            }else{}
             canvas.rotate(minutesRotation - hoursRotation, mCenterX, mCenterY)
             canvas.drawLine(
                 mCenterX,
@@ -1387,6 +475,7 @@ class MyWatchFace : CanvasWatchFaceService() {
                     mCenterY - mSecondHandLength,
                     mSecondPaint
                 )
+
             }
             canvas.drawCircle(
                 mCenterX,
@@ -1394,7 +483,6 @@ class MyWatchFace : CanvasWatchFaceService() {
                 CENTER_GAP_AND_CIRCLE_RADIUS,
                 mTickAndCirclePaint
             )
-
 
             /* Restore the canvas" original orientation. */
             canvas.restore()
@@ -1452,6 +540,1067 @@ class MyWatchFace : CanvasWatchFaceService() {
         }
 
         /**
+         * Captures tap event (and tap type). The [WatchFaceService.TAP_TYPE_TAP] case can be
+         * used for implementing specific logic to handle the gesture.
+         */
+        override fun onTapCommand(tapType: Int, x: Int, y: Int, eventTime: Long) {
+            val frameTime = INTERACTIVE_UPDATE_RATE_MS
+            val sdf = SimpleDateFormat("EEE")
+            val sdf1 = SimpleDateFormat("EEEE")
+            val sdf2 = SimpleDateFormat("MMMM")
+            val sdf3 = SimpleDateFormat("d")
+            val sdf4 = SimpleDateFormat("yyyy")
+            val sdf5 = SimpleDateFormat("MMMM d yyyy")
+            val sdf6 = SimpleDateFormat("h:mm:ss a")
+            val sdf7 = SimpleDateFormat("a")
+            val d = Date()
+            val dayOfTheWeek: String = sdf.format(d)
+            val dayOfTheWeekLong: String = sdf1.format(d)
+            val monthOfYear: String = sdf2.format(d)
+            val dayOfMonth: String = sdf3.format(d)
+            val year4digits: String = sdf4.format(d)
+            val fullDateSpaces: String = sdf5.format(d)
+            val timeSpecific : String = sdf6.format(d)
+            val amPM : String = sdf7.format(d)
+
+            //Shows different methods to call strings
+            when (tapType) {
+                TAP_TYPE_TOUCH -> {
+                    // The user has started touching the screen.
+                }
+                TAP_TYPE_TOUCH_CANCEL -> {
+                    // The user has started a different gesture or otherwise cancelled the tap.
+                }
+                TAP_TYPE_TAP ->
+
+                    when (mCalendar.get(Calendar.MINUTE)%8) {
+
+                        0 -> when (getHoroscope()){
+                            "Aquarius" -> Toast.makeText(applicationContext, R.string.horoscope0, Toast.LENGTH_SHORT)
+                            "Aries" -> Toast.makeText(applicationContext, R.string.horoscope1, Toast.LENGTH_SHORT)
+                            "Cancer" -> Toast.makeText(applicationContext, R.string.horoscope2, Toast.LENGTH_SHORT)
+                            "Capricorn" -> Toast.makeText(applicationContext, R.string.horoscope3, Toast.LENGTH_SHORT)
+                            "Gemini" -> Toast.makeText(applicationContext, R.string.horoscope4, Toast.LENGTH_SHORT)
+                            "Leo" -> Toast.makeText(applicationContext, R.string.horoscope5, Toast.LENGTH_SHORT)
+                            "Libra" -> Toast.makeText(applicationContext, R.string.horoscope6, Toast.LENGTH_SHORT)
+                            "Pisces" -> Toast.makeText(applicationContext, R.string.horoscope7, Toast.LENGTH_SHORT)
+                            "Sagittarius" -> Toast.makeText(applicationContext, R.string.horoscope8, Toast.LENGTH_SHORT)
+                            "Scorpio" -> Toast.makeText(applicationContext, R.string.horoscope9, Toast.LENGTH_SHORT)
+                            "Taurus" -> Toast.makeText(applicationContext, R.string.horoscope10, Toast.LENGTH_SHORT)
+                            "Virgo" -> Toast.makeText(applicationContext, R.string.horoscope11, Toast.LENGTH_SHORT)
+                            else -> Toast.makeText(applicationContext, R.string.horoscope2, Toast.LENGTH_SHORT)}
+                        1 -> Toast.makeText(applicationContext,
+                            "$dayOfTheWeek , $fullDateSpaces", Toast.LENGTH_SHORT)
+                        2 -> Toast.makeText(applicationContext, timeSpecific, Toast.LENGTH_SHORT)
+                        3 -> Toast.makeText(applicationContext, getMoonPhase(), Toast.LENGTH_SHORT)
+                        4 -> if(getPlanetEventTYPE() == "none"){
+                            Toast.makeText(applicationContext, getPlanetEvent3(), Toast.LENGTH_SHORT)
+                        }else{
+                            Toast.makeText(applicationContext, getPlanetEvent(), Toast.LENGTH_SHORT)
+                        }
+                        5 -> if(getPlanetEventTYPE2() == "none"){
+                            Toast.makeText(applicationContext, getPlanetEvent3(), Toast.LENGTH_SHORT)
+                        }else{
+                            Toast.makeText(applicationContext, getPlanetEvent2(), Toast.LENGTH_SHORT)
+                        }
+                        6 -> Toast.makeText(applicationContext, getPlanetEvent3(), Toast.LENGTH_SHORT)
+
+                        7 -> Toast.makeText(applicationContext, getPlanetEvent1() + ": "+ monthOfYear + " " + getFullMoonDate() , Toast.LENGTH_SHORT)
+
+                        else ->  Toast.makeText(applicationContext, " ", Toast.LENGTH_SHORT)}
+
+                        .show()
+
+            }
+            invalidate()
+        }
+
+
+        private fun getFullMoonDate(): String {
+            val d = Date()
+            val sdf0 = SimpleDateFormat("yyyy MMMM")
+            val yearMonth: String = sdf0.format(d)
+            val fullMoonDate = when(yearMonth){
+                "2022 January" -> "17"
+                "2022 February" -> "16"
+                "2022 March" -> "18"
+                "2022 April" -> "16"
+                "2022 May" -> "16"
+                "2022 June" -> "14"
+                "2022 July" -> "13"
+                "2022 August" -> "11"
+                "2022 September" -> "10"
+                "2022 October" -> "9"
+                "2022 November" -> "8"
+                "2022 December" -> "7"
+                "2023 January" -> "6"
+                "2023 February" -> "5"
+                "2023 March" -> "7"
+                "2023 April" -> "5"
+                "2023 May" -> "5"
+                "2023 June" -> "3"
+                "2023 July" -> "3"
+                "2023 August" -> "1"
+                "2023 September" -> "29"
+                "2023 October" -> "28"
+                "2023 November" -> "27"
+                "2023 December" -> "26"
+                "2024 January" -> "25"
+                "2024 February" -> "24"
+                "2024 March" -> "25"
+                "2024 April" -> "23"
+                "2024 May" -> "23"
+                "2024 June" -> "21"
+                "2024 July" -> "21"
+                "2024 August" -> "19"
+                "2024 September" -> "17"
+                "2024 October" -> "17"
+                "2024 November" -> "15"
+                "2024 December" -> "15"
+                "2025 January" -> "13"
+                "2025 February" -> "12"
+                "2025 March" -> "13"
+                "2025 April" -> "12"
+                "2025 May" -> "12"
+                "2025 June" -> "11"
+                "2025 July" -> "10"
+                "2025 August" -> "9"
+                "2025 September" -> "7"
+                "2025 October" -> "6"
+                "2025 November" -> "5"
+                "2025 December" -> "4"
+                "2026 January" -> "3"
+                "2026 February" -> "1"
+                "2026 March" -> "3"
+                "2026 April" -> "1"
+                "2026 May" -> "1"
+                "2026 June" -> "29"
+                "2026 July" -> "29"
+                "2026 August" -> "27"
+                "2026 September" -> "26"
+                "2026 October" -> "25"
+                "2026 November" -> "24"
+                "2026 December" -> "23"
+                "2027 January" -> "22"
+                "2027 February" -> "20"
+                "2027 March" -> "22"
+                "2027 April" -> "20"
+                "2027 May" -> "20"
+                "2027 June" -> "18"
+                "2027 July" -> "18"
+                "2027 August" -> "17"
+                "2027 September" -> "15"
+                "2027 October" -> "15"
+                "2027 November" -> "13"
+                "2027 December" -> "13"
+                "2028 January" -> "11"
+                "2028 February" -> "10"
+                "2028 March" -> "10"
+                "2028 April" -> "9"
+                "2028 May" -> "8"
+                "2028 June" -> "6"
+                "2028 July" -> "6"
+                "2028 August" -> "5"
+                "2028 September" -> "3"
+                "2028 October" -> "3"
+                "2028 November" -> "2"
+                "2028 December" -> "1"
+                else -> "1"
+            }
+            return fullMoonDate
+        }
+
+        private fun getnewMoonDate(): String {
+            val d = Date()
+            val sdf0 = SimpleDateFormat("yyyy MMMM")
+            val yearMonth: String = sdf0.format(d)
+            val newMoonDate = when(yearMonth){
+                "2022 January" -> 2
+                "2022 February" -> 1
+                "2022 March" -> 2
+                "2022 April" -> 1
+                "2022 May" -> 30
+                "2022 June" -> 28
+                "2022 July" -> 28
+                "2022 August" -> 27
+                "2022 September" -> 25
+                "2022 October" -> 25
+                "2022 November" -> 23
+                "2022 December" -> 23
+                "2023 January" -> 21
+                "2023 February" -> 19
+                "2023 March" -> 21
+                "2023 April" -> 19
+                "2023 May" -> 19
+                "2023 June" -> 17
+                "2023 July" -> 17
+                "2023 August" -> 16
+                "2023 September" -> 14
+                "2023 October" -> 14
+                "2023 November" -> 13
+                "2023 December" -> 12
+                else -> 1
+            }
+            return newMoonDate.toString()
+        }
+
+
+        private fun getPlanetEvent(): String {
+            val d = Date()
+            val sdf0 = SimpleDateFormat("yyyy MMMM")
+            val yearMonth: String = sdf0.format(d)
+            val planetOpposition =
+                when(yearMonth){
+                    "2022 January" -> "Jupiter in Pisces January 1st" //Mercury Visible at Sunset
+                    "2022 February" -> "Venus Brightest on February 9" //Pluto returns. This happens only once 248 years
+                    "2022 March" -> "March 20 - March Equinox" //March 18: Worm Moon
+                    "2022 April" -> "Mercury will be visible at Sunrise" //April 16: Pink Moon
+                    "2022 May" -> "none"
+                    "2022 June" -> "June 28: Neptune begins retrograde motion" //Mercury Visible at Sunrise
+                    "2022 July" -> "July 28: Jupiter begins retrograde motion" // Pluto at Opposition 20 Jul 2022
+                    "2022 August" -> "Saturn in Opposition on August 14" //August 24, 2022: Uranus begins retrograde motion
+                    "2022 September" -> "Jupiter at opposition on September 26" //Septemper 16, 2022: Neptune at opposition
+                    "2022 October" -> "Saturn ends retrograde motion" //Mars in Retrograde October 30, 2022
+                    "2022 November" -> "November 23: Jupiter ends retrograde motion" // 2022 Uranus opposition – November 9
+                    "2022 December" -> "Mars at Opposition on December 8" //Dec 21: December Solstice
+
+                    "2023 January" -> "Uranus ends retrograde motion" //Jan 7, 2023: Inferior conjunction Mercury
+                    "2023 February" -> "February 16: Saturn in conjunction with the sun"
+                    "2023 March" -> "Neptune at solar conjunction" //Uranus at solar conjunction
+                    "2023 April" -> "April 11: Jupiter at solar conjunction"
+                    "2023 May" -> "Venus Brightest on May 12" // Mercury Visible at Sunrise
+                    "2023 June" -> "Neptune begins retrograde motion"
+                    "2023 July" -> "Pluto at Opposition : July 22 "
+                    "2023 August" -> "Saturn at Opposition on August 27" // Uranus begins retrograde motion
+                    "2023 September" -> "September 19 : Neptune at opposition"
+                    "2023 October" -> "October 22 - Orionids Meteor Shower"
+                    "2023 November" -> "Jupiter opposition – November 2" // 2023 Uranus opposition – November 13
+                    "2023 December" -> "December 14 - Geminids Meteor Shower"
+
+                    "2024 January" -> "none"
+                    "2024 February" -> "none"
+                    "2024 March" -> "Mercury Visible at Sunset"
+                    "2024 April" -> "none"
+                    "2024 May" -> "Mercury Visible at Sunrise"
+                    "2024 June" -> "Venus at superior solar conjunction : June 04 "
+                    "2024 July" -> "Pluto at Opposition : July 23 " //Mercury visible at Sunset
+                    "2024 August" -> "none"
+                    "2024 September" -> "Saturn is in Opposition on September 8" //Mercury visible at Sunrise
+                    "2024 October" -> "none"
+                    "2024 November" -> "Uranus opposition – November 16" //Mercury visible at sunset
+                    "2024 December" -> "Jupiter opposition – December 7"
+
+                    "2025 January" -> "Jupiter opposition– January 10" // "Mars is in Opposition on January 16th"
+                    "2025 February" -> "Venus at greatest brightness: Feb 16"
+                    "2025 March" -> "Mercury visible at Sunset"
+                    "2025 April" -> "none"
+                    "2025 May" -> "none"
+                    "2025 June" -> "none"
+                    "2025 July" -> "Pluto at Opposition : July 25"
+                    "2025 August" -> "none"
+                    "2025 September" -> "Saturn is in Opposition on September 25"
+                    "2025 October" -> "none"
+                    "2025 November" -> "Uranus opposition – November 21"
+                    "2025 December" -> "December 14 - Geminids Meteor Shower"
+
+                    else -> "none"
+                }
+            return planetOpposition
+
+        }
+        private fun getPlanetEvent1(): String {
+            val d = Date()
+            val sdf0 = SimpleDateFormat("MMMM")
+            val Month: String = sdf0.format(d)
+            val planetOpposition =
+                when(Month){
+                    "January" -> "Wolf Moon"
+                    "February" -> "Snow Moon"
+                    "March" -> "Worm Moon"
+                    "April" -> "Pink Moon"
+                    "May" -> "Flower Moon"
+                    "June" -> "Strawberry Moon"
+                    "July" -> "Buck Moon"
+                    "August" -> "Sturgeon Moon"
+                    "September" -> "Corn Moon"
+                    "October" -> "Harvest Moon"
+                    "November" -> "Beaver Moon"
+                    "December" -> "Cold Moon"
+                    else -> "None"
+                }
+            return planetOpposition}
+
+        private fun getPlanetEvent2(): String {
+            val d = Date()
+            val sdf0 = SimpleDateFormat("yyyy MMMM")
+            val yearMonth: String = sdf0.format(d)
+            val planetOpposition =
+                when(yearMonth){
+                    "2022 January" -> "Mercury Visible at Sunset"
+                    "2022 February" -> "none"
+                    "2022 March" -> "none"
+                    "2022 April" -> "none"
+                    "2022 May" -> "May 6: Eta Aquarid Meteors"
+                    "2022 June" -> "Mercury Visible at Sunrise"
+                    "2022 July" -> "Pluto at Opposition Jul 20"
+                    "2022 August" -> "August 24 : Uranus begins retrograde motion"
+                    "2022 September" -> "Septemper 16: Neptune at opposition"
+                    "2022 October" -> "Mars in Retrograde October 30"
+                    "2022 November" -> "Uranus at opposition – November 9"
+                    "2022 December" -> "Dec 21: December Solstice"
+
+                    "2023 January" -> "Jan 7: Inferior conjunction Mercury"
+                    "2023 February" -> "none"
+                    "2023 March" -> "Uranus at solar conjunction"
+                    "2023 April" -> "none"
+                    "2023 May" -> "Mercury Visible at Sunrise"
+                    "2023 June" -> "June 21: Summer Solstice"
+                    "2023 July" -> "none"
+                    "2023 August" -> "Uranus begins retrograde motion"
+                    "2023 September" -> "Fall Equinox September 23rd"
+                    "2023 October" -> "none"
+                    "2023 November" -> "Uranus at opposition – November 13"
+                    "2023 December" -> "Winter Solstice on Dec 21st"
+
+                    "2024 January" -> "January 4 - Quadrantids Meteor Shower"
+                    "2024 February" -> "none"
+                    "2024 March" -> "Spring Equinox March 19th"
+                    "2024 April" -> "April 8: Total Solar Eclipse parts of USA"
+                    "2024 May" -> "May 7 - Eta Aquarids Meteor Shower"
+                    "2024 June" -> "Summer Solstice Jun 20th"
+                    "2024 July" -> "Mercury visible at Sunset"
+                    "2024 August" -> "August 13 - Perseids Meteor Shower"
+                    "2024 September" -> "Mercury visible at Sunrise"
+                    "2024 October" -> "October 22 - Orionids Meteor Shower"
+                    "2024 November" -> "Mercury visible at Sunset"
+                    "2024 December" -> "Winter Solstice Dec 21st"
+
+                    "2025 January" -> "Mars at Opposition on January 16th"
+                    "2025 February" -> "none"
+                    "2025 March" -> "Spring Equinox March 20th"
+                    "2025 April" -> "April 23rd - Lyrids Meteor Shower"
+                    "2025 May" -> "May 7th - Eta Aquarids Meteor Shower"
+                    "2025 June" -> "Summer Solstice June 20th"
+                    "2025 July" -> "July 29th - Delta Aquarids Meteor Shower"
+                    "2025 August" -> "August 13th - Perseids Meteor Shower"
+                    "2025 September" -> "Fall Equinox: September 22nd"
+                    "2025 October" -> "October 22nd - Orionids Meteor Shower"
+                    "2025 November" -> "November 5th - Taurids Meteor Shower"
+                    "2025 December" -> "Winter Solstice : December 21st"
+
+                    else -> "none"
+                }
+            return planetOpposition
+
+        }
+        private fun getPlanetEvent3(): String {
+            val planetOpposition =
+                when(getHoroscope()){
+                    "Aries" -> "Monthly Ruling Planet: Mars"
+                    "Taurus" -> "Monthly Ruling Planet: Venus"
+                    "Gemini" -> "Monthly Ruling Planet: Mercury"
+                    "Cancer" -> "Ruling in Sky: Moon"
+                    "Leo" -> "Ruling in Sky: Sun"
+                    "Virgo" -> "Monthly Ruling Planet: Mercury"
+                    "Libra" -> "Monthly Ruling Planet: Venus"
+                    "Scorpio" ->"Monthly Ruling Planet: Pluto"
+                    "Sagittarius" -> "Monthly Ruling Planet: Jupiter"
+                    "Capricorn" -> "Monthly Ruling Planet: Saturn"
+                    "Aquarius" -> "Monthly Ruling Planet: Uranus"
+                    "Pisces" -> "Monthly Ruling Planet: Neptune"
+                    else -> "Monthly Ruling Planet: Saturn"
+                }
+            return planetOpposition
+
+        }
+        private fun getPlanetEventTYPE(): String {
+
+            val planetType = when{
+                getPlanetEvent().contains("Pink") -> "moonpink"
+                getPlanetEvent().contains("Harvest") -> "moonharvest"
+                getPlanetEvent().contains("Worm") -> "moonworm"
+                getPlanetEvent().contains("Snow") -> "moonsnow"
+                getPlanetEvent().contains("Cold") -> "mooncold"
+                getPlanetEvent().contains("Corn") -> "mooncorn"
+                getPlanetEvent().contains("Strawberry") -> "moonstrawberry"
+                getPlanetEvent().contains("Wolf") -> "moonwolf"
+                getPlanetEvent().contains("Sturgeon") -> "moonbanimal"
+                getPlanetEvent().contains("Buck") -> "moonbanimal"
+                getPlanetEvent().contains("Flower") -> "moonpink"
+                getPlanetEvent().contains("Beaver") -> "moonbeaver"
+                getPlanetEvent().contains("Solstice" )-> "sun"
+                getPlanetEvent().contains("Equinox")-> "sun"
+                getPlanetEvent().contains("solstice")-> "sun"
+                getPlanetEvent().contains("equinox")-> "sun"
+                getPlanetEvent().contains("Mercury")-> "mercury"
+                getPlanetEvent().contains("Venus")-> "venus"
+                getPlanetEvent().contains("Mars")-> "mars"
+                getPlanetEvent().contains("Jupiter")-> "jupiter"
+                getPlanetEvent().contains("Saturn")-> "saturn"
+                getPlanetEvent().contains("Uranus")-> "uranus"
+                getPlanetEvent().contains("Neptune")-> "neptune"
+                getPlanetEvent().contains("Pluto")-> "pluto"
+                getPlanetEvent().contains("Meteor")-> "shower"
+                getPlanetEvent().contains("meteor")-> "shower"
+                else -> "none"
+            }
+
+            return planetType
+        }
+
+        private fun getPlanetEventTYPE1(): String {
+
+            val planetType = when{
+                getPlanetEvent().contains("Pink") -> "moonpink"
+                getPlanetEvent().contains("Harvest") -> "moonharvest"
+                getPlanetEvent().contains("Worm") -> "moonworm"
+                getPlanetEvent().contains("Snow") -> "moonsnow"
+                getPlanetEvent().contains("Cold") -> "mooncold"
+                getPlanetEvent().contains("Corn") -> "mooncorn"
+                getPlanetEvent().contains("Strawberry") -> "moonstrawberry"
+                getPlanetEvent().contains("Wolf") -> "moonwolf"
+                getPlanetEvent().contains("Sturgeon") -> "moonbanimal"
+                getPlanetEvent().contains("Buck") -> "moonbanimal"
+                getPlanetEvent().contains("Flower") -> "moonpink"
+                getPlanetEvent().contains("Beaver") -> "moonbeaver"
+                else -> "none"
+            }
+
+            return planetType
+        }
+        private fun getPlanetEventTYPE2(): String {
+
+            val planetType2 : String = when{
+                getPlanetEvent().contains("Pink") -> "moonpink"
+                getPlanetEvent().contains("Harvest") -> "moonharvest"
+                getPlanetEvent().contains("Worm") -> "moonworm"
+                getPlanetEvent().contains("Snow") -> "moonsnow"
+                getPlanetEvent().contains("Cold") -> "mooncold"
+                getPlanetEvent().contains("Corn") -> "mooncorn"
+                getPlanetEvent().contains("Strawberry") -> "moonstrawberry"
+                getPlanetEvent().contains("Wolf") -> "moonwolf"
+                getPlanetEvent().contains("Sturgeon") -> "moonbanimal"
+                getPlanetEvent().contains("Buck") -> "moonbanimal"
+                getPlanetEvent().contains("Flower") -> "moonpink"
+                getPlanetEvent().contains("Beaver") -> "moonbeaver"
+                getPlanetEvent().contains("Solstice" )-> "sun"
+                getPlanetEvent().contains("Equinox")-> "sun"
+                getPlanetEvent().contains("solstice")-> "sun"
+                getPlanetEvent().contains("equinox")-> "sun"
+                getPlanetEvent().contains("Mercury")-> "mercury"
+                getPlanetEvent().contains("Venus")-> "venus"
+                getPlanetEvent().contains("Mars")-> "mars"
+                getPlanetEvent().contains("Jupiter")-> "jupiter"
+                getPlanetEvent().contains("Saturn")-> "saturn"
+                getPlanetEvent().contains("Uranus")-> "uranus"
+                getPlanetEvent().contains("Neptune")-> "neptune"
+                getPlanetEvent().contains("Pluto")-> "pluto"
+                getPlanetEvent().contains("Meteor")-> "shower"
+                getPlanetEvent().contains("meteor")-> "shower"
+                getPlanetEvent().contains("None")-> "none"
+                else -> "none"
+            }
+
+            return planetType2
+        }
+
+        private fun getPlanetEventTYPE3(): String {
+
+            val planetType3 = when{
+                getPlanetEvent3().contains("moon") -> "moon"
+                getPlanetEvent3().contains("Moon") -> "moon"
+                getPlanetEvent3().contains("Solstice" )-> "sun"
+                getPlanetEvent3().contains("Equinox")-> "sun"
+                getPlanetEvent3().contains("solstice")-> "sun"
+                getPlanetEvent3().contains("equinox")-> "sun"
+                getPlanetEvent3().contains("Mercury")-> "mercury"
+                getPlanetEvent3().contains("Venus")-> "venus"
+                getPlanetEvent3().contains("Mars")-> "mars"
+                getPlanetEvent3().contains("Jupiter")-> "jupiter"
+                getPlanetEvent3().contains("Saturn")-> "saturn"
+                getPlanetEvent3().contains("Uranus")-> "uranus"
+                getPlanetEvent3().contains("Neptune")-> "neptune"
+                getPlanetEvent3().contains("Pluto")-> "pluto"
+                getPlanetEvent3().contains("Meteor")-> "sun"
+                getPlanetEvent3().contains("meteor")-> "sun"
+                getPlanetEvent3().contains("None")-> "none"
+                else -> "none"
+            }
+
+            return planetType3
+        }
+
+
+
+
+        private fun getHoroscope(): String {
+
+            val sdf2 = SimpleDateFormat("MMMM")
+            val sdf3 = SimpleDateFormat("d")
+            val d = Date()
+            val monthOfYear: String = sdf2.format(d)
+            val dayOfMonth: String = sdf3.format(d)
+
+            val horoscopeString = when(monthOfYear){
+                "January" -> if(Integer.parseInt(dayOfMonth) in 1..19){ "Capricorn" }
+                else {"Aquarius" }
+                "February" ->  if(Integer.parseInt(dayOfMonth) in 1..18 ){"Aquarius"}
+                else {"Pisces"}
+                "March" -> if(Integer.parseInt(dayOfMonth) in 1..20 ){"Pisces"}
+                else{ "Aries"}
+                "April" -> if(Integer.parseInt(dayOfMonth) in 1..19 ){"Aries"}
+                else {"Taurus"}
+                "May" -> {"Taurus"}
+                "June" -> if(Integer.parseInt(dayOfMonth) in 1..20 ){"Gemini"}
+                else{"Cancer"}
+                "July" -> if(Integer.parseInt(dayOfMonth) in 1..22) {"Cancer"}
+                else {"Leo"}
+                "August" ->if(Integer.parseInt(dayOfMonth) in 1..22){ "Leo"}
+                else {"Virgo"}
+                "September" -> if(Integer.parseInt(dayOfMonth) in 1..22) {"Virgo"}
+                else{"Libra"}
+                "October" -> if(Integer.parseInt(dayOfMonth) in 1..22) {"Libra"}
+                else {"Scorpio"}
+                "November" ->if(Integer.parseInt(dayOfMonth) in 1..21) { "Scorpio"}
+                else {"Sagittarius"}
+                "December" -> if(Integer.parseInt(dayOfMonth) in 1..21) { "Sagittarius"}
+                else{ "Capricorn"}
+                else -> "Cancer" }
+            return horoscopeString
+        }
+        private fun getDayorNight(): String {
+            val sdf = SimpleDateFormat("k")
+            val d = Date()
+            val militaryTime: String = sdf.format(d)
+
+            val timeTypeString = when (Integer.parseInt(militaryTime)){
+                in 0..5 -> "Night"
+                in 6..18 -> "Day"
+                in 19..23 -> "Night"
+                else-> "Night"
+            }
+            return timeTypeString
+        }
+
+        val frameTime = INTERACTIVE_UPDATE_RATE_MS
+
+
+        private fun getAstrologyBackground(): Bitmap {
+            val sdf2 = SimpleDateFormat("MMMM")
+            val d = Date()
+            val monthOfYear: String = sdf2.format(d)
+
+            val backgroundBitmap: Bitmap =
+               when (mCalendar.get(Calendar.MINUTE) % 8) {
+                    0-> when (getHoroscope()) {
+                        "Aquarius" -> BitmapFactory.decodeResource(resources, R.drawable.aquarius)
+                        "Aries" -> BitmapFactory.decodeResource(resources, R.drawable.aries)
+                        "Cancer" -> BitmapFactory.decodeResource(resources, R.drawable.cancer)
+                        "Capricorn" -> BitmapFactory.decodeResource(resources, R.drawable.capricorn)
+                        "Gemini" -> BitmapFactory.decodeResource(resources, R.drawable.gemini)
+                        "Leo" -> BitmapFactory.decodeResource(resources, R.drawable.leo)
+                        "Libra" -> BitmapFactory.decodeResource(resources, R.drawable.libra)
+                        "Pisces" -> BitmapFactory.decodeResource(resources, R.drawable.pisces)
+                        "Sagittarius" -> BitmapFactory.decodeResource(resources, R.drawable.sagitarius)
+                        "Scorpio" -> BitmapFactory.decodeResource(resources, R.drawable.scorpio)
+                        "Taurus" -> BitmapFactory.decodeResource(resources, R.drawable.taurus)
+                        "Virgo" -> BitmapFactory.decodeResource(resources, R.drawable.virgo)
+                        else -> BitmapFactory.decodeResource(resources, R.drawable.cancer) }
+                    1-> when (getDayorNight()){
+                        "Day" -> BitmapFactory.decodeResource(resources, R.drawable.earth)
+                        "Night" -> BitmapFactory.decodeResource(resources, R.drawable.earthnight)
+                        else -> BitmapFactory.decodeResource(resources, R.drawable.sun) }
+                    2->  BitmapFactory.decodeResource(resources, R.drawable.icerainbow)
+                    3 -> when(getMoonPhase()){
+                        "New Moon" -> BitmapFactory.decodeResource(resources, R.drawable.newmoon)
+                        "Waxing Crescent Moon" -> BitmapFactory.decodeResource(resources, R.drawable.rightcrescent)
+                        "Waxing Half Moon" -> BitmapFactory.decodeResource(resources, R.drawable.halfmoonright)
+                        "Waxing Gibbous Moon" -> BitmapFactory.decodeResource(resources, R.drawable.gibright)
+                        "Full Moon" -> BitmapFactory.decodeResource(resources, R.drawable.fulloon)
+                        "Waning Gibbous Moon" -> BitmapFactory.decodeResource(resources, R.drawable.gibleft)
+                        "Waning half Moon" -> BitmapFactory.decodeResource(resources, R.drawable.halfmoonleft)
+                        "Waning Crescent Moon" -> BitmapFactory.decodeResource(resources, R.drawable.leftcrescent)
+                        else-> BitmapFactory.decodeResource(resources, R.drawable.newmoon)
+                    }
+                    4 -> when(getPlanetEventTYPE()){
+                        "moonanimal"-> BitmapFactory.decodeResource(resources, R.drawable.moonanimal)
+                        "moonbeaver"-> BitmapFactory.decodeResource(resources, R.drawable.moonbeaver)
+                        "mooncold"-> BitmapFactory.decodeResource(resources, R.drawable.mooncold)
+                        "mooncorn"-> BitmapFactory.decodeResource(resources, R.drawable.mooncorn)
+                        "moonharvest"-> BitmapFactory.decodeResource(resources, R.drawable.moonharvest)
+                        "moonpink"-> BitmapFactory.decodeResource(resources, R.drawable.moonpink)
+                        "moonsnow"-> BitmapFactory.decodeResource(resources, R.drawable.moonsnow)
+                        "moonstrawberry"-> BitmapFactory.decodeResource(resources, R.drawable.moonwolf)
+                        "moonworm"-> BitmapFactory.decodeResource(resources, R.drawable.moonworm)
+                        "moonwolf"-> BitmapFactory.decodeResource(resources, R.drawable.moonbeaver)
+                        "meteor"-> BitmapFactory.decodeResource(resources, R.drawable.shower)
+                        "sun"-> BitmapFactory.decodeResource(resources, R.drawable.sun)
+                        "mercury"-> BitmapFactory.decodeResource(resources, R.drawable.mercury)
+                        "venus"-> BitmapFactory.decodeResource(resources, R.drawable.venus)
+                        "mars"-> BitmapFactory.decodeResource(resources, R.drawable.mars)
+                        "jupiter"-> BitmapFactory.decodeResource(resources, R.drawable.jupiter)
+                        "saturn"-> BitmapFactory.decodeResource(resources, R.drawable.saturn)
+                        "uranus"-> BitmapFactory.decodeResource(resources, R.drawable.uranus)
+                        "neptune"-> BitmapFactory.decodeResource(resources, R.drawable.neptune)
+                        "none" -> when(getPlanetEventTYPE3()){
+                            "moon"-> BitmapFactory.decodeResource(resources, R.drawable.plainmoon)
+                            "sun"-> BitmapFactory.decodeResource(resources, R.drawable.sun)
+                            "mercury"-> BitmapFactory.decodeResource(resources, R.drawable.mercury)
+                            "venus"-> BitmapFactory.decodeResource(resources, R.drawable.venus)
+                            "mars"-> BitmapFactory.decodeResource(resources, R.drawable.mars)
+                            "jupiter"-> BitmapFactory.decodeResource(resources, R.drawable.jupiter)
+                            "saturn"-> BitmapFactory.decodeResource(resources, R.drawable.saturn)
+                            "uranus"-> BitmapFactory.decodeResource(resources, R.drawable.uranus)
+                            "neptune"-> BitmapFactory.decodeResource(resources, R.drawable.neptune)
+
+                            else -> BitmapFactory.decodeResource(resources, R.drawable.sun)}
+                        else -> BitmapFactory.decodeResource(resources, R.drawable.sun)}
+
+                    5 -> when(getPlanetEventTYPE2()){
+                        "moonanimal"-> BitmapFactory.decodeResource(resources, R.drawable.moonanimal)
+                        "moonbeaver"-> BitmapFactory.decodeResource(resources, R.drawable.moonbeaver)
+                        "mooncold"-> BitmapFactory.decodeResource(resources, R.drawable.mooncold)
+                        "mooncorn"-> BitmapFactory.decodeResource(resources, R.drawable.mooncorn)
+                        "moonharvest"-> BitmapFactory.decodeResource(resources, R.drawable.moonharvest)
+                        "moonpink"-> BitmapFactory.decodeResource(resources, R.drawable.moonpink)
+                        "moonsnow"-> BitmapFactory.decodeResource(resources, R.drawable.moonsnow)
+                        "moonstrawberry"-> BitmapFactory.decodeResource(resources, R.drawable.moonwolf)
+                        "moonworm"-> BitmapFactory.decodeResource(resources, R.drawable.moonworm)
+                        "moonwolf"-> BitmapFactory.decodeResource(resources, R.drawable.moonbeaver)
+                        "meteor"-> BitmapFactory.decodeResource(resources, R.drawable.shower)
+                        "sun"-> BitmapFactory.decodeResource(resources, R.drawable.sun)
+                        "mercury"-> BitmapFactory.decodeResource(resources, R.drawable.mercury)
+                        "venus"-> BitmapFactory.decodeResource(resources, R.drawable.venus)
+                        "mars"-> BitmapFactory.decodeResource(resources, R.drawable.mars)
+                        "jupiter"-> BitmapFactory.decodeResource(resources, R.drawable.jupiter)
+                        "saturn"-> BitmapFactory.decodeResource(resources, R.drawable.saturn)
+                        "uranus"-> BitmapFactory.decodeResource(resources, R.drawable.uranus)
+                        "neptune"-> BitmapFactory.decodeResource(resources, R.drawable.neptune)
+                        "none" -> when(getPlanetEventTYPE3()){
+                            "moon"-> BitmapFactory.decodeResource(resources, R.drawable.plainmoon)
+                            "sun"-> BitmapFactory.decodeResource(resources, R.drawable.sun)
+                            "mercury"-> BitmapFactory.decodeResource(resources, R.drawable.mercury)
+                            "venus"-> BitmapFactory.decodeResource(resources, R.drawable.venus)
+                            "mars"-> BitmapFactory.decodeResource(resources, R.drawable.mars)
+                            "jupiter"-> BitmapFactory.decodeResource(resources, R.drawable.jupiter)
+                            "saturn"-> BitmapFactory.decodeResource(resources, R.drawable.saturn)
+                            "uranus"-> BitmapFactory.decodeResource(resources, R.drawable.uranus)
+                            "neptune"-> BitmapFactory.decodeResource(resources, R.drawable.neptune)
+                            else -> BitmapFactory.decodeResource(resources, R.drawable.sun)}
+                        else -> BitmapFactory.decodeResource(resources, R.drawable.sun)}
+
+                    6 -> when(getPlanetEventTYPE3()){
+                        "moon"-> BitmapFactory.decodeResource(resources, R.drawable.plainmoon)
+                        "sun"-> BitmapFactory.decodeResource(resources, R.drawable.sun)
+                        "mercury"-> BitmapFactory.decodeResource(resources, R.drawable.mercury)
+                        "venus"-> BitmapFactory.decodeResource(resources, R.drawable.venus)
+                        "mars"-> BitmapFactory.decodeResource(resources, R.drawable.mars)
+                        "jupiter"-> BitmapFactory.decodeResource(resources, R.drawable.jupiter)
+                        "saturn"-> BitmapFactory.decodeResource(resources, R.drawable.saturn)
+                        "uranus"-> BitmapFactory.decodeResource(resources, R.drawable.uranus)
+                        "neptune"-> BitmapFactory.decodeResource(resources, R.drawable.neptune)
+                        else -> BitmapFactory.decodeResource(resources, R.drawable.sun)}
+
+                    7 -> when(monthOfYear){
+                        "January"-> BitmapFactory.decodeResource(resources, R.drawable.moonwolf)
+                        "February"-> BitmapFactory.decodeResource(resources, R.drawable.moonsnow)
+                        "March"-> BitmapFactory.decodeResource(resources, R.drawable.moonworm)
+                        "April"-> BitmapFactory.decodeResource(resources, R.drawable.moonpink)
+                        "May"-> BitmapFactory.decodeResource(resources, R.drawable.moonpink)
+                        "June"-> BitmapFactory.decodeResource(resources, R.drawable.moonstrawberry)
+                        "July"-> BitmapFactory.decodeResource(resources, R.drawable.moonanimal)
+                        "August"-> BitmapFactory.decodeResource(resources, R.drawable.moonanimal)
+                        "September"-> BitmapFactory.decodeResource(resources, R.drawable.mooncorn)
+                        "October"-> BitmapFactory.decodeResource(resources, R.drawable.moonharvest)
+                        "November"-> BitmapFactory.decodeResource(resources, R.drawable.moonbeaver)
+                        "December"-> BitmapFactory.decodeResource(resources, R.drawable.mooncold)
+                        else -> BitmapFactory.decodeResource(resources, R.drawable.sun)}
+
+                    else -> BitmapFactory.decodeResource(resources, R.drawable.earth)
+                }
+            return backgroundBitmap
+        }
+
+        private fun getAnimationCase(): String {
+
+
+            val sdf = SimpleDateFormat("EEE")
+            val sdf1 = SimpleDateFormat("EEEE")
+            val sdf2 = SimpleDateFormat("MMMM")
+            val sdf3 = SimpleDateFormat("d")
+            val sdf4 = SimpleDateFormat("yyyy")
+            val sdf5 = SimpleDateFormat("MMMM d yyyy")
+
+            val d = Date()
+            val dayOfTheWeek: String = sdf.format(d)
+            val dayOfTheWeekLong: String = sdf1.format(d)
+            val monthOfYear: String = sdf2.format(d)
+            val dayOfMonth: String = sdf3.format(d)
+            val year4digits: String = sdf4.format(d)
+            val fullDateSpaces: String = sdf5.format(d)
+
+            val ThanksgivingArray = arrayOf(
+                "November 24 2022",
+                "November 23 2023",
+                "November 28 2024",
+                "November 27 2025",
+                "November 26 2026",
+                "November 25 2027",
+                "November 23 2028",
+                "November 22 2029",
+                "November 28 2030",
+                "November 27 2031",
+                "November 25 2032"
+            )
+
+            val lunarArray = arrayOf(
+                "February 1 2022",
+                "January 22 2023",
+                "February 10 2024",
+                "January 29 2025",
+                "February 17 2026",
+                "February 7 2027",
+                "January 26 2028",
+                "February 13 2029",
+                "February 2 2030"
+            )
+
+                val easterArray = arrayOf(
+                "April 17 2022",
+                "April 9 2023",
+                "March 31 2024",
+                "April 20 2025",
+                "April 5 2026",
+                "March 28 2027",
+                "April 16 2028",
+                "April 1 2029",
+                "April 21 2030",
+                "April 13 2031",
+                "March 28 2032"
+            )
+            val caseString =
+            if (monthOfYear == "October") {
+                "Halloween is on October 31st"
+            } else if (monthOfYear == "November") {
+                    if (Integer.parseInt(year4digits) in 2022..2032){
+                ("Thanksgiving is on " + ThanksgivingArray[Integer.parseInt(year4digits)-2022])}
+                    else{"Happy Fall!"}
+            } else if (monthOfYear == "December") {
+                //https://www.calendardate.com/hanukkah_2030.htm has dates up to 2030 for Hanukah or use HebrewCalendar (YEAR, 2, 25)
+                if ((Integer.parseInt(year4digits) == 2022 && Integer.parseInt(dayOfMonth) in 18..23) ||
+                    (Integer.parseInt(year4digits) == 2023 && Integer.parseInt(dayOfMonth) in 7..15) ||
+                    (Integer.parseInt(year4digits) == 2024 && Integer.parseInt(dayOfMonth) in 26..30) ||
+                    (Integer.parseInt(year4digits) == 2025 && Integer.parseInt(dayOfMonth) in 14..22) ||
+                    (Integer.parseInt(year4digits) == 2026 && Integer.parseInt(dayOfMonth) in 4..12) ||
+                    (Integer.parseInt(year4digits) == 2027 && Integer.parseInt(dayOfMonth) in 26..30) ||
+                    (Integer.parseInt(year4digits) == 2028 && Integer.parseInt(dayOfMonth) in 12..20) ||
+                    (Integer.parseInt(year4digits) == 2029 && Integer.parseInt(dayOfMonth) in 1..9) ||
+                    (Integer.parseInt(year4digits) == 2030 && Integer.parseInt(dayOfMonth) in 20..23)
+                ) {
+                    "Happy Holidays!"
+                } else if (dayOfMonth == "31"){"Happy New Year's Eve!"}
+                else {
+                    "It's Christmas Season!"
+                }
+            } else if (monthOfYear == "January"){
+                if (lunarArray.contains(fullDateSpaces)) {
+                    "Happy Lunar New Year!"
+                }
+                else if(dayOfMonth == "1") {
+            "Happy New Year!"}
+                else{"Winter Season"}
+            }
+            else if (monthOfYear == "February") {
+                if (Integer.parseInt(dayOfMonth) in 1..14) {
+                    "Valentine's Day is on February 14th"
+                } else {
+                    "Happy Spring"
+                }
+            } else if (monthOfYear == "March") {
+                if (Integer.parseInt(dayOfMonth) in 1..17) {
+                    "Saint Patrick's Day is on March 17th"
+                } else if (easterArray.contains(fullDateSpaces)) {
+                    "Happy Easter!"
+                } else {
+                    "Happy Spring!"
+                }
+            } else if (monthOfYear == "April") {
+                if (easterArray.contains(fullDateSpaces)) {
+                    "Happy Easter!"
+                } else {
+                    "Happy Spring!"
+                }}
+            else {
+                 "RainbowIce"
+                }
+
+
+
+            return caseString
+        }
+        private fun drawAnimation(canvas: Canvas, bounds: Rect) {
+
+            val sdf2 = SimpleDateFormat("MMMM")
+            val d = Date()
+            val monthOfYear: String = sdf2.format(d)
+            var drawable =
+                if (mCalendar.get(Calendar.MINUTE) % 8 == 1){
+                    if (getAnimationCase() == "Happy Holidays!") {
+                            when (mCalendar.get(Calendar.SECOND) % 2) {
+                                0 -> R.drawable.jewishcandle0
+                                1-> R.drawable.jewishcandle1
+                                else -> R.drawable.jewishcandle0}}
+                       else if (getAnimationCase() =="It's Christmas Season!"){
+                            when (mCalendar.get(Calendar.SECOND) % 2) {
+                                0 -> R.drawable.cookiesanta0
+                                1-> R.drawable.cookiesanta1
+                                else -> R.drawable.cookiesanta0}}
+                        else if (getAnimationCase() == "Happy New Year's Eve!"){
+                            when (mCalendar.get(Calendar.SECOND) % 2) {
+                                0 -> R.drawable.darkergold1
+                                1-> R.drawable.darkergold2
+                                else -> R.drawable.darkergold1}}
+                    else if (getAnimationCase() == "Happy New Year!"){
+                        when (mCalendar.get(Calendar.SECOND) % 2) {
+                            0 -> R.drawable.darkergold1
+                            1-> R.drawable.darkergold2
+                            else -> R.drawable.darkergold1}}
+                    else if (getAnimationCase() == "Happy Lunar New Year!"){
+                        when (mCalendar.get(Calendar.SECOND) % 2) {
+                            0 -> R.drawable.darkergold1
+                            1-> R.drawable.darkergold2
+                            else -> R.drawable.darkergold1}}
+                    else if (getAnimationCase() == "Winter Season"){
+                        when (mCalendar.get(Calendar.SECOND) % 2) {
+                            0 -> R.drawable.whitebright0
+                            1-> R.drawable.whitebright1
+                            else -> R.drawable.whitebright1}}
+                    else if (monthOfYear == "October"){
+                        when (mCalendar.get(Calendar.SECOND) % 2) {
+                            0 -> R.drawable.pumpkin0
+                            1-> R.drawable.pumpkin2
+                            else -> R.drawable.pumpkin0}}
+                    else if (monthOfYear == "November"){
+                        when (mCalendar.get(Calendar.SECOND) % 2) {
+                            0 -> R.drawable.turkey0
+                            1-> R.drawable.turkey1
+                            else -> R.drawable.turkey1}}
+                    else if (monthOfYear == "February"){
+                        when (mCalendar.get(Calendar.SECOND) % 2) {
+                            0 -> R.drawable.heart0
+                            1-> R.drawable.heart1
+                            else -> R.drawable.heart0}}
+                    else if (monthOfYear == "March"){
+                        when (mCalendar.get(Calendar.SECOND) % 2) {
+                            0 -> R.drawable.green0
+                            1-> R.drawable.green1
+                            else -> R.drawable.green1}}
+                    else if (monthOfYear == "April"){
+                        when (mCalendar.get(Calendar.SECOND) % 2) {
+                            0 -> R.drawable.bunnyblue0
+                            1-> R.drawable.bunnybluepeep1
+                            else -> R.drawable.bunnyblue0}}
+                    else if (monthOfYear == "May"){
+                        when (mCalendar.get(Calendar.SECOND) % 2) {
+                            0 -> R.drawable.motherdaystar0
+                            1-> R.drawable.motherdaystar1
+                            else -> R.drawable.motherdaystar1}}
+                    else {
+                    when (mCalendar.get(Calendar.SECOND) % 12) {
+                        0 -> R.drawable.rainbow1
+                        1-> R.drawable.rainbow2
+                        2 -> R.drawable.rainbow3
+                        3-> R.drawable.rainbow4
+                        4 -> R.drawable.rainbow5
+                        5 -> R.drawable.rainbow6
+                        6 -> R.drawable.rainbow1
+                        7 -> R.drawable.rainbow3
+                        8 -> R.drawable.rainbow1
+                        9 -> R.drawable.rainbow3
+                        10 -> R.drawable.rainbow1
+                        11 -> R.drawable.rainbow3
+                        else -> R.drawable.rainbow1}
+                }}
+                else if (mCalendar.get(Calendar.MINUTE) % 8 == 2){
+              when (mCalendar.get(Calendar.SECOND) % 12) {
+                0 -> R.drawable.rainbow1
+                1-> R.drawable.rainbow2
+                2 -> R.drawable.rainbow3
+                3-> R.drawable.rainbow4
+                4 -> R.drawable.rainbow5
+                5 -> R.drawable.rainbow6
+                    6 -> R.drawable.rainbow1
+                    7 -> R.drawable.rainbow3
+                    8 -> R.drawable.rainbow1
+                    9 -> R.drawable.rainbow3
+                    10 -> R.drawable.rainbow1
+                    11 -> R.drawable.rainbow3
+                else -> R.drawable.rainbow1}}
+            else {
+                if(mCalendar.get(Calendar.HOUR) == 1){
+                    if(mCalendar.get(Calendar.MINUTE) > 29)
+                        {when (mCalendar.get(Calendar.SECOND) % 2){
+                            0-> R.drawable.hourjump130
+                            1 -> R.drawable.hourjumps130
+                            else -> R.drawable.hourjumps130} }
+                        else{
+                when (mCalendar.get(Calendar.SECOND) % 2){
+                        0-> R.drawable.hourjump1
+                        1 -> R.drawable.hourjumps1
+                        else -> R.drawable.hourjumps1} }}
+                    else if(mCalendar.get(Calendar.HOUR) == 2){
+                    if(mCalendar.get(Calendar.MINUTE) > 29)
+                    {when (mCalendar.get(Calendar.SECOND) % 2){
+                        0-> R.drawable.hourjump230
+                        1 -> R.drawable.hourjumps230
+                        else -> R.drawable.hourjumps230} }
+                    else{
+                        when (mCalendar.get(Calendar.SECOND) % 2){
+                            0-> R.drawable.hourjump2
+                            1 -> R.drawable.hourjumps2
+                            else -> R.drawable.hourjumps2} }}
+                else if(mCalendar.get(Calendar.HOUR) == 3){
+                    if(mCalendar.get(Calendar.MINUTE) > 29)
+                    {when (mCalendar.get(Calendar.SECOND) % 2){
+                        0-> R.drawable.hourjump330
+                        1 -> R.drawable.hourjumps330
+                        else -> R.drawable.hourjumps330} }
+                    else{
+                    when (mCalendar.get(Calendar.SECOND) % 2){
+                        0-> R.drawable.hourjump3
+                        1 -> R.drawable.hourjumps3
+                        else -> R.drawable.hourjumps3} }}
+                else if(mCalendar.get(Calendar.HOUR) == 4){
+                    if(mCalendar.get(Calendar.MINUTE) > 29)
+                    {when (mCalendar.get(Calendar.SECOND) % 2){
+                        0-> R.drawable.hourjump430
+                        1 -> R.drawable.hourjumps430
+                        else -> R.drawable.hourjumps430} }
+                    else{
+                    when (mCalendar.get(Calendar.SECOND) % 2){
+                        0-> R.drawable.hourjump4
+                        1 -> R.drawable.hourjumps4
+                        else -> R.drawable.hourjumps4} }}
+                else if(mCalendar.get(Calendar.HOUR) == 5){
+                    if(mCalendar.get(Calendar.MINUTE) > 29)
+                    {when (mCalendar.get(Calendar.SECOND) % 2){
+                        0-> R.drawable.hourjump530
+                        1 -> R.drawable.hourjumps530
+                        else -> R.drawable.hourjumps530} }
+                    else{
+                    when (mCalendar.get(Calendar.SECOND) % 2){
+                        0-> R.drawable.hourjump5
+                        1 -> R.drawable.hourjumps5
+                        else -> R.drawable.hourjumps5} }}
+                else if(mCalendar.get(Calendar.HOUR) == 6){
+                    if(mCalendar.get(Calendar.MINUTE) > 29)
+                    {when (mCalendar.get(Calendar.SECOND) % 2){
+                        0-> R.drawable.hourjump630
+                        1 -> R.drawable.hourjumps630
+                        else -> R.drawable.hourjumps630} }
+                    else{
+                    when (mCalendar.get(Calendar.SECOND) % 2){
+                        0-> R.drawable.hourjump6
+                        1 -> R.drawable.hourjumps6
+                        else -> R.drawable.hourjumps6} }}
+                else if(mCalendar.get(Calendar.HOUR) == 7){
+                    if(mCalendar.get(Calendar.MINUTE) > 29)
+                    {when (mCalendar.get(Calendar.SECOND) % 2){
+                        0-> R.drawable.hourjump730
+                        1 -> R.drawable.hourjumps730
+                        else -> R.drawable.hourjumps730} }
+                    else{
+                    when (mCalendar.get(Calendar.SECOND) % 2){
+                        0-> R.drawable.hourjump7
+                        1 -> R.drawable.hourjumps7
+                        else -> R.drawable.hourjumps7} }}
+                else if(mCalendar.get(Calendar.HOUR) == 8){
+                    if(mCalendar.get(Calendar.MINUTE) > 29)
+                    {when (mCalendar.get(Calendar.SECOND) % 2){
+                        0-> R.drawable.hourjump830
+                        1 -> R.drawable.hourjumps830
+                        else -> R.drawable.hourjumps830} }
+                    else{
+                    when (mCalendar.get(Calendar.SECOND) % 2){
+                        0-> R.drawable.hourjump8
+                        1 -> R.drawable.hourjumps8
+                        else -> R.drawable.hourjumps8} }}
+                else if(mCalendar.get(Calendar.HOUR) == 9){
+                    if(mCalendar.get(Calendar.MINUTE) > 29)
+                    {when (mCalendar.get(Calendar.SECOND) % 2){
+                        0-> R.drawable.hourjump930
+                        1 -> R.drawable.hourjumps930
+                        else -> R.drawable.hourjumps930} }
+                    else{
+                    when (mCalendar.get(Calendar.SECOND) % 2){
+                        0-> R.drawable.hourjump9
+                        1 -> R.drawable.hourjumps9
+                        else -> R.drawable.hourjumps9}}}
+                else if(mCalendar.get(Calendar.HOUR) == 10){
+                    if(mCalendar.get(Calendar.MINUTE) > 29)
+                    {when (mCalendar.get(Calendar.SECOND) % 2){
+                        0-> R.drawable.hourjump1030
+                        1 -> R.drawable.hourjumps1030
+                        else -> R.drawable.hourjumps1030} }
+                    else{
+                    when (mCalendar.get(Calendar.SECOND) % 2){
+                        0-> R.drawable.hourjump10
+                        1 -> R.drawable.hourjumps10
+                        else -> R.drawable.hourjumps10} }}
+                else if(mCalendar.get(Calendar.HOUR) == 11){
+                    if(mCalendar.get(Calendar.MINUTE) > 29)
+                    {when (mCalendar.get(Calendar.SECOND) % 2){
+                        0-> R.drawable.hourjump1130
+                        1 -> R.drawable.hourjumps1130
+                        else -> R.drawable.hourjumps1130} }
+                    else{
+                    when (mCalendar.get(Calendar.SECOND) % 2){
+                        0-> R.drawable.hourjump11
+                        1 -> R.drawable.hourjumps11
+                        else -> R.drawable.hourjumps11} }}
+                else if(mCalendar.get(Calendar.HOUR_OF_DAY) == 12 ){
+                    if(mCalendar.get(Calendar.MINUTE) > 29)
+                    {when (mCalendar.get(Calendar.SECOND) % 2){
+                        0-> R.drawable.hourjumped1230
+                        1 -> R.drawable.hourjumps1230
+                        else -> R.drawable.hourjumped1230} }
+                    else{
+                        when (mCalendar.get(Calendar.SECOND) % 2){
+                            0-> R.drawable.hourjump12
+                            1 -> R.drawable.hourjumps12
+                            else -> R.drawable.hourjumps12} }}
+                else {
+                    if(mCalendar.get(Calendar.MINUTE) > 29)
+                    {when (mCalendar.get(Calendar.SECOND) % 2){
+                        0-> R.drawable.hourjump1230
+                        1 -> R.drawable.hourjumped1230
+                        else -> R.drawable.hourjumped1230} }
+                    else{when (mCalendar.get(Calendar.SECOND) % 2){
+                    0-> R.drawable.hourjump12
+                    1 -> R.drawable.hourjumps12
+                    else -> R.drawable.hourjumps12}}}}
+
+            if (mAmbient) {
+                if (mCalendar.get(Calendar.MINUTE) % 8 == 2){
+                drawable = R.drawable.blackandwhitestar}
+                else{drawable = R.drawable.blank}
+
+            }
+
+            val bitmap = BitmapFactory.decodeResource(applicationContext.resources, drawable)
+
+            val src = Rect(0, 0, bitmap.height, bitmap.width)
+            val dst = Rect(bounds.left, bounds.top, bounds.right, bounds.bottom)
+
+            canvas.drawBitmap(
+                bitmap,
+                src,
+                dst,
+                null
+            )
+        }
+
+        /**
          * Handle updating the time periodically in interactive mode.
          */
         fun handleUpdateTimeMessage() {
@@ -1462,6 +1611,5 @@ class MyWatchFace : CanvasWatchFaceService() {
                 mUpdateTimeHandler.sendEmptyMessageDelayed(MSG_UPDATE_TIME, delayMs)
             }
         }
-
     }
 }
