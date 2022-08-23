@@ -724,6 +724,8 @@ class MyWatchFace : CanvasWatchFaceService() {
             drawWatchFace(canvas)
             drawAnimation(canvas, bounds)
             drawStepsFace(canvas)
+            drawDaysFace(canvas)
+            drawMonthsFace(canvas)
             initGrayBackgroundBitmap()
             changeWandColor()
 
@@ -1301,7 +1303,7 @@ class MyWatchFace : CanvasWatchFaceService() {
             }
 
             if (mAmbient) {
-                drawable = R.drawable.stepstrackerspaced
+                drawable = R.drawable.ambientmodecalendar
             }
 
             val bitmap = BitmapFactory.decodeResource(applicationContext.resources, drawable)
@@ -1334,30 +1336,6 @@ class MyWatchFace : CanvasWatchFaceService() {
 
         private fun drawWatchFace(canvas: Canvas) {
 
-            /*
-             * Draw ticks. Usually you will want to bake this directly into the photo, but in
-             * cases where you want to allow users to select their own photos, this dynamically
-             * creates them on top of the photo.
-             */
-            /*
-            val innerTickRadius = mCenterX - 10
-            val outerTickRadius = mCenterX
-            for (tickIndex in 0..11) {
-                val tickRot = (tickIndex.toDouble() * Math.PI * 2.0 / 12).toFloat()
-                val innerX = Math.sin(tickRot.toDouble()).toFloat() * innerTickRadius
-                val innerY = (-Math.cos(tickRot.toDouble())).toFloat() * innerTickRadius
-                val outerX = Math.sin(tickRot.toDouble()).toFloat() * outerTickRadius
-                val outerY = (-Math.cos(tickRot.toDouble())).toFloat() * outerTickRadius
-//                canvas.drawLine(
-                //                  mCenterX + innerX, mCenterY + innerY,
-                //                mCenterX + outerX, mCenterY + outerY, mTickAndCirclePaint
-                        )*/
-           // }
-
-            /*
-             * These calculations reflect the rotation in degrees per unit of time, e.g.,
-             * 360 / 60 = 6 and 360 / 12 = 30.
-             */
             val seconds =
                 mCalendar.get(Calendar.SECOND) + mCalendar.get(Calendar.MILLISECOND) / 1000f
             val secondsRotation = seconds * 6f
@@ -1418,16 +1396,12 @@ class MyWatchFace : CanvasWatchFaceService() {
 
         private fun drawStepsFace(canvas: Canvas) {
 if(mAmbient){
-            /*
-             * Draw ticks. Usually you will want to bake this directly into the photo, but in
-             * cases where you want to allow users to select their own photos, this dynamically
-             * creates them on top of the photo.
-             */
+
                  val steps: Int = (1200/100).toInt()
             val innerTickRadius = mCenterX - 59
             val outerTickRadius = mCenterX -54
             for (tickIndex in 0..steps) {
-                val tickRot = (tickIndex.toDouble() * Math.PI * 2.0 / 100).toFloat()
+                val tickRot = (tickIndex.toDouble() * Math.PI * 2.0 / 105).toFloat()
                 val innerX = Math.sin(tickRot.toDouble()).toFloat() * innerTickRadius
                 val innerY = (-Math.cos(tickRot.toDouble())).toFloat() * innerTickRadius
                 val outerX = Math.sin(tickRot.toDouble()).toFloat() * outerTickRadius
@@ -1437,6 +1411,74 @@ if(mAmbient){
                                 mCenterX + outerX, mCenterY + outerY, mTickAndCirclePaint
                           )
             }}else{}
+        }
+
+        private fun drawDaysFace(canvas: Canvas) {
+            val sdf = SimpleDateFormat("EEE")
+            val sdf1 = SimpleDateFormat("EEEE")
+            val sdf2 = SimpleDateFormat("MMMM")
+            val sdf3 = SimpleDateFormat("d")
+            val sdf4 = SimpleDateFormat("yyyy")
+            val sdf5 = SimpleDateFormat("MMMM d yyyy")
+
+            val d = Date()
+            val dayOfTheWeek: String = sdf.format(d)
+            val dayOfTheWeekLong: String = sdf1.format(d)
+            val monthOfYear: String = sdf2.format(d)
+            val dayOfMonth: String = sdf3.format(d)
+            val year4digits: String = sdf4.format(d)
+            val fullDateSpaces: String = sdf5.format(d)
+
+            if(mAmbient){
+
+                val days: Int = dayOfMonth.toInt()
+                val innerTickRadius = mCenterX - 22
+                val outerTickRadius = mCenterX -25
+                for (tickIndex in 0..days) {
+                    val tickRot = (tickIndex.toDouble() * Math.PI * 2.0 / 31).toFloat()
+                    val innerX = Math.sin(tickRot.toDouble()).toFloat() * innerTickRadius
+                    val innerY = (-Math.cos(tickRot.toDouble())).toFloat() * innerTickRadius
+                    val outerX = Math.sin(tickRot.toDouble()).toFloat() * outerTickRadius
+                    val outerY = (-Math.cos(tickRot.toDouble())).toFloat() * outerTickRadius
+                    canvas.drawLine(
+                        mCenterX + innerX, mCenterY + innerY,
+                        mCenterX + outerX, mCenterY + outerY, mTickAndCirclePaint
+                    )
+                }}else{}
+        }
+
+        private fun drawMonthsFace(canvas: Canvas) {
+            val sdf = SimpleDateFormat("EEE")
+            val sdf1 = SimpleDateFormat("EEEE")
+            val sdf2 = SimpleDateFormat("M")
+            val sdf3 = SimpleDateFormat("d")
+            val sdf4 = SimpleDateFormat("yyyy")
+            val sdf5 = SimpleDateFormat("MMMM d yyyy")
+
+            val d = Date()
+            val dayOfTheWeek: String = sdf.format(d)
+            val dayOfTheWeekLong: String = sdf1.format(d)
+            val monthOfYear: String = sdf2.format(d)
+            val dayOfMonth: String = sdf3.format(d)
+            val year4digits: String = sdf4.format(d)
+            val fullDateSpaces: String = sdf5.format(d)
+
+            if(mAmbient){
+
+                val months: Int = monthOfYear.toInt()
+                val innerTickRadius = mCenterX - 0
+                val outerTickRadius = mCenterX -3
+                for (tickIndex in 0..months) {
+                    val tickRot = (tickIndex.toDouble() * Math.PI * 2.0 / 12).toFloat()
+                    val innerX = Math.sin(tickRot.toDouble()).toFloat() * innerTickRadius
+                    val innerY = (-Math.cos(tickRot.toDouble())).toFloat() * innerTickRadius
+                    val outerX = Math.sin(tickRot.toDouble()).toFloat() * outerTickRadius
+                    val outerY = (-Math.cos(tickRot.toDouble())).toFloat() * outerTickRadius
+                    canvas.drawLine(
+                        mCenterX + innerX, mCenterY + innerY,
+                        mCenterX + outerX, mCenterY + outerY, mTickAndCirclePaint
+                    )
+                }}else{}
         }
 
         override fun onVisibilityChanged(visible: Boolean) {
