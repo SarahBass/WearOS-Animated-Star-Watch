@@ -81,7 +81,8 @@ Winter
 -----------------------
 ## Ambient Mode:
 
-Color to Black and White
+Color to Black and White:
+
 <img src="https://github.com/SarahBass/WearOS-Animated-Star-Watch/blob/main/SamplePngforGITHUBONLY/ambientmode.gif" width="300" height="300">
 
 Color to Calendar:
