@@ -31,7 +31,7 @@ private const val INTERACTIVE_UPDATE_RATE_MS = 600
  * Handler message id for updating the time periodically in interactive mode.
  */
 private const val MSG_UPDATE_TIME = 0
-private const val HOUR_STROKE_WIDTH = 12f
+private const val HOUR_STROKE_WIDTH =  12f
 private const val MINUTE_STROKE_WIDTH = 10f
 private const val SECOND_TICK_STROKE_WIDTH = 5f
 private const val CENTER_GAP_AND_CIRCLE_RADIUS = 4f
@@ -487,6 +487,16 @@ class MyWatchFace : CanvasWatchFaceService() {
                 }
             }
         }
+        private fun changeWandColor() {
+        /* Extracts colors from background image to improve watchface style. */
+        Palette.from(mBackgroundBitmap).generate {
+            it?.let {
+                mWatchHandHighlightColor = it.getVibrantColor(Color.WHITE)
+                mWatchHandColor = it.getLightVibrantColor(Color.WHITE)
+                mWatchHandShadowColor = it.getDarkMutedColor(Color.BLACK)
+                updateWatchHandStyle()
+            }
+        }}
 
         private fun initializeWatchFace() {
             /* Set defaults for colors */
@@ -572,6 +582,8 @@ class MyWatchFace : CanvasWatchFaceService() {
                 mMinutePaint.color = Color.WHITE
                 mSecondPaint.color = Color.WHITE
                 mTickAndCirclePaint.color = Color.WHITE
+                mMinutePaint.strokeWidth = (MINUTE_STROKE_WIDTH * 0.5).toFloat()
+                mHourPaint.strokeWidth = (HOUR_STROKE_WIDTH * 0.5).toFloat()
 
                 mHourPaint.isAntiAlias = false
                 mMinutePaint.isAntiAlias = false
@@ -588,7 +600,8 @@ class MyWatchFace : CanvasWatchFaceService() {
                 mMinutePaint.color = mWatchHandColor
                 mSecondPaint.color = mWatchHandHighlightColor
                 mTickAndCirclePaint.color = mWatchHandColor
-
+                mMinutePaint.strokeWidth = MINUTE_STROKE_WIDTH
+                mHourPaint.strokeWidth = HOUR_STROKE_WIDTH
                 mHourPaint.isAntiAlias = true
                 mMinutePaint.isAntiAlias = true
                 mSecondPaint.isAntiAlias = true
@@ -638,8 +651,8 @@ class MyWatchFace : CanvasWatchFaceService() {
              * Calculate lengths of different hands based on watch screen size.
              */
             mSecondHandLength = (mCenterX * 0.6).toFloat()
-            sMinuteHandLength = (mCenterX * 0.6).toFloat()
-            sHourHandLength = (mCenterX * 0.6).toFloat()
+            sMinuteHandLength =  (mCenterX * 0.6).toFloat()
+            sHourHandLength =  (mCenterX * 0.6).toFloat()
 
             /* Scale loaded background image (more efficient) if surface dimensions change. */
             val scale = width.toFloat() / mBackgroundBitmap.width.toFloat()
@@ -710,7 +723,9 @@ class MyWatchFace : CanvasWatchFaceService() {
             drawBackground(canvas)
             drawWatchFace(canvas)
             drawAnimation(canvas, bounds)
+            drawStepsFace(canvas)
             initGrayBackgroundBitmap()
+            changeWandColor()
 
 
         }
@@ -1286,7 +1301,7 @@ class MyWatchFace : CanvasWatchFaceService() {
             }
 
             if (mAmbient) {
-                drawable = R.drawable.blackandwhitestar
+                drawable = R.drawable.stepstrackerspaced
             }
 
             val bitmap = BitmapFactory.decodeResource(applicationContext.resources, drawable)
@@ -1324,6 +1339,7 @@ class MyWatchFace : CanvasWatchFaceService() {
              * cases where you want to allow users to select their own photos, this dynamically
              * creates them on top of the photo.
              */
+            /*
             val innerTickRadius = mCenterX - 10
             val outerTickRadius = mCenterX
             for (tickIndex in 0..11) {
@@ -1335,8 +1351,8 @@ class MyWatchFace : CanvasWatchFaceService() {
 //                canvas.drawLine(
                 //                  mCenterX + innerX, mCenterY + innerY,
                 //                mCenterX + outerX, mCenterY + outerY, mTickAndCirclePaint
-                //          )
-            }
+                        )*/
+           // }
 
             /*
              * These calculations reflect the rotation in degrees per unit of time, e.g.,
@@ -1398,6 +1414,29 @@ class MyWatchFace : CanvasWatchFaceService() {
 
             /* Restore the canvas" original orientation. */
             canvas.restore()
+        }
+
+        private fun drawStepsFace(canvas: Canvas) {
+if(mAmbient){
+            /*
+             * Draw ticks. Usually you will want to bake this directly into the photo, but in
+             * cases where you want to allow users to select their own photos, this dynamically
+             * creates them on top of the photo.
+             */
+                 val steps: Int = (1200/100).toInt()
+            val innerTickRadius = mCenterX - 59
+            val outerTickRadius = mCenterX -54
+            for (tickIndex in 0..steps) {
+                val tickRot = (tickIndex.toDouble() * Math.PI * 2.0 / 100).toFloat()
+                val innerX = Math.sin(tickRot.toDouble()).toFloat() * innerTickRadius
+                val innerY = (-Math.cos(tickRot.toDouble())).toFloat() * innerTickRadius
+                val outerX = Math.sin(tickRot.toDouble()).toFloat() * outerTickRadius
+                val outerY = (-Math.cos(tickRot.toDouble())).toFloat() * outerTickRadius
+                canvas.drawLine(
+                                  mCenterX + innerX, mCenterY + innerY,
+                                mCenterX + outerX, mCenterY + outerY, mTickAndCirclePaint
+                          )
+            }}else{}
         }
 
         override fun onVisibilityChanged(visible: Boolean) {
