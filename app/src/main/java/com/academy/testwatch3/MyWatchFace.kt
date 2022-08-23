@@ -21,6 +21,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
+
 /**
  * Updates rate in milliseconds for interactive mode. We update once a second to advance the
  * second hand.
@@ -312,8 +313,8 @@ class MyWatchFace : CanvasWatchFaceService() {
                             when (dayOfTheWeek) {
                                 "Mon" -> R.drawable.monday
                                 "Tue" -> R.drawable.tuesday
-                                "Wed" -> R.drawable.icerainbow
-                                "Thu" -> R.drawable.icerainbow
+                                "Wed" -> R.drawable.wednesday
+                                "Thu" -> R.drawable.thursday
                                 "Fri" -> R.drawable.friday
                                 "Sat" -> R.drawable.saturday
                                 "Sun" -> R.drawable.sunday
@@ -1395,6 +1396,8 @@ class MyWatchFace : CanvasWatchFaceService() {
         }
 
         private fun drawStepsFace(canvas: Canvas) {
+
+
 if(mAmbient){
 
                  val steps: Int = (1200/100).toInt()
@@ -1431,7 +1434,7 @@ if(mAmbient){
 
             if(mAmbient){
 
-                val days: Int = dayOfMonth.toInt()
+                val days: Int = (dayOfMonth.toInt()) -1
                 val innerTickRadius = mCenterX - 22
                 val outerTickRadius = mCenterX -25
                 for (tickIndex in 0..days) {
@@ -1465,7 +1468,7 @@ if(mAmbient){
 
             if(mAmbient){
 
-                val months: Int = monthOfYear.toInt()
+                val months: Int = (monthOfYear.toInt()) -1
                 val innerTickRadius = mCenterX - 0
                 val outerTickRadius = mCenterX -3
                 for (tickIndex in 0..months) {
