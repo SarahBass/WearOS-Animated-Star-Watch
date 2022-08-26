@@ -20,6 +20,7 @@ import java.lang.ref.WeakReference
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.abs
+import kotlin.math.floor
 
 
 /**
@@ -795,8 +796,8 @@ class MyWatchFace : CanvasWatchFaceService() {
                 mMinutePaint.color = Color.WHITE
                 mSecondPaint.color = Color.WHITE
                 mTickAndCirclePaint.color = Color.WHITE
-                mMinutePaint.strokeWidth = (MINUTE_STROKE_WIDTH * 0.5).toFloat()
-                mHourPaint.strokeWidth = (HOUR_STROKE_WIDTH * 0.5).toFloat()
+                //mMinutePaint.strokeWidth = (MINUTE_STROKE_WIDTH * 0.5).toFloat()
+                //mHourPaint.strokeWidth = (HOUR_STROKE_WIDTH * 0.5).toFloat()
 
                 mHourPaint.isAntiAlias = false
                 mMinutePaint.isAntiAlias = false
@@ -942,6 +943,14 @@ class MyWatchFace : CanvasWatchFaceService() {
             drawMonth(canvas, bounds)
             drawDay(canvas, bounds)
             drawMoon(canvas, bounds)
+            drawMinTen(canvas, bounds)
+            drawHours(canvas, bounds)
+            drawMin(canvas, bounds)
+            drawAMPM(canvas, bounds)
+            drawDates(canvas, bounds)
+            drawDatesTen(canvas, bounds)
+            drawHeartRates(canvas, bounds)
+            drawHeartRatesTens(canvas, bounds)
             initGrayBackgroundBitmap()
             changeWandColor()
 
@@ -951,8 +960,7 @@ class MyWatchFace : CanvasWatchFaceService() {
         private fun drawAnimation(canvas: Canvas, bounds: Rect) {
             val frameTime = INTERACTIVE_UPDATE_RATE_MS
 
-            //val starsCount = 2
-            //val timeTimeSwitch = 20000
+
 
             var drawable = when (getAnimationCase()) {
 
@@ -1605,13 +1613,273 @@ if (mAmbient) {
                 "Sun" ->R.drawable.sun
 
 
-                else -> R.drawable.jan}
+                else -> R.drawable.sun}
 
             if (mAmbient) {
                 val bitmap = BitmapFactory.decodeResource(applicationContext.resources, drawable)
 
                 val src = Rect(0, 0, bitmap.height, bitmap.width)
                 val dst = Rect(bounds.left, bounds.top, bounds.right, bounds.bottom)
+
+                canvas.drawBitmap(
+                    bitmap,
+                    src,
+                    dst,
+                    null
+                )
+            }else{}
+        }
+
+
+        private fun drawMin(canvas: Canvas, bounds: Rect) {
+            val sdf = SimpleDateFormat("m")
+            val d = Date()
+            val minutes: String = sdf.format(d)
+            var drawable : Int = when (Integer.parseInt(minutes)%10){
+                0 ->R.drawable.minuteones0
+                1->R.drawable.minuteones1
+                2 ->R.drawable.minuteones2
+                3 ->R.drawable.minuteones3
+                4 ->R.drawable.minuteones4
+                5-> R.drawable.minuteones5
+                6 ->R.drawable.minuteones6
+                7 ->R.drawable.minuteones7
+                8 ->R.drawable.minuteones8
+                9 ->R.drawable.minuteones9
+
+
+                else -> R.drawable.minuteones0}
+
+            if (mAmbient) {
+                val bitmap = BitmapFactory.decodeResource(applicationContext.resources, drawable)
+
+                val src = Rect(0, 0, bitmap.height, bitmap.width)
+                val dst = Rect(bounds.left, bounds.top, bounds.right, bounds.bottom)
+
+                canvas.drawBitmap(
+                    bitmap,
+                    src,
+                    dst,
+                    null
+                )
+            }else{}
+        }
+
+        private fun drawMinTen(canvas: Canvas, bounds: Rect) {
+            val sdf = SimpleDateFormat("m")
+            val d = Date()
+            val minutes: String = sdf.format(d)
+
+            var drawable : Int = when ((floor(( (Integer.parseInt(minutes)/10)).toDouble()).toInt())){
+                0 ->R.drawable.minuteones0
+                1->R.drawable.minuteones1
+                2 ->R.drawable.minuteones2
+                3 ->R.drawable.minuteones3
+                4 ->R.drawable.minuteones4
+                5->R.drawable.minuteones5
+                6 ->R.drawable.minuteones6
+                7 ->R.drawable.minuteones7
+                8 ->R.drawable.minuteones8
+                9 ->R.drawable.minuteones9
+
+
+                else -> R.drawable.minuteones0}
+
+            if (mAmbient) {
+                val bitmap = BitmapFactory.decodeResource(applicationContext.resources, drawable)
+
+                val src = Rect(0, 0, bitmap.height, bitmap.width)
+                val dst = Rect(bounds.left  , bounds.top, bounds.right -46  , bounds.bottom)
+
+                canvas.drawBitmap(
+                    bitmap,
+                    src,
+                    dst,
+                    null
+                )
+            }else{}
+        }
+
+        private fun drawDates(canvas: Canvas, bounds: Rect) {
+            val sdf = SimpleDateFormat("d")
+            val d = Date()
+            val day: String = sdf.format(d)
+
+            var drawable : Int = when( Integer.parseInt(day)%10){
+                0 ->R.drawable.day0
+                1 ->R.drawable.day1
+                2 ->R.drawable.day2
+                3 ->R.drawable.day3
+                4 ->R.drawable.day4
+                5 ->R.drawable.day5
+                6 ->R.drawable.day6
+                7 ->R.drawable.day7
+                8 ->R.drawable.day8
+                9 ->R.drawable.day9
+                else -> R.drawable.day0}
+
+            if (mAmbient) {
+                val bitmap = BitmapFactory.decodeResource(applicationContext.resources, drawable)
+
+                val src = Rect(0, 0, bitmap.height, bitmap.width)
+                val dst = Rect(bounds.left  , bounds.top, bounds.right   , bounds.bottom)
+
+                canvas.drawBitmap(
+                    bitmap,
+                    src,
+                    dst,
+                    null
+                )
+            }else{}
+        }
+
+        private fun drawDatesTen(canvas: Canvas, bounds: Rect) {
+            val sdf = SimpleDateFormat("d")
+            val d = Date()
+            val day: String = sdf.format(d)
+
+            var drawable : Int = when ((floor(( (Integer.parseInt(day)/10)).toDouble()).toInt())){
+                0 ->R.drawable.day0
+                1 ->R.drawable.day1
+                2 ->R.drawable.day2
+                3 ->R.drawable.day3
+                4 ->R.drawable.day4
+                5 ->R.drawable.day5
+                6 ->R.drawable.day6
+                7 ->R.drawable.day7
+                8 ->R.drawable.day8
+                9 ->R.drawable.day9
+                else -> R.drawable.day0}
+
+            if (mAmbient) {
+                val bitmap = BitmapFactory.decodeResource(applicationContext.resources, drawable)
+
+                val src = Rect(0, 0, bitmap.height, bitmap.width)
+                val dst = Rect(bounds.left -15 , bounds.top, bounds.right -15   , bounds.bottom)
+
+                canvas.drawBitmap(
+                    bitmap,
+                    src,
+                    dst,
+                    null
+                )
+            }else{}
+        }
+
+        private fun drawHeartRates(canvas: Canvas, bounds: Rect) {
+
+            val yourHeart = 65
+
+            var drawable : Int = when (yourHeart%10){
+                0 ->R.drawable.day0
+                1 ->R.drawable.day1
+                2 ->R.drawable.day2
+                3 ->R.drawable.day3
+                4 ->R.drawable.day4
+                5 ->R.drawable.day5
+                6 ->R.drawable.day6
+                7 ->R.drawable.day7
+                8 ->R.drawable.day8
+                9 ->R.drawable.day9
+                else -> R.drawable.day0}
+
+            if (mAmbient) {
+                val bitmap = BitmapFactory.decodeResource(applicationContext.resources, drawable)
+
+                val src = Rect(0, 0, bitmap.height, bitmap.width)
+                val dst = Rect(bounds.left +97 , bounds.top -185, bounds.right +97   , bounds.bottom -185)
+
+                canvas.drawBitmap(
+                    bitmap,
+                    src,
+                    dst,
+                    null
+                )
+            }else{}
+        }
+        private fun drawHeartRatesTens(canvas: Canvas, bounds: Rect) {
+
+            val yourHeart : Double= 65.0
+
+            var drawable : Int = when (floor(yourHeart/10)){
+                0.0 ->R.drawable.day0
+                1.0 ->R.drawable.day1
+                2.0 ->R.drawable.day2
+                3.0 ->R.drawable.day3
+                4.0 ->R.drawable.day4
+                5.0 ->R.drawable.day5
+                6.0 ->R.drawable.day6
+                7.0 ->R.drawable.day7
+                8.0 ->R.drawable.day8
+                9.0 ->R.drawable.day9
+                else -> R.drawable.day0}
+
+            if (mAmbient) {
+                val bitmap = BitmapFactory.decodeResource(applicationContext.resources, drawable)
+
+                val src = Rect(0, 0, bitmap.height, bitmap.width)
+                val dst = Rect(bounds.left +83 , bounds.top -185, bounds.right +83   , bounds.bottom -185)
+
+                canvas.drawBitmap(
+                    bitmap,
+                    src,
+                    dst,
+                    null
+                )
+            }else{}
+        }
+        private fun drawAMPM(canvas: Canvas, bounds: Rect) {
+            val sdf = SimpleDateFormat("a")
+            val d = Date()
+            val amPM: String = sdf.format(d)
+
+            var drawable : Int = when (amPM){
+                "AM" ->R.drawable.am
+                "PM"->R.drawable.pm
+                else -> R.drawable.pm}
+
+            if (mAmbient) {
+                val bitmap = BitmapFactory.decodeResource(applicationContext.resources, drawable)
+
+                val src = Rect(0, 0, bitmap.height, bitmap.width)
+                val dst = Rect(bounds.left  , bounds.top, bounds.right   , bounds.bottom)
+
+                canvas.drawBitmap(
+                    bitmap,
+                    src,
+                    dst,
+                    null
+                )
+            }else{}
+        }
+
+
+        private fun drawHours(canvas: Canvas, bounds: Rect) {
+            val sdf = SimpleDateFormat("h")
+            val d = Date()
+            val hours: String = sdf.format(d)
+
+            var drawable : Int = when (hours){
+                "0" ->R.drawable.minuteones0
+                "1"->R.drawable.minuteones1
+                "2" ->R.drawable.minuteones2
+                "3" ->R.drawable.minuteones3
+                "4" ->R.drawable.minuteones4
+                "5"->R.drawable.minuteones5
+                "6" ->R.drawable.minuteones6
+                "7" ->R.drawable.minuteones7
+                "8" ->R.drawable.minuteones8
+                "9" ->R.drawable.minuteones9
+                "10" ->R.drawable.minutes10
+                "11" ->R.drawable.minutes11
+                "12" ->R.drawable.minutes12
+                else -> R.drawable.minuteones0}
+
+            if (mAmbient) {
+                val bitmap = BitmapFactory.decodeResource(applicationContext.resources, drawable)
+
+                val src = Rect(0, 0, bitmap.height, bitmap.width)
+                val dst = Rect(bounds.left -60 , bounds.top, bounds.right-60, bounds.bottom)
 
                 canvas.drawBitmap(
                     bitmap,
@@ -1681,15 +1949,15 @@ if (mAmbient) {
              */
             canvas.save()
 
-            canvas.rotate(hoursRotation, mCenterX, mCenterY)
+            if (!mAmbient) {canvas.rotate(hoursRotation, mCenterX, mCenterY)
             canvas.drawLine(
                 mCenterX,
                 mCenterY - CENTER_GAP_AND_CIRCLE_RADIUS,
                 mCenterX,
                 mCenterY - sHourHandLength,
                 mHourPaint
-            )
-
+            )}
+            if (!mAmbient) {
             canvas.rotate(minutesRotation - hoursRotation, mCenterX, mCenterY)
             canvas.drawLine(
                 mCenterX,
@@ -1697,7 +1965,7 @@ if (mAmbient) {
                 mCenterX,
                 mCenterY - sMinuteHandLength,
                 mMinutePaint
-            )
+            )}
 
             /*
              * Ensure the "seconds" hand is drawn only when we are in interactive mode.
@@ -1731,8 +1999,8 @@ if (mAmbient) {
 if(mAmbient){
 
                  val steps: Int = (1200/100).toInt()
-            val innerTickRadius = mCenterX - 59
-            val outerTickRadius = mCenterX -54
+            val innerTickRadius = mCenterX - 40
+            val outerTickRadius = mCenterX -43
             for (tickIndex in 0..steps) {
                 val tickRot = (tickIndex.toDouble() * Math.PI * 2.0 / 105).toFloat()
                 val innerX = Math.sin(tickRot.toDouble()).toFloat() * innerTickRadius
@@ -1765,8 +2033,8 @@ if(mAmbient){
             if(mAmbient){
 
                 val days: Int = (dayOfMonth.toInt()) -1
-                val innerTickRadius = mCenterX - 22
-                val outerTickRadius = mCenterX -25
+                val innerTickRadius = mCenterX - 35
+                val outerTickRadius = mCenterX -30
                 for (tickIndex in 0..days) {
                     val tickRot = (tickIndex.toDouble() * Math.PI * 2.0 / 31).toFloat()
                     val innerX = Math.sin(tickRot.toDouble()).toFloat() * innerTickRadius
