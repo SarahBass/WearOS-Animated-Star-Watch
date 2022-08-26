@@ -120,7 +120,7 @@ Contents | Description
 [Star.xml](https://github.com/SarahBass/WearOS-Animated-Star-Watch/blob/main/FilesforFormatingOnly/star.xml)      | Used to Preview Layout , not used in final Code
 [PNG Files](https://github.com/SarahBass/WearOS-Animated-Star-Watch/tree/main/SamplePngforGITHUBONLY)     | No Drawables or APP Art is included on Github
 
-## Connect Device :
+## Connect Device with Android Debug Bridge :
 
 > Terminal Command: adb devices
 
