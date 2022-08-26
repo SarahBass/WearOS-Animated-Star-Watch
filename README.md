@@ -87,11 +87,8 @@ Color to Black and White:
 
 Color to Calendar:
 
-<img src="https://github.com/SarahBass/WearOS-Animated-Star-Watch/blob/main/SamplePngforGITHUBONLY/ambientmode2.gif" width="300" height="300">
+<img src="https://github.com/SarahBass/WearOS-Animated-Star-Watch/blob/main/SamplePngforGITHUBONLY/dataheavy.gif" width="300" height="300">
 
-Calendar Without Dates:
-
-<img src="https://github.com/SarahBass/WearOS-Animated-Star-Watch/blob/main/SamplePngforGITHUBONLY/AmbientModeCalendar.png" width="300" height="300">
 -----------------------
 
 ## Animation Mode Samples:
