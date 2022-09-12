@@ -12,10 +12,12 @@ class MyWatchFaceTest {
         assert(MyWatchFaceUtils().getHolidayBackgroundDrawable(Date(2022, 5, 5, 5, 5)) == R.drawable.cincodemayo)
     }
 }
+
 //Expected Output:
 //May 5th 2023: full
 //May 5 2022 : wax
 // May 5th, 2026 : wan
+// May 16th, 2026 : new
 /*
 class moonPhaseTest {
    @Test
@@ -29,5 +31,8 @@ class moonPhaseTest {
    fun test3() {
        assert(MyFullMoonFaceUtils().drawMoon(Date(2023, 5, 5, 5, 5))) == R.drawable.fullpng)
    }
+   fun test4() {
+       assert(MyFullMoonFaceUtils().drawMoon(Date(2026, 5, 6, 5, 5))) == R.drawable.newmoontiny)
+   }
 }
-*/
+/*
