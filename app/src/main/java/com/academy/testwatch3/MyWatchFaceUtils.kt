@@ -8,3 +8,20 @@ class MyWatchFaceUtils {
         return R.drawable.cincodemayo
     }
 }
+class MyWanMoonFaceUtils {
+    fun drawMoon(date: Date): Int {
+        return R.drawable.wan
+    }
+}
+
+class MyWaxMoonFaceUtils {
+    fun drawMoon(date: Date): Int {
+        return R.drawable.wax
+    }
+}
+
+class MyFullMoonFaceUtils {
+    fun drawMoon(date: Date): Int {
+        return R.drawable.fullpng
+    }
+}
