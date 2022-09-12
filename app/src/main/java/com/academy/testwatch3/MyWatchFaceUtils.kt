@@ -25,3 +25,9 @@ class MyFullMoonFaceUtils {
         return R.drawable.fullpng
     }
 }
+
+class MyNewMoonFaceUtils {
+    fun drawMoon(date: Date): Int {
+        return R.drawable.newmoontiny
+    }
+}
