@@ -1875,9 +1875,6 @@ if (mAmbient) {
                 "Waxing" ->R.drawable.wax
                 "Waning" ->R.drawable.wan
                 "New Moon" ->R.drawable.newmoontiny
-
-
-
                 else -> R.drawable.wax}
 
             if (mAmbient) {
