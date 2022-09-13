@@ -1,38 +1,23 @@
 package com.academy.testwatch3
 
+import org.junit.Assert.assertEquals
 import org.junit.runner.RunWith
 import org.junit.Test
 import org.mockito.junit.MockitoJUnitRunner
-import java.util.*
+import java.util.Date
+
 //Date(int year, int month, int date, int hrs, int min)
 @RunWith(MockitoJUnitRunner::class)
 class MyWatchFaceTest {
     @Test
-    fun test1() {
-        assert(MyWatchFaceUtils().getHolidayBackgroundDrawable(Date(2022, 5, 5, 5, 5)) == R.drawable.cincodemayo)
+    fun test_all() {
+        assertEquals(MyWatchFaceUtils().getHolidayBackgroundDrawable(Date(122, 4, 5, 5, 5)), R.drawable.cincodemayo)
+        assertEquals(MyWatchFaceUtils().getHolidayBackgroundDrawable(Date(122, 11, 25, 5, 5)), R.drawable.december1)
+        assertEquals(MyWatchFaceUtils().getHolidayBackgroundDrawable(Date(126, 3, 5, 5, 5)), R.drawable.easter)
+
+        assertEquals(MyFullMoonFaceUtils().getMoonDrawable(Date(126, 4, 5, 5, 5)), R.drawable.wan)
+        assertEquals(MyFullMoonFaceUtils().getMoonDrawable(Date(122, 4, 5, 5, 5)), R.drawable.wax)
+        assertEquals(MyFullMoonFaceUtils().getMoonDrawable(Date(123, 4, 5, 5, 5)), R.drawable.full)
+        assertEquals(MyFullMoonFaceUtils().getMoonDrawable(Date(126, 4, 16, 5, 5)), R.drawable.newmoontiny)
     }
 }
-
-//Expected Output:
-//May 5th 2023: full
-//May 5 2022 : wax
-// May 5th, 2026 : wan
-// May 16th, 2026 : new
-/*
-class moonPhaseTest {
-   @Test
-
-   fun test1() {
-       assert(MyWanMoonFaceUtils().drawMoon(Date(2026, 5, 5, 5, 5))) == R.drawable.wan)
-   }
-   fun test2() {
-       assert(MyWaxMoonFaceUtils().drawMoon(Date(2022, 5, 5, 5, 5))) == R.drawable.wax)
-   }
-   fun test3() {
-       assert(MyFullMoonFaceUtils().drawMoon(Date(2023, 5, 5, 5, 5))) == R.drawable.fullpng)
-   }
-   fun test4() {
-       assert(MyFullMoonFaceUtils().drawMoon(Date(2026, 5, 6, 5, 5))) == R.drawable.newmoontiny)
-   }
-}
-/*
