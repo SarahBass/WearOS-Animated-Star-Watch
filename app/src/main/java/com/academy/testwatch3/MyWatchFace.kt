@@ -1,6 +1,4 @@
 package com.academy.testwatch3
-//imports for Heart Rate Sensor - Permission in XML needed
-
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -1599,19 +1597,17 @@ if (mAmbient) {
         }
 
         private fun drawStepsFace(canvas: Canvas) {
-
-
             if(mAmbient){
                 val steps: Int = (stepCount / 100).roundToInt()
-            val innerTickRadius = mCenterX - 54
-            val outerTickRadius = mCenterX -58
-            for (tickIndex in 0..steps) {
-                val tickRot = (tickIndex.toDouble() * Math.PI * 2.0 / 105).toFloat()
-                val innerX = Math.sin(tickRot.toDouble()).toFloat() * innerTickRadius
-                val innerY = (-Math.cos(tickRot.toDouble())).toFloat() * innerTickRadius
-                val outerX = Math.sin(tickRot.toDouble()).toFloat() * outerTickRadius
-                val outerY = (-Math.cos(tickRot.toDouble())).toFloat() * outerTickRadius
-                canvas.drawLine(
+                val innerTickRadius = mCenterX - 54
+                val outerTickRadius = mCenterX -58
+                for (tickIndex in 0..steps) {
+                    val tickRot = (tickIndex.toDouble() * Math.PI * 2.0 / 105).toFloat()
+                    val innerX = Math.sin(tickRot.toDouble()).toFloat() * innerTickRadius
+                    val innerY = (-Math.cos(tickRot.toDouble())).toFloat() * innerTickRadius
+                    val outerX = Math.sin(tickRot.toDouble()).toFloat() * outerTickRadius
+                    val outerY = (-Math.cos(tickRot.toDouble())).toFloat() * outerTickRadius
+                    canvas.drawLine(
                                   mCenterX + innerX, mCenterY + innerY,
                                 mCenterX + outerX, mCenterY + outerY, mTickAndCirclePaint
                           )
