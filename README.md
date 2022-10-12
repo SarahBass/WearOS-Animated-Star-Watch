@@ -3,8 +3,7 @@
 
 ## TicWatch E-3 Virtual Star Pet
 
-<img src="https://github.com/SarahBass/WearOS-Animated-Star-Watch/blob/main/SamplePngforGITHUBONLY/Galaxywatch360.jpeg" width="300" height="300">
-
+[<img src="https://github.com/SarahBass/WearOS-Animated-Star-Watch/blob/main/SamplePngforGITHUBONLY/Galaxywatch360.jpeg" width="300" height="300">](https://play.google.com/store/apps/details?id=com.academy.testwatch3)
 [Google Play Store](https://play.google.com/store/apps/details?id=com.academy.testwatch3)
 
 ----------
